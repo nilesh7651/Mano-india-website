@@ -1,14 +1,13 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 
+import './App.css'
+import Home from '.src/landing_page/Home.jsx'
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <h1>Mano India</h1>
+      <Home/>
     </>
   )
 }
