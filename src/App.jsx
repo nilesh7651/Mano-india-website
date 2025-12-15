@@ -12,6 +12,7 @@ function App() {
       <h1>Mano India</h1>
       <h1>Mano India</h1>
       <h1>Mano India</h1>
+      <h1>Mano India</h1>
       <Home />
      
     </>
