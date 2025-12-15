@@ -1,16 +1,138 @@
-# React + Vite
+# Mano India – Event Management & Organization Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Mano India is a web-based event management and organization platform that allows users to book cooks, artists, and venues for various functions such as weddings, parties, corporate events, and private gatherings. The platform aims to simplify event planning by providing a single place to discover and manage multiple service providers.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Project Overview
 
-## React Compiler
+Planning an event involves coordinating many vendors, which can be time-consuming and complex. Mano India solves this problem by offering a centralized system where users can:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Book professional cooks for events
+- Hire artists and performers
+- Discover and reserve venues
+- Manage event-related services easily
 
-## Expanding the ESLint configuration
+The platform focuses on usability, scalability, and a clean user experience.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+- React.js
+- Vite
+- Bootstrap 5
+- HTML5
+- CSS3
+- JavaScript (ES6+)
+
+### Backend (Planned)
+- Node.js
+- Express.js
+- REST APIs
+- Database (MongoDB / SQL)
+- Authentication & Authorization
+
+---
+
+## 📂 Project Structure
+
+Mano-india-website/
+│
+├── frontend/
+│ ├── public/
+│ │ └── vite.svg
+│ │
+│ ├── src/
+│ │ ├── assets/ # Images and static assets
+│ │ ├── components/ # Reusable React components
+│ │ ├── pages/ # Page-level components
+│ │ ├── App.jsx # Root component
+│ │ ├── main.jsx # Entry point
+│ │ ├── App.css # App-specific styles
+│ │ └── index.css # Global styles
+│ │
+│ ├── index.html # Main HTML file
+│ ├── package.json
+│ ├── vite.config.js
+│ └── eslint.config.js
+│
+├── README.md
+└── package-lock.json
+
+
+---
+
+## ⚙️ Installation & Setup
+
+### Prerequisites
+- Node.js (v16+ recommended)
+- npm or yarn
+
+### Steps to Run Locally
+
+```bash
+git clone https://github.com/nilesh7651/Mano-india-website.git
+cd Mano-india-website
+npm install
+npm run dev
+✨ Features
+Current Features
+
+Responsive frontend UI
+
+Homepage layout for event services
+
+Bootstrap-based design
+
+Fast development using Vite
+
+Planned Features
+
+User authentication (login/signup)
+
+Booking system for cooks, artists, and venues
+
+Admin dashboard
+
+Vendor profiles and availability
+
+Online payments
+
+Reviews and ratings
+
+🎯 Project Goals
+
+Build a real-world event management platform
+
+Practice React component architecture
+
+Implement scalable frontend structure
+
+Use as a portfolio or final-year academic project
+
+🤝 Contribution
+
+Contributions are welcome. You can help by:
+
+Improving UI/UX
+
+Adding new features
+
+Fixing bugs
+
+Optimizing performance
+
+📄 License
+
+This project is intended for business purposes.
+
+
+If you want, I can also:
+- Add **screenshots section**
+- Write a **backend README**
+- Make this **industry-grade**
+- Tailor it for **college submission**
+
+Just say the word 👍
