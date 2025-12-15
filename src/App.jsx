@@ -1,21 +1,23 @@
-import { useState } from 'react'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Venues from "./pages/Venues";
+import Suppliers from "./pages/Suppliers";
+import Contact from "./pages/Contact";
+import "./App.css";
 
-import Home from './landing_page/Home.jsx'
-
-
-function App() {
+export default function App() {
   return (
-    <>
-      <h1>Mano India1</h1>
-      <h1>Mano India</h1>
-      <h1>Mano India</h1>
-      <h1>Mano India</h1>
-      <h1>management and organized by priya</h1>
-      <Home />
-     
-    </>
-  )
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/venues" element={<Venues />} />
+        <Route path="/suppliers" element={<Suppliers />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
+  );
 }
-
-export default App
