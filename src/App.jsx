@@ -11,6 +11,9 @@ function App() {
       <h1>Mano India</h1>
       <h1>Mano India</h1>
       <h1>Mano India</h1>
+      <h1>Mano India</h1>
+      <h1>Mano India</h1>
+      <h1>Mano India</h1>
       <h1>management and organized by priya</h1>
       <Home />
      
