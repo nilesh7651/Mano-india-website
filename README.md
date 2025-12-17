@@ -22,10 +22,7 @@ The platform focuses on usability, scalability, and a clean user experience.
 ### Frontend
 - React.js
 - Vite
-- Bootstrap 5
-- HTML5
 - CSS3
-- JavaScript (ES6+)
 
 ### Backend (Planned)
 - Node.js
@@ -128,11 +125,3 @@ Optimizing performance
 
 This project is intended for business purposes.
 
-
-If you want, I can also:
-- Add **screenshots section**
-- Write a **backend README**
-- Make this **industry-grade**
-- Tailor it for **college submission**
-
-Just say the word 👍
