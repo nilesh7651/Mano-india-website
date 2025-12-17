@@ -22,10 +22,7 @@ The platform focuses on usability, scalability, and a clean user experience.
 ### Frontend
 - React.js
 - Vite
-- Bootstrap 5
-- HTML5
 - CSS3
-- JavaScript (ES6+)
 
 ### Backend (Planned)
 - Node.js
