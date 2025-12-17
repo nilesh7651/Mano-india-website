@@ -18,13 +18,13 @@ const createBooking = async (req, res) => {
     const existingBooking = await Booking.findOne({
       artist: artistId,
       eventDate,
-      status: { $in: ["pending", "approved"] },
+      bookingStatus: { $in: ["pending_payment", "paid", "approved"] },
     });
 
     if (existingBooking) {
       return res
         .status(400)
-        .json({ message: "Artist already booked on this date" });
+        .json({ message: "Artist already booked for this date" });
     }
 
     const booking = await Booking.create({
@@ -32,9 +32,14 @@ const createBooking = async (req, res) => {
       artist: artistId,
       eventDate,
       eventLocation,
+      amount: artist.pricePerEvent, // snapshot price
+      bookingStatus: "pending_payment",
     });
 
-    res.status(201).json(booking);
+    res.status(201).json({
+      message: "Booking created. Payment required.",
+      booking,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

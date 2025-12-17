@@ -20,10 +20,30 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    status: {
+
+    // BUSINESS FIELDS
+    amount: {
+      type: Number,
+      required: true,
+    },
+    bookingStatus: {
       type: String,
-      enum: ["pending", "approved", "rejected"],
-      default: "pending",
+      enum: [
+        "pending_payment",
+        "paid",
+        "approved",
+        "completed",
+        "cancelled",
+      ],
+      default: "pending_payment",
+    },
+
+    // PAYMENT PLACEHOLDERS
+    paymentProvider: {
+      type: String, // razorpay | stripe | etc
+    },
+    paymentIntentId: {
+      type: String,
     },
   },
   { timestamps: true }
