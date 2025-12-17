@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Testing Panel</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .box { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+    input, textarea { width: 250px; margin: 5px 0; padding: 6px; }
+    button { padding: 8px 12px; margin: 5px 0; }
+    pre { background: #f4f4f4; padding: 10px; }
+  </style>
+</head>
+<body>
+
+<h1>Artist Booking – Test Interface (Saves to DB)</h1>
+
+<!-- Register -->
+<div class="box">
+  <h2>Register User</h2>
+  <input id="rName" placeholder="Name"><br>
+  <input id="rEmail" placeholder="Email"><br>
+  <input id="rPass" placeholder="Password"><br>
+  <button onclick="register()">Register</button>
+  <pre id="regOut"></pre>
+</div>
+
+<!-- Login -->
+<div class="box">
+  <h2>Login</h2>
+  <input id="lEmail" placeholder="Email"><br>
+  <input id="lPass" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+  <pre id="loginOut"></pre>
+</div>
+
+<div class="box">
+  <h2>Stored Token</h2>
+  <pre id="tokenBox">No token yet</pre>
+</div>
+
+<!-- Add Artist -->
+<div class="box">
+  <h2>Add Artist (stores in database)</h2>
+  <input id="aName" placeholder="Artist Name"><br>
+  <input id="aCategory" placeholder="Category (singer, dancer...)"><br>
+  <input id="aCity" placeholder="City"><br>
+  <input id="aPrice" placeholder="Price Per Event"><br>
+  <textarea id="aBio" placeholder="Short Bio"></textarea><br>
+  <button onclick="addArtist()">Create Artist</button>
+  <pre id="artistOut"></pre>
+</div>
+
+<!-- Get Artists -->
+<div class="box">
+  <h2>Get All Artists</h2>
+  <button onclick="getArtists()">Fetch Artists</button>
+  <pre id="allArtists"></pre>
+</div>
+
+<!-- Create Booking -->
+<div class="box">
+  <h2>Create Booking</h2>
+  <input id="bArtist" placeholder="Artist ID"><br>
+  <input id="bDate" placeholder="Event Date (YYYY-MM-DD)"><br>
+  <button onclick="createBooking()">Create Booking</button>
+  <pre id="bookingOut"></pre>
+</div>
+
+<!-- Get User Bookings -->
+<div class="box">
+  <h2>Get My Bookings</h2>
+  <button onclick="getBookings()">Fetch My Bookings</button>
+  <pre id="myBookings"></pre>
+</div>
+
+<script>
+  let token = "";
+
+  function showToken() {
+    document.getElementById("tokenBox").textContent = token || "No token yet";
+  }
+
+  async function register() {
+    let res = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: rName.value,
+        email: rEmail.value,
+        password: rPass.value
+      })
+    });
+    document.getElementById("regOut").textContent = JSON.stringify(await res.json(), null, 2);
+  }
+
+  async function login() {
+    let res = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: lEmail.value,
+        password: lPass.value
+      })
+    });
+    let data = await res.json();
+    token = data.token;
+    document.getElementById("loginOut").textContent = JSON.stringify(data, null, 2);
+    showToken();
+  }
+
+  async function addArtist() {
+    let res = await fetch("http://localhost:5000/api/artists", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        name: aName.value,
+        category: aCategory.value,
+        city: aCity.value,
+        pricePerEvent: aPrice.value,
+        bio: aBio.value
+      })
+    });
+    document.getElementById("artistOut").textContent = JSON.stringify(await res.json(), null, 2);
+  }
+
+  async function getArtists() {
+    let res = await fetch("http://localhost:5000/api/artists");
+    document.getElementById("allArtists").textContent = JSON.stringify(await res.json(), null, 2);
+  }
+
+  async function createBooking() {
+    let res = await fetch("http://localhost:5000/api/bookings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        artist: bArtist.value,
+        eventDate: bDate.value
+      })
+    });
+    document.getElementById("bookingOut").textContent = JSON.stringify(await res.json(), null, 2);
+  }
+
+  async function getBookings() {
+    let res = await fetch("http://localhost:5000/api/bookings/user", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    document.getElementById("myBookings").textContent = JSON.stringify(await res.json(), null, 2);
+  }
+
+</script>
+
+</body>
+</html>
