@@ -1,0 +1,68 @@
+.section {
+  margin-top: 70px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* REQUIRED RULE YOU ASKED TO REUSE */
+.header h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.header span {
+  font-size: 14px;
+  color: #777;
+  cursor: pointer;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: #777;
+}
+
+.pagination span {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #d6d6d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.pagination svg {
+  cursor: pointer;
+}
+
+.active {
+  background: #e5e5e5;
+  color: #000;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

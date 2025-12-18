@@ -1,0 +1,30 @@
+.hero {
+  background-color: #f6f6f6;
+  padding: 50px 80px;
+  text-align: center;
+}
+
+/* Main heading */
+.heading {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+/* Sub text wrapper */
+.subText {
+  line-height: 1.4;
+}
+
+/* Normal lines */
+.subText p {
+  font-size: 22px;
+  font-weight: 400;
+  margin: 4px 0;
+}
+
+/* Bold middle line */
+.bold {
+  font-size: 26px;
+  font-weight: 700;
+}

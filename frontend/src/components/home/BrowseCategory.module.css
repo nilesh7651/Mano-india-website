@@ -1,0 +1,102 @@
+.section {
+  padding: 40px 60px;
+  background: #fff;
+}
+
+/* Header */
+.header {
+    margin:0 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.header span {
+  font-size: 14px;
+  font-weight: 400;
+  color: #777;
+  cursor: pointer;
+}
+
+/* Grid */
+.grid {
+    margin:0 100px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* Card */
+.card {
+  text-align: center;
+  cursor: pointer;
+}
+
+.imageBox {
+  height: 180px;
+  /* width: 243.6px; */
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.imageIcon {
+  font-size: 32px;
+  opacity: 0.5;
+}
+
+.card p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.pagination button {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+  background: #fff;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background: #eee;
+}
+
+/* .active {
+  background: #bdbdbd;
+  color: #fff;
+  border: none;
+} */
+
+/* Responsive */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

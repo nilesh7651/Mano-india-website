@@ -1,0 +1,95 @@
+.wrapper {
+  margin: 30px 155px;
+}
+
+/* Filters container */
+.filters {
+  display: flex;
+  justify-content: center;   
+  align-items: center;
+  gap: 54px;
+}
+
+
+/* Select wrapper */
+.selectBox {
+    display: flex;
+  position: relative;
+  width: 200px;
+  justify-content: space-between;
+}
+
+/* Dropdown */
+.selectBox select {
+  width: 255px;
+  height: 44px;
+  padding: 0 40px 0 14px;
+  font-size: 14px;
+  color: #999;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  appearance: none;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* Icon */
+.icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #000;
+  pointer-events: none;
+}
+
+/* Search button */
+.searchBtn {
+  width: 200px;
+  height: 44px;
+  background: #bfbfbf;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+}
+
+.searchBtn:hover {
+  background: #a9a9a9;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .wrapper {
+    margin: 30px 60px;
+  }
+
+  .filters {
+    flex-wrap: wrap;
+  }
+
+  .selectBox,
+  .searchBtn {
+    width: 48%;
+  }
+  .selectBox select{
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .wrapper {
+    margin: 20px;
+  }
+
+  .filters {
+    flex-direction: column;
+  }
+
+  .selectBox,
+  .searchBtn {
+    width: 100%;
+  }
+}

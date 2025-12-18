@@ -1,0 +1,31 @@
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 14px;
+}
+
+/* Image placeholder */
+.image {
+  width: 100%;
+  height: 170px;
+  border: 1px solid #d6d6d6;
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+
+/* Text */
+.card h4 {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.card strong {
+  font-size: 13px;
+}
+
+.card p {
+  font-size: 12px;
+  color: #000;
+  margin-top: 4px;
+}

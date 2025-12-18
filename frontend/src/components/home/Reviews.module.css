@@ -1,0 +1,103 @@
+.section {
+  margin: 50px 150px;
+}
+
+.section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+/* Cards wrapper */
+.cardsWrapper {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+
+/* Card */
+.card {
+  position: relative;
+  background: #f2f2f2;
+  border-radius: 12px;
+  padding: 50px 30px 30px;
+  width: 590px;
+  text-align: center;
+}
+
+/* Avatar circle */
+.avatar {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 56px;
+  background: #e0e0e0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Arrow button */
+.arrowBtn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* Text */
+.card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.card p {
+  font-size: 13px;
+  color: #9a9a9a;
+  line-height: 1.6;
+}
+
+/* Dots */
+.dots {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.dots span {
+  width: 8px;
+  height: 8px;
+  background: #d0d0d0;
+  border-radius: 50%;
+}
+
+.activeDot {
+  background: #8c8c8c;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .cardsWrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    margin: 60px 20px;
+  }
+}

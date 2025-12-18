@@ -1,0 +1,88 @@
+.section {
+  padding: 60px 0;
+  background: #fff;
+}
+
+.container {
+  margin: 0 160px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+/* LEFT FORM */
+.form h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.form label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form textarea {
+  min-height: 140px;
+  resize: none;
+}
+
+.form button {
+  width: 100%;
+  padding: 12px;
+  background: #bdbdbd;
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+/* RIGHT INFO */
+.info{
+    padding: 50px;
+}
+.info h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.info p {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.info span {
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .container {
+    margin: 0 60px;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin: 0 20px;
+  }
+}

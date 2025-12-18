@@ -1,0 +1,39 @@
+.hero {
+  background: #f6f6f6;
+  padding: 50px 80px;
+  text-align: center;
+}
+
+/* Main heading */
+.hero h1 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 36px;
+}
+
+/* Sub text */
+.subText {
+  font-size: 22px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* Bold middle line */
+.subText strong {
+  font-weight: 700;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .hero {
+    padding: 70px 0 60px;
+  }
+
+  .hero h1 {
+    font-size: 22px;
+  }
+
+  .subText {
+    font-size: 18px;
+  }
+}

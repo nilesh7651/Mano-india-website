@@ -1,0 +1,48 @@
+.card {
+  cursor: pointer;
+}
+
+/* Image box */
+.image {
+  width: 358px;
+  height: 210px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.image span {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Text */
+.card h4 {
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.card strong {
+  font-weight: 600;
+}
+
+/* Rating */
+.rating {
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.rating span {
+  font-weight: 400;
+}
+
+/* Guests */
+.guests {
+  font-size: 12px;
+  color: #555;
+}

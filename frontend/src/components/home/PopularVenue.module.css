@@ -1,0 +1,129 @@
+.section {
+  padding: 40px 60px;
+  background: #fff;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+  margin:0 100px;
+}
+
+.header h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.header span {
+  font-size: 14px;
+  font-weight: 400;
+  color: #777;
+  cursor: pointer;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin:24px 100px;
+}
+
+/* Card */
+.card {
+  cursor: pointer;
+}
+
+.imageBox {
+  height: 180px;
+  /* width: 243.6px; */
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  background: #fff;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.explore {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+/* Text */
+.title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.location {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.pagination button {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+  background: #fff;
+  font-size: 12px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconBtn {
+  padding: 0;
+}
+
+.active {
+  background: #bdbdbd;
+  color: #fff;
+  border: none;
+}
+
+.pagination button:hover {
+  background: #ededed;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .section {
+    padding: 30px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
