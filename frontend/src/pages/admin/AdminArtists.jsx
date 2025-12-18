@@ -1,0 +1,176 @@
+import { useEffect, useState } from "react";
+import API from "../../services/api";
+
+export default function AdminArtists() {
+  const [artists, setArtists] = useState([]);
+  const [allArtists, setAllArtists] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState("pending"); // "pending" or "all"
+
+  useEffect(() => {
+    loadArtists();
+    loadAllArtists();
+  }, []);
+
+  const loadArtists = () => {
+    API.get("/admin/artists/pending")
+      .then(res => setArtists(res.data))
+      .catch(err => {
+        console.error("Failed to load pending artists:", err);
+        setArtists([]);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  const loadAllArtists = () => {
+    API.get("/admin/artists")
+      .then(res => setAllArtists(res.data))
+      .catch(err => {
+        console.error("Failed to load all artists:", err);
+        setAllArtists([]);
+      });
+  };
+
+  const refreshData = () => {
+    loadArtists();
+    loadAllArtists();
+  };
+
+  const approveArtist = async (id) => {
+    try {
+      await API.put(`/admin/artists/${id}/approve`);
+      refreshData();
+      alert("Artist approved successfully!");
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to approve artist");
+    }
+  };
+
+  const rejectArtist = async (id) => {
+    if (!confirm("Are you sure you want to reject this artist?")) return;
+    
+    try {
+      await API.delete(`/admin/artists/${id}/reject`);
+      refreshData();
+      alert("Artist rejected and removed");
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to reject artist");
+    }
+  };
+
+  if (loading) return <p className="text-gray-500">Loading artists...</p>;
+
+  const displayArtists = viewMode === "pending" ? artists : allArtists;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-semibold text-gray-900 mb-2">Artist Management</h1>
+          <p className="text-gray-600 text-sm">Approve and manage artist profiles</p>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setViewMode("pending")}
+            className={`px-4 py-2 rounded-lg transition ${
+              viewMode === "pending"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            Pending ({artists.length})
+          </button>
+          <button
+            onClick={() => setViewMode("all")}
+            className={`px-4 py-2 rounded-lg transition ${
+              viewMode === "all"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            All Artists ({allArtists.length})
+          </button>
+        </div>
+      </div>
+
+      {viewMode === "pending" && artists.length === 0 && (
+        <div className="text-center py-12 bg-gray-50 rounded-xl border border-gray-200">
+          <p className="text-gray-500">No pending artist approvals.</p>
+        </div>
+      )}
+
+      {viewMode === "all" && allArtists.length === 0 && (
+        <div className="text-center py-12 bg-gray-50 rounded-xl border border-gray-200">
+          <p className="text-gray-500">No artists registered yet.</p>
+        </div>
+      )}
+
+      {displayArtists.length > 0 && (
+        <div className="grid gap-4">
+          {displayArtists.map(artist => (
+            <div
+              key={artist._id}
+              className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200"
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {artist.name}
+                  </h3>
+                  <p className="text-gray-600 mt-1">
+                    {artist.category} • {artist.city}
+                  </p>
+                  {artist.user && (
+                    <p className="text-sm text-gray-500 mt-1">
+                      Owner: {artist.user.name} ({artist.user.email})
+                    </p>
+                  )}
+                  {artist.bio && (
+                    <p className="text-gray-700 mt-2">{artist.bio}</p>
+                  )}
+                  <p className="text-lg font-semibold mt-3">
+                    ₹ {artist.pricePerEvent?.toLocaleString()} / event
+                  </p>
+                  <div className="mt-2">
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      artist.isVerified 
+                        ? "bg-green-100 text-green-700" 
+                        : "bg-yellow-100 text-yellow-700"
+                    }`}>
+                      {artist.isVerified ? "✓ Verified" : "⏳ Pending"}
+                    </span>
+                  </div>
+                </div>
+
+                {!artist.isVerified && (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => approveArtist(artist._id)}
+                      className="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium text-sm"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => rejectArtist(artist._id)}
+                      className="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium text-sm"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                )}
+
+                {artist.isVerified && (
+                  <div className="px-4 py-2 bg-green-50 border border-green-200 rounded-lg">
+                    <span className="text-green-700 font-semibold text-sm">
+                      ✓ Approved
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
