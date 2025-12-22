@@ -24,6 +24,7 @@ app.use("/api/admin", require("./routes/adminPayoutRoutes"));
 app.use("/api/admin", require("./routes/adminDashboardRoutes"));
 app.use("/api/earnings", require("./routes/earningsRoutes"));
 app.use("/api/notifications", require("./routes/notificationRoutes"));
+app.use("/api/payments", require("./routes/paymentRoutes"));
 
 
 

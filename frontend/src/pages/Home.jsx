@@ -14,8 +14,8 @@ export default function Home() {
             for Your Perfect Event
           </h1>
 
-          <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-            Mano helps you discover verified artists and premium venues
+          <p className="mt-6 text-lg text-gray-500 leading-relaxed">
+            ManoIndia helps you discover verified artists and premium venues
             for weddings, parties, and corporate events — all in one place.
           </p>
 
@@ -43,9 +43,9 @@ export default function Home() {
       {/* HOW IT WORKS */}
       <section className="text-center">
         <h2 className="text-3xl font-semibold text-gray-900 mb-4">
-          How Mano Works
+          How ManoIndia Works
         </h2>
-        <p className="text-gray-600 mb-12">Simple steps to book your perfect event</p>
+        <p className="text-gray-500 mb-12">Simple steps to book your perfect event</p>
 
         <div className="grid md:grid-cols-3 gap-6">
           {[
@@ -69,7 +69,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold text-gray-900 mb-3">
                 {step.title}
               </h3>
-              <p className="text-gray-600">{step.desc}</p>
+              <p className="text-gray-500">{step.desc}</p>
             </div>
           ))}
         </div>
@@ -78,10 +78,10 @@ export default function Home() {
       {/* WHY MANO */}
       <section className="bg-gray-50 rounded-2xl p-12 text-center border border-gray-200">
         <h2 className="text-3xl font-semibold text-gray-900 mb-4">
-          Why Choose Mano?
+          Why Choose ManoIndia?
         </h2>
 
-        <p className="max-w-2xl mx-auto text-gray-600 leading-relaxed">
+        <p className="max-w-2xl mx-auto text-gray-500 leading-relaxed">
           We focus on verified profiles, transparent pricing, and a seamless
           booking experience — eliminating the chaos of traditional event planning.
         </p>
@@ -92,7 +92,7 @@ export default function Home() {
         <h2 className="text-3xl font-semibold text-gray-900 mb-4">
           Start Planning Your Event Today
         </h2>
-        <p className="text-gray-600 mb-6">Join thousands of satisfied customers</p>
+        <p className="text-gray-500 mb-6">Join thousands of satisfied customers</p>
 
         <Link
           to="/artists"
@@ -116,7 +116,7 @@ export default function Home() {
   </div>
 
   <p className="mt-4 text-center text-gray-500 text-sm">
-    Discover how Mano simplifies artist & venue booking for every event.
+    Discover how ManoIndia simplifies artist & venue booking for every event.
   </p>
 </section>
 

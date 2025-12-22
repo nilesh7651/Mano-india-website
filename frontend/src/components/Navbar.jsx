@@ -29,7 +29,7 @@ export default function Navbar() {
             alt="Mano"
             className="h-8 w-auto object-contain"
           />
-          <span className="font-semibold text-lg">Mano</span>
+          <span className="font-semibold text-lg">ManoIndia</span>
         </Link>
 
         {/* Center Links */}
