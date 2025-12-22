@@ -76,16 +76,53 @@ export default function Home() {
       </section>
 
       {/* WHY MANO */}
-      <section className="bg-gray-50 rounded-2xl p-12 text-center border border-gray-200">
-        <h2 className="text-3xl font-semibold text-gray-900 mb-4">
-          Why Choose ManoIndia?
-        </h2>
+      <section className="py-20 bg-gray-50 rounded-2xl border border-gray-200">
+  <div className="max-w-7xl mx-auto px-6 text-center">
+    <h2 className="text-4xl font-bold text-gray-900 mb-4">
+      Why Choose ManoIndia?
+    </h2>
 
-        <p className="max-w-2xl mx-auto text-gray-500 leading-relaxed">
-          We focus on verified profiles, transparent pricing, and a seamless
-          booking experience — eliminating the chaos of traditional event planning.
+    <p className="max-w-2xl mx-auto text-gray-600 mb-12">
+      We focus on verified profiles, transparent pricing, and a seamless booking
+      experience — eliminating the chaos of traditional event planning.
+    </p>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all">
+        <div className="text-4xl mb-4">✅</div>
+        <h3 className="text-xl font-semibold mb-2">Verified Artists</h3>
+        <p className="text-gray-600 text-sm">
+          All artists and venues are manually verified for quality.
         </p>
-      </section>
+      </div>
+
+      <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all">
+        <div className="text-4xl mb-4">💰</div>
+        <h3 className="text-xl font-semibold mb-2">Transparent Pricing</h3>
+        <p className="text-gray-600 text-sm">
+          No hidden charges. Clear pricing before booking.
+        </p>
+      </div>
+
+      <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all">
+        <div className="text-4xl mb-4">🔒</div>
+        <h3 className="text-xl font-semibold mb-2">Secure Payments</h3>
+        <p className="text-gray-600 text-sm">
+          Payments are safe with trusted gateways.
+        </p>
+      </div>
+
+      <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all">
+        <div className="text-4xl mb-4">⚡</div>
+        <h3 className="text-xl font-semibold mb-2">Fast Booking</h3>
+        <p className="text-gray-600 text-sm">
+          Book artists and venues in minutes.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* CTA */}
       <section className="text-center">
