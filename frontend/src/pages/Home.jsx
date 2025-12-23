@@ -45,7 +45,7 @@ export default function Home() {
         <h2 className="text-3xl font-semibold text-gray-900 mb-4">
           How ManoIndia Works
         </h2>
-        <p className="text-gray-500 mb-12">Simple steps to book your perfect event</p>
+        <p className="text-gray-500 mb-12">Simple steps to book your perfect event.</p>
 
         <div className="grid md:grid-cols-3 gap-6">
           {[
