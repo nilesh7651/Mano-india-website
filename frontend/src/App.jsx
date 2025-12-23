@@ -18,7 +18,7 @@ import AdminArtists from "./pages/admin/AdminArtists";
 import AdminVenues from "./pages/admin/AdminVenues";
 import AdminBookings from "./pages/admin/AdminBookings";
 import CreateVenue from "./pages/CreateVenue";
-
+import UserBookings from "./pages/userBooking";
 
 export default function App() {
   return (
@@ -33,6 +33,7 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} /> 
+          <Route path="/my-bookings" element={<UserBookings />} />
           <Route
   path="/dashboard"
   element={

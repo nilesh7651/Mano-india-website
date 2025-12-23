@@ -1,0 +1,149 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f6f7fb;
+  color: #2c2c2c;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: white;
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.logo span {
+  color: #ff3f6c;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #2c2c2c;
+  font-weight: 500;
+}
+
+/* HERO VIDEO */
+.hero-video {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-video video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+.hero-video::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+.hero-content h1 {
+  font-size: 44px;
+}
+
+.hero-content button {
+  margin-top: 20px;
+  padding: 14px 34px;
+  border-radius: 30px;
+  border: none;
+  background: #ff3f6c;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ARTISTS */
+.artists {
+  padding: 80px 40px;
+}
+
+.artists h2 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* CARD GRID */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+}
+
+/* CARD */
+.card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card h3 {
+  margin: 12px;
+}
+
+.card p {
+  margin: 0 12px 12px;
+  color: gray;
+}
+
+/* FOOTER */
+footer {
+  background: white;
+  text-align: center;
+  padding: 20px;
+}
