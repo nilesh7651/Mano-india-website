@@ -31,6 +31,9 @@ export default function App() {
           <Route path="/venues" element={<Venues />} />
           <Route path="/venues/:id" element={<VenueDetails />} />
           <Route path="/signup" element={<Signup />} />
+          {/* <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />  */}
+
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} /> 
           <Route
