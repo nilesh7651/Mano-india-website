@@ -41,8 +41,9 @@ export default function App() {
     </ProtectedRoute>
   }
 />
-
+0
 <Route
+  {/* path="/dashboard/artist" */}
   path="/dashboard/artist"
   element={
     <ProtectedRoute role="artist">
