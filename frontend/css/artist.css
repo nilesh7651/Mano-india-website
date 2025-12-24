@@ -1,0 +1,31 @@
+body {
+  background: #f6f7fb;
+  font-family: Poppins, sans-serif;
+}
+
+.artist-box {
+  background: white;
+  max-width: 520px;
+  margin: 60px auto;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.artist-box img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.book-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  background: #ff3f6c;
+  color: white;
+  border-radius: 12px;
+  font-size: 16px;
+  margin-top: 20px;
+}
