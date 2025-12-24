@@ -19,6 +19,7 @@ import AdminVenues from "./pages/admin/AdminVenues";
 import AdminBookings from "./pages/admin/AdminBookings";
 import CreateVenue from "./pages/CreateVenue";
 import UserBookings from "./pages/userBooking";
+import Events from "./pages/Events";
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
           {/* <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />  */}
+  <Route path="/events" element={<Events />} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} /> 
@@ -47,7 +49,6 @@ export default function App() {
 />
 0
 <Route
-  {/* path="/dashboard/artist" */}
   path="/dashboard/artist"
   element={
     <ProtectedRoute role="artist">
