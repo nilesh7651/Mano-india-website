@@ -13,6 +13,7 @@ export default function ArtistDashboard() {
     name: "",
     category: "",
     city: "",
+    phone: "",
     pricePerEvent: "",
     bio: "",
     images: "",
@@ -88,10 +89,14 @@ export default function ArtistDashboard() {
             />
             <div className="grid grid-cols-2 gap-4">
               <Input
-                label="City"
-                placeholder="e.g. Mumbai"
-                value={form.city}
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
+                required
+              />
+              <Input
+                label="Phone Number"
+                placeholder="e.g. +91 9876543210"
+                value={form.phone}
+                onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 required
               />
               <Input
@@ -206,10 +211,10 @@ export default function ArtistDashboard() {
                 ) : (
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${b.status === "ACCEPTED"
-                        ? "bg-green-100 text-green-800"
-                        : b.status === "REJECTED"
-                          ? "bg-red-100 text-red-800"
-                          : "bg-blue-100 text-blue-800"
+                      ? "bg-green-100 text-green-800"
+                      : b.status === "REJECTED"
+                        ? "bg-red-100 text-red-800"
+                        : "bg-blue-100 text-blue-800"
                       }`}
                   >
                     {b.status}

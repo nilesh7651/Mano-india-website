@@ -20,6 +20,10 @@ const artistSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    phone: {
+      type: String,
+      required: true,
+    },
     pricePerEvent: {
       type: Number,
       required: true,

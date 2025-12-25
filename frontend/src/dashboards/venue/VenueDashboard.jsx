@@ -13,6 +13,7 @@ export default function VenueDashboard() {
     name: "",
     venueType: "Wedding Hall",
     city: "",
+    phone: "",
     capacity: "",
     pricePerDay: "",
     description: "",
@@ -108,8 +109,17 @@ export default function VenueDashboard() {
               <Input
                 label="City"
                 placeholder="e.g. Delhi"
-                value={form.city}
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
+                required
+              />
+            </div>
+
+            <div>
+              <Input
+                label="Phone Number"
+                placeholder="e.g. +91 9876543210"
+                value={form.phone}
+                onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 required
               />
             </div>
@@ -215,6 +225,10 @@ export default function VenueDashboard() {
           <div className="p-4 bg-gray-50 rounded-xl">
             <p className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Location</p>
             <p className="font-bold text-gray-900">{venue.city}</p>
+          </div>
+          <div className="p-4 bg-gray-50 rounded-xl">
+            <p className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Contact</p>
+            <p className="font-bold text-gray-900">{venue.phone || "Not Set"}</p>
           </div>
           <div className="p-4 bg-gray-50 rounded-xl">
             <p className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Price</p>

@@ -3,9 +3,9 @@ const Artist = require("../models/Artist");
 // CREATE ARTIST PROFILE
 const createArtistProfile = async (req, res) => {
   try {
-    const { name, category, city, pricePerEvent, bio, images } = req.body;
+    const { name, category, city, phone, pricePerEvent, bio, images } = req.body;
 
-    if (!name || !category || !city || !pricePerEvent) {
+    if (!name || !category || !city || !pricePerEvent || !phone) {
       return res.status(400).json({ message: "All required fields missing" });
     }
 
@@ -22,6 +22,7 @@ const createArtistProfile = async (req, res) => {
       name,
       category,
       city,
+      phone,
       pricePerEvent,
       bio,
       images: images || [],
