@@ -24,8 +24,8 @@ export default function VenueDetails() {
           capacity: 500,
           pricePerDay: 200000,
           description:
-            "A premium wedding and event venue suitable for large celebrations, receptions, and corporate events.",
-          amenities: ["Parking", "AC", "Power Backup", "Decoration Area"],
+            "A premium wedding and event venue suitable for large celebrations, receptions, and corporate events. Features state-of-the-art lighting and luxurious interiors.",
+          amenities: ["Parking", "AC", "Power Backup", "Decoration Area", "Catering"],
         });
       });
 
@@ -34,52 +34,66 @@ export default function VenueDetails() {
   }, [id]);
 
   if (!venue) {
-    return <p className="text-gray-500">Loading venue details...</p>;
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <p className="text-amber-500 animate-pulse text-lg font-medium">Loading venue details...</p>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
+      {/* Top Section: Image & Details */}
       <div className="grid md:grid-cols-2 gap-10">
-        {/* Image */}
-        <div className="h-96 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center text-gray-400 shadow-sm">
-          <span>Venue Image</span>
+        
+        {/* Image Placeholder - Dark Gradient */}
+        <div className="h-96 bg-gradient-to-br from-gray-800 to-black rounded-2xl flex items-center justify-center text-gray-500 shadow-2xl border border-gray-800 relative overflow-hidden group">
+          <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+          <span className="text-lg font-medium">Venue Image</span>
         </div>
 
-        {/* Details */}
-        <div className="space-y-6">
+        {/* Venue Info */}
+        <div className="space-y-8 flex flex-col justify-center">
           <div>
-            <h1 className="text-3xl font-semibold text-gray-900 mb-2">
+            <div className="flex items-center gap-3 mb-2">
+              <span className="bg-amber-500/10 text-amber-500 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-amber-500/20">
+                {venue.venueType}
+              </span>
+              <span className="text-gray-500 text-sm">• {venue.city}</span>
+            </div>
+            
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
               {venue.name}
             </h1>
-            <p className="text-gray-600">
-              {venue.venueType} • {venue.city}
-            </p>
           </div>
 
           {venue.description && (
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">About</h2>
-              <p className="text-gray-700 leading-relaxed">
+              <h2 className="font-semibold text-gray-300 mb-2 uppercase tracking-wide text-sm">About the Venue</h2>
+              <p className="text-gray-400 leading-relaxed text-lg">
                 {venue.description}
               </p>
             </div>
           )}
 
-          <div className="space-y-3">
+          {/* Details Grid */}
+          <div className="space-y-4">
             <div>
-              <span className="text-gray-600">Capacity: </span>
-              <span className="font-semibold text-gray-900">{venue.capacity} guests</span>
+              <span className="text-gray-500 text-sm uppercase tracking-wider block mb-1">Capacity</span>
+              <span className="text-xl font-semibold text-white flex items-center gap-2">
+                👥 {venue.capacity} guests
+              </span>
             </div>
 
             {/* Amenities */}
             {venue.amenities && venue.amenities.length > 0 && (
               <div>
-                <h3 className="text-sm font-semibold text-gray-900 mb-2">Amenities</h3>
+                <span className="text-gray-500 text-sm uppercase tracking-wider block mb-2">Amenities</span>
                 <div className="flex flex-wrap gap-2">
                   {venue.amenities.map((a, i) => (
                     <span
                       key={i}
-                      className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm"
+                      className="px-3 py-1.5 bg-gray-800 border border-gray-700 text-gray-300 rounded-lg text-sm hover:border-amber-500/50 hover:text-amber-500 transition-colors cursor-default"
                     >
                       {a}
                     </span>
@@ -89,27 +103,29 @@ export default function VenueDetails() {
             )}
           </div>
 
-          <div className="p-5 bg-gray-50 rounded-xl border border-gray-200">
-            <div className="text-2xl font-semibold text-gray-900">
-              ₹ {venue.pricePerDay?.toLocaleString()} <span className="text-sm text-gray-500 font-normal">/ day</span>
-            </div>
-            <p className="text-sm text-gray-600 mt-1">
-              Book this venue for your event
-            </p>
-          </div>
+          {/* Price & Action Card */}
+          <div className="p-6 bg-gray-900 rounded-xl border border-gray-800 shadow-xl">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <p className="text-sm text-gray-400 mb-1">Price per day</p>
+                <div className="text-3xl font-bold text-amber-500">
+                  ₹ {venue.pricePerDay?.toLocaleString()} <span className="text-sm text-gray-500 font-normal">/ day</span>
+                </div>
+              </div>
 
-          <button
-            onClick={() => setOpenBooking(true)}
-            className="w-full bg-black text-white px-8 py-3.5 rounded-lg hover:opacity-90 font-medium text-lg transition shadow-md"
-          >
-            📅 Book This Venue
-          </button>
+              <button
+                onClick={() => setOpenBooking(true)}
+                className="bg-amber-600 text-white px-8 py-4 rounded-lg hover:bg-amber-500 font-bold text-lg transition-all shadow-lg shadow-amber-900/40 transform hover:-translate-y-1"
+              >
+                📅 Book Venue
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="mt-8">
+      <div className="border-t border-gray-800 pt-10">
         <Reviews reviews={reviews} />
-
       </div>
 
       {openBooking && (

@@ -49,75 +49,91 @@ export default function CreateVenue() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-3xl font-semibold mb-6 text-center">
-          Create Venue Profile
-        </h1>
+    <div className="min-h-screen bg-black py-12 px-4 flex items-center justify-center">
+      <div className="w-full max-w-2xl bg-gray-900 rounded-2xl shadow-2xl shadow-amber-900/10 border border-gray-800 p-8 md:p-10">
+        
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-white mb-2">
+            Create <span className="text-amber-500">Venue Profile</span>
+          </h1>
+          <p className="text-gray-400 text-sm">
+            List your venue on ManoIndia and reach premium clients.
+          </p>
+        </div>
 
         {error && (
-          <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
-            {error}
+          <div className="mb-6 text-sm text-red-400 bg-red-900/20 border border-red-900/50 rounded-lg p-4 flex items-center gap-2">
+            ⚠ {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Venue Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Venue Name *
+            <label className="block text-sm font-medium text-gray-400 mb-2">
+              Venue Name <span className="text-amber-500">*</span>
             </label>
             <input
               name="name"
               type="text"
-              placeholder="Royal Wedding Hall"
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black"
+              placeholder="e.g. Royal Wedding Hall"
+              className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
               onChange={handleChange}
               required
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Venue Type *
-            </label>
-            <select
-              name="venueType"
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black"
-              onChange={handleChange}
-              required
-            >
-              <option value="Wedding Hall">Wedding Hall</option>
-              <option value="Banquet">Banquet</option>
-              <option value="Resort">Resort</option>
-              <option value="Farmhouse">Farmhouse</option>
-              <option value="Party Hall">Party Hall</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              City *
-            </label>
-            <input
-              name="city"
-              type="text"
-              placeholder="Delhi"
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black"
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
+          {/* Type & City */}
+          <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Capacity (guests) *
+              <label className="block text-sm font-medium text-gray-400 mb-2">
+                Venue Type <span className="text-amber-500">*</span>
+              </label>
+              <div className="relative">
+                <select
+                  name="venueType"
+                  className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors appearance-none cursor-pointer"
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="Wedding Hall">Wedding Hall</option>
+                  <option value="Banquet">Banquet</option>
+                  <option value="Resort">Resort</option>
+                  <option value="Farmhouse">Farmhouse</option>
+                  <option value="Party Hall">Party Hall</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-500">
+                  ▼
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-2">
+                City <span className="text-amber-500">*</span>
+              </label>
+              <input
+                name="city"
+                type="text"
+                placeholder="e.g. Delhi"
+                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Capacity & Price */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-2">
+                Capacity (guests) <span className="text-amber-500">*</span>
               </label>
               <input
                 name="capacity"
                 type="number"
-                placeholder="500"
-                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black"
+                placeholder="e.g. 500"
+                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
                 onChange={handleChange}
                 required
                 min="1"
@@ -125,14 +141,14 @@ export default function CreateVenue() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Price Per Day (₹) *
+              <label className="block text-sm font-medium text-gray-400 mb-2">
+                Price Per Day (₹) <span className="text-amber-500">*</span>
               </label>
               <input
                 name="pricePerDay"
                 type="number"
-                placeholder="200000"
-                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black"
+                placeholder="e.g. 200000"
+                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
                 onChange={handleChange}
                 required
                 min="0"
@@ -140,45 +156,47 @@ export default function CreateVenue() {
             </div>
           </div>
 
+          {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-400 mb-2">
               Description
             </label>
             <textarea
               name="description"
-              placeholder="Describe your venue..."
+              placeholder="Describe your venue, ambiance, and special features..."
               rows="4"
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600 resize-none"
               onChange={handleChange}
             />
           </div>
 
+          {/* Amenities */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-400 mb-2">
               Amenities (comma-separated)
             </label>
             <input
               name="amenities"
               type="text"
-              placeholder="Parking, AC, Power Backup, Decoration Area"
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black"
+              placeholder="e.g. Parking, AC, Power Backup, Decoration Area"
+              className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
               onChange={handleChange}
             />
-            <p className="text-xs text-gray-500 mt-1">
-              Separate amenities with commas
+            <p className="text-xs text-gray-500 mt-2">
+              Tip: Separate multiple amenities with commas.
             </p>
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-black text-white py-3 rounded-lg hover:opacity-90 transition font-medium"
+            className="w-full bg-amber-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-amber-500 transition-all shadow-lg shadow-amber-900/40 disabled:opacity-50 disabled:cursor-not-allowed mt-4"
           >
-            {loading ? "Creating..." : "Create Venue Profile"}
+            {loading ? "Creating Profile..." : "Create Venue Profile"}
           </button>
         </form>
       </div>
     </div>
   );
 }
-

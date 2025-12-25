@@ -1,21 +1,21 @@
 export default function Footer() {
   return (
-    <footer className="bg-gray-100 border-t mt-20">
+    <footer className="bg-black border-t border-gray-800 mt-20 text-gray-300">
       <div className="max-w-7xl mx-auto px-6 py-12 grid gap-8 md:grid-cols-4">
         
         {/* Brand */}
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">ManoIndia</h2>
-          <p className="mt-3 text-sm text-gray-600">
+          <h2 className="text-2xl font-bold text-amber-500 tracking-wide">ManoIndia</h2>
+          <p className="mt-4 text-sm text-gray-400">
             Managed & Organized by <br />
-            <span className="font-medium">Mayramurti Pvt. Ltd.</span>
+            <span className="font-semibold text-white">Mayramurti Pvt. Ltd.</span>
           </p>
         </div>
 
         {/* Address */}
         <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Office Address</h3>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <h3 className="font-semibold text-white mb-4 uppercase tracking-wider text-sm">Office Address</h3>
+          <p className="text-sm text-gray-400 leading-relaxed">
             Bhub, BSFC Building,<br />
             Frazer Road,<br />
             Patna – 800001
@@ -24,38 +24,38 @@ export default function Footer() {
 
         {/* Contact */}
         <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Contact</h3>
-          <p className="text-sm text-gray-600">
+          <h3 className="font-semibold text-white mb-4 uppercase tracking-wider text-sm">Contact</h3>
+          <p className="text-sm text-gray-400 hover:text-amber-500 transition-colors cursor-pointer">
             📞 +91 87097 36094
           </p>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-gray-400 mt-2 hover:text-amber-500 transition-colors cursor-pointer">
             ✉️ info@mayramurti.com
           </p>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-gray-400 mt-2 hover:text-amber-500 transition-colors cursor-pointer">
             🌐 www.mayramurti.com
           </p>
         </div>
 
         {/* Services */}
         <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Our Services</h3>
-          <ul className="text-sm text-gray-600 space-y-1">
-            <li>• Management</li>
-            <li>• Marketing</li>
-            <li>• Creative</li>
-            <li>• Analysis</li>
+          <h3 className="font-semibold text-white mb-4 uppercase tracking-wider text-sm">Our Services</h3>
+          <ul className="text-sm text-gray-400 space-y-2">
+            <li className="hover:text-amber-500 transition-colors cursor-pointer">• Management</li>
+            <li className="hover:text-amber-500 transition-colors cursor-pointer">• Marketing</li>
+            <li className="hover:text-amber-500 transition-colors cursor-pointer">• Creative</li>
+            <li className="hover:text-amber-500 transition-colors cursor-pointer">• Analysis</li>
           </ul>
         </div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t bg-white">
-        <div className="max-w-7xl mx-auto px-6 py-4 text-sm text-gray-500 flex flex-col md:flex-row justify-between gap-2">
-          <p>
+      <div className="border-t border-gray-800 bg-gray-900">
+        <div className="max-w-7xl mx-auto px-6 py-6 text-xs md:text-sm text-gray-500 flex flex-col md:flex-row justify-between gap-4 items-center">
+          <p className="text-center md:text-left">
             CIN: U70200BR2023PTC064260 | GST: 10AARCM1035D1Z1
           </p>
-          <p>
-            © {new Date().getFullYear()} ManoIndia. All rights reserved.
+          <p className="text-center md:text-right">
+            © {new Date().getFullYear()} <span className="text-amber-600">ManoIndia</span>. All rights reserved.
           </p>
         </div>
       </div>

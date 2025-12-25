@@ -59,6 +59,16 @@ const bookingSchema = new mongoose.Schema(
   default: "NOT_READY",
 },
 
+paymentStatus: {
+  type: String,
+  enum: ["PENDING", "PAID", "FAILED"],
+  default: "PENDING",
+},
+
+razorpayOrderId: String,
+razorpayPaymentId: String,
+
+
 paidAt: {
   type: Date,
 },

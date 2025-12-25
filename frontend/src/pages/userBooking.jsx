@@ -20,61 +20,102 @@ export default function UserBookings() {
     fetchBookings();
   }, []);
 
-  if (loading) return <p>Loading bookings...</p>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-amber-500"></div>
+      </div>
+    );
 
   if (bookings.length === 0) {
     return (
-      <div className="text-center text-gray-500 mt-12">
-        No bookings yet.
+      <div className="text-center py-20 bg-gray-900 rounded-xl border border-gray-800 border-dashed">
+        <h3 className="text-lg font-medium text-white mb-2">No Bookings Found</h3>
+        <p className="text-gray-500">
+          You haven't made any bookings yet. Start exploring artists or venues!
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
-      <h1 className="text-2xl font-semibold">My Bookings</h1>
+    <div className="max-w-5xl mx-auto space-y-8">
+      <div className="border-b border-gray-800 pb-4">
+        <h1 className="text-3xl font-bold text-white">
+          My <span className="text-amber-500">Bookings</span>
+        </h1>
+        <p className="text-gray-400 text-sm mt-1">
+          Manage your upcoming events and payment status
+        </p>
+      </div>
 
-      {bookings.map((booking) => (
-        <div
-          key={booking._id}
-          className="bg-white border rounded-xl p-6 flex justify-between items-center"
-        >
-          <div>
-            <h2 className="font-medium text-lg">
-              {booking.artist?.name || booking.venue?.name}
-            </h2>
+      <div className="space-y-4">
+        {bookings.map((booking) => (
+          <div
+            key={booking._id}
+            className="bg-gray-900 border border-gray-800 rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-sm hover:border-gray-700 transition-colors"
+          >
+            {/* Info Section */}
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <h2 className="text-xl font-bold text-white">
+                  {booking.artist?.name || booking.venue?.name}
+                </h2>
+                <span className="text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded border border-gray-700 uppercase">
+                  {booking.artist ? "Artist" : "Venue"}
+                </span>
+              </div>
 
-            <p className="text-sm text-gray-600">
-              {new Date(booking.eventDate).toDateString()}
-            </p>
+              <div className="space-y-1">
+                <p className="text-sm text-gray-400 flex items-center gap-2">
+                  📅 {new Date(booking.eventDate).toDateString()}
+                </p>
+                <p className="text-sm text-gray-400 flex items-center gap-2">
+                  💰 Amount: <span className="text-white font-medium">₹ {booking.amount?.toLocaleString()}</span>
+                </p>
+              </div>
 
-            <p className="text-sm text-gray-600">
-              Amount: ₹ {booking.amount}
-            </p>
+              <div className="mt-4">
+                <span
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                    booking.status === "PENDING"
+                      ? "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20"
+                      : booking.status === "ACCEPTED" || booking.status === "CONFIRMED"
+                      ? "bg-green-500/10 text-green-500 border border-green-500/20"
+                      : booking.status === "REJECTED" || booking.status === "CANCELLED"
+                      ? "bg-red-500/10 text-red-500 border border-red-500/20"
+                      : "bg-gray-700 text-gray-300"
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${
+                    booking.status === "PENDING" ? "bg-yellow-500" :
+                    booking.status === "ACCEPTED" || booking.status === "CONFIRMED" ? "bg-green-500" :
+                    booking.status === "REJECTED" || booking.status === "CANCELLED" ? "bg-red-500" : "bg-gray-400"
+                  }`}></span>
+                  {booking.status}
+                </span>
+              </div>
+            </div>
 
-            <span
-              className={`inline-block mt-2 text-xs px-2 py-1 rounded ${
-                booking.status === "PENDING"
-                  ? "bg-yellow-100 text-yellow-700"
-                  : booking.status === "ACCEPTED"
-                  ? "bg-green-100 text-green-700"
-                  : booking.status === "REJECTED"
-                  ? "bg-red-100 text-red-700"
-                  : "bg-gray-100 text-gray-700"
-              }`}
-            >
-              {booking.status}
-            </span>
+            {/* Action Section */}
+            <div className="flex flex-col items-end gap-3 w-full md:w-auto">
+              {booking.status === "PENDING" ? (
+                <button className="w-full md:w-auto bg-amber-600 text-white px-6 py-2.5 rounded-lg hover:bg-amber-500 font-medium transition-all shadow-lg shadow-amber-900/20">
+                  Proceed to Pay
+                </button>
+              ) : booking.status === "ACCEPTED" || booking.status === "CONFIRMED" ? (
+                 <button className="w-full md:w-auto border border-gray-700 text-gray-300 px-6 py-2.5 rounded-lg hover:bg-gray-800 transition-colors">
+                  View Receipt
+                </button>
+              ) : null}
+              
+              <p className="text-xs text-gray-500">
+                ID: {booking._id.slice(-6).toUpperCase()}
+              </p>
+            </div>
           </div>
-
-          {/* PAYMENT PLACEHOLDER (Phase-2) */}
-          {booking.status === "PENDING" && (
-            <button className="bg-black text-white px-4 py-2 rounded-lg">
-              Pay Now
-            </button>
-          )}
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

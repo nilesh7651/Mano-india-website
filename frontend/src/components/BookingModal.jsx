@@ -44,63 +44,68 @@ export default function BookingModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-md shadow-2xl">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">
-            Request {bookingType} Booking
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-md shadow-2xl shadow-amber-900/20 transform transition-all">
+        
+        {/* Header */}
+        <div className="p-6 border-b border-gray-800">
+          <h2 className="text-xl font-bold text-white">
+            Request <span className="text-amber-500">{bookingType}</span> Booking
           </h2>
+          <p className="text-xs text-gray-500 mt-1">
+            Fill in the details below to proceed.
+          </p>
         </div>
 
         <div className="p-6">
           {error && (
-            <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
-              {error}
+            <div className="mb-5 text-sm text-red-400 bg-red-900/20 border border-red-900/50 rounded-lg p-3">
+              ⚠ {error}
             </div>
           )}
 
           {/* Event Date */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Event Date *
+          <div className="mb-5">
+            <label className="block text-sm font-medium text-gray-400 mb-2">
+              Event Date <span className="text-amber-500">*</span>
             </label>
             <input
               type="date"
               value={eventDate}
               onChange={(e) => setEventDate(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-500"
               required
             />
           </div>
 
           {/* Event Location */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Event Location *
+          <div className="mb-8">
+            <label className="block text-sm font-medium text-gray-400 mb-2">
+              Event Location <span className="text-amber-500">*</span>
             </label>
             <input
               type="text"
-              placeholder="Enter event location"
+              placeholder="e.g. Grand Hotel, Patna"
               value={eventLocation}
               onChange={(e) => setEventLocation(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
               required
             />
           </div>
 
           {/* Actions */}
-          <div className="flex gap-3">
+          <div className="flex gap-4">
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="flex-1 bg-black text-white py-2.5 rounded-lg hover:opacity-90 transition font-medium disabled:opacity-50"
+              className="flex-1 bg-amber-600 text-white py-3 rounded-lg hover:bg-amber-500 transition-all font-semibold shadow-lg shadow-amber-900/30 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Submitting..." : "Confirm Booking"}
             </button>
 
             <button
               onClick={onClose}
-              className="flex-1 border border-gray-300 py-2.5 rounded-lg hover:bg-gray-50 transition font-medium"
+              className="flex-1 bg-transparent border border-gray-600 text-gray-300 py-3 rounded-lg hover:border-gray-400 hover:text-white transition-colors font-medium"
             >
               Cancel
             </button>

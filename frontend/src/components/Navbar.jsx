@@ -19,7 +19,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <nav className="bg-black border-b border-gray-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
 
         {/* Logo */}
@@ -29,28 +29,39 @@ export default function Navbar() {
             alt="Mano"
             className="h-8 w-auto object-contain"
           />
-          <span className="font-semibold text-lg">ManoIndia</span>
+          <span className="font-semibold text-lg text-white tracking-wide">
+            Mano<span className="text-amber-500">India</span>
+          </span>
         </Link>
 
         {/* Center Links */}
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link to="/artists" className="text-gray-700 hover:text-black transition">
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+          <Link 
+            to="/artists" 
+            className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
+          >
             Artists
           </Link>
-          <Link to="/venues" className="text-gray-700 hover:text-black transition">
+          <Link 
+            to="/venues" 
+            className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
+          >
             Venues
           </Link>
         </div>
 
         {/* Right Side */}
         {!user ? (
-          <div className="flex items-center gap-3 text-sm font-medium">
-            <Link to="/login" className="text-gray-700 hover:text-black transition">
+          <div className="flex items-center gap-4 text-sm font-medium">
+            <Link 
+              to="/login" 
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Login
             </Link>
             <Link
               to="/signup"
-              className="bg-black text-white px-4 py-2 rounded-lg hover:opacity-90 transition font-medium"
+              className="bg-amber-600 text-white px-5 py-2 rounded-lg hover:bg-amber-500 transition-all font-medium shadow-lg shadow-amber-900/30"
             >
               Sign Up
             </Link>
@@ -60,56 +71,63 @@ export default function Navbar() {
             {/* User Initial */}
             <button
               onClick={() => setOpen(!open)}
-              className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-semibold hover:opacity-90 transition"
+              className="w-10 h-10 rounded-full bg-gray-800 text-amber-500 border border-gray-700 flex items-center justify-center font-bold hover:border-amber-500 transition-colors"
             >
               {user.name.charAt(0).toUpperCase()}
             </button>
 
             {/* Dropdown */}
             {open && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
-                {user.role === "admin" ? (
-                  <Link
-                    to="/admin"
-                    onClick={() => setOpen(false)}
-                    className="block px-4 py-2.5 hover:bg-gray-50 transition text-gray-700"
-                  >
-                    Admin Dashboard
-                  </Link>
-                ) : user.role === "artist" ? (
-                  <Link
-                    to="/dashboard/artist"
-                    onClick={() => setOpen(false)}
-                    className="block px-4 py-2.5 hover:bg-gray-50 transition text-gray-700"
-                  >
-                    Artist Dashboard
-                  </Link>
-                ) : user.role === "venue" ? (
-                  <Link
-                    to="/dashboard/venue"
-                    onClick={() => setOpen(false)}
-                    className="block px-4 py-2.5 hover:bg-gray-50 transition text-gray-700"
-                  >
-                    Venue Dashboard
-                  </Link>
-                ) : (
-                  <Link
-                    to="/dashboard"
-                    onClick={() => setOpen(false)}
-                    className="block px-4 py-2.5 hover:bg-gray-50 transition text-gray-700"
-                  >
-                    My Dashboard
-                  </Link>
-                )}
+              <div className="absolute right-0 mt-2 w-56 bg-gray-900 border border-gray-800 rounded-xl shadow-xl overflow-hidden z-50">
+                <div className="px-4 py-3 border-b border-gray-800">
+                  <p className="text-sm text-white font-medium truncate">{user.name}</p>
+                  <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                </div>
 
-                <div className="border-t border-gray-100"></div>
+                <div className="py-1">
+                  {user.role === "admin" ? (
+                    <Link
+                      to="/admin"
+                      onClick={() => setOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-amber-500 transition-colors"
+                    >
+                      Admin Dashboard
+                    </Link>
+                  ) : user.role === "artist" ? (
+                    <Link
+                      to="/dashboard/artist"
+                      onClick={() => setOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-amber-500 transition-colors"
+                    >
+                      Artist Dashboard
+                    </Link>
+                  ) : user.role === "venue" ? (
+                    <Link
+                      to="/dashboard/venue"
+                      onClick={() => setOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-amber-500 transition-colors"
+                    >
+                      Venue Dashboard
+                    </Link>
+                  ) : (
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-amber-500 transition-colors"
+                    >
+                      My Dashboard
+                    </Link>
+                  )}
+                </div>
+
+                <div className="border-t border-gray-800"></div>
+                
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-4 py-2.5 hover:bg-gray-50 transition text-red-600 font-medium"
+                  className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-gray-800 hover:text-red-300 transition-colors font-medium"
                 >
                   Logout
                 </button>
-
               </div>
             )}
           </div>

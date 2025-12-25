@@ -32,44 +32,44 @@ export default function Login() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center px-4 ">
+    <div className="relative min-h-screen flex items-center justify-center px-4 bg-black">
 
-      {/* 🌄 OUTER BACKGROUND (Illustration style) */}
+      {/* 🌄 OUTER BACKGROUND */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center opacity-40"
         style={{
           backgroundImage:
-            "url('https://plus.unsplash.com/premium_photo-1661315459644-18297c559777?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+            "url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1400&auto=format&fit=crop')",
         }}
       />
-
+      
       {/* Dark overlay for contrast */}
-      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
 
       {/* ================= AUTH CARD ================= */}
-      <div className="relative z-10 w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+      <div className="relative z-10 w-full max-w-5xl bg-gray-900 rounded-3xl shadow-2xl shadow-amber-900/20 overflow-hidden grid grid-cols-1 md:grid-cols-2 border border-gray-800">
 
         {/* ================= LEFT : LOGIN FORM ================= */}
-        <div className="p-8 md:p-12">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-semibold text-gray-900">
-              Welcome back
+        <div className="p-8 md:p-12 flex flex-col justify-center">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-white mb-2">
+              Welcome Back
             </h1>
-            <p className="text-gray-500 mt-2">
-              Login to continue booking artists & venues
+            <p className="text-gray-400">
+              Login to access your premium dashboard
             </p>
           </div>
 
           {error && (
-            <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
-              {error}
+            <div className="mb-6 text-sm text-red-400 bg-red-900/20 border border-red-900/50 rounded-lg p-3 text-center">
+              ⚠ {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email
+              <label className="block text-sm font-medium text-gray-400 mb-2">
+                Email Address
               </label>
               <input
                 type="email"
@@ -77,12 +77,12 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-400 mb-2">
                 Password
               </label>
               <input
@@ -91,50 +91,57 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-black text-white py-3 rounded-lg font-medium hover:opacity-90 transition"
+              className="w-full bg-amber-600 text-white py-3.5 rounded-lg font-bold text-lg hover:bg-amber-500 transition-all shadow-lg shadow-amber-900/30 mt-2"
             >
               Login
             </button>
           </form>
 
-          {/* Mobile Sign up */}
-          <div className="mt-6 text-center text-sm text-gray-600 md:hidden">
+          {/* Mobile Sign up Link */}
+          <div className="mt-8 text-center text-sm text-gray-500 md:hidden">
             Don’t have an account?{" "}
             <Link
               to="/signup"
-              className="text-red-500 font-medium hover:underline"
+              className="text-amber-500 font-semibold hover:text-amber-400 transition-colors"
             >
               Sign up
             </Link>
           </div>
         </div>
 
-        {/* ================= RIGHT : RED PANEL ================= */}
-        <div className="flex flex-col items-center justify-center text-center bg-red-500 text-white p-10 md:p-12">
-          <h2 className="text-3xl font-bold mb-4">
-            Hello, Friend!
-          </h2>
-          <p className="text-red-100 mb-8 max-w-xs">
-            Enter your personal details and start your journey with us
-          </p>
+        {/* ================= RIGHT : GOLD PANEL ================= */}
+        <div className="hidden md:flex flex-col items-center justify-center text-center bg-gradient-to-br from-amber-600 via-amber-700 to-amber-800 text-white p-12 relative overflow-hidden">
+          
+          {/* Subtle Texture Overlay */}
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+          
+          <div className="relative z-10">
+            <h2 className="text-4xl font-bold mb-6">
+              New Here?
+            </h2>
+            <p className="text-amber-100 mb-10 max-w-xs mx-auto text-lg leading-relaxed">
+              Join ManoIndia today to discover and book exclusive artists & venues for your events.
+            </p>
 
-          <Link
-            to="/register"
-            className="
-              border-2 border-white px-8 py-3 rounded-full
-              font-semibold
-              hover:bg-white hover:text-red-500
-              transition
-            "
-          >
-            SIGN UP
-          </Link>
+            <Link
+              to="/signup"
+              className="
+                inline-block border-2 border-white px-10 py-3 rounded-full
+                font-bold tracking-wide
+                hover:bg-white hover:text-amber-700
+                transition-all duration-300
+                shadow-lg
+              "
+            >
+              SIGN UP
+            </Link>
+          </div>
         </div>
       </div>
     </div>
