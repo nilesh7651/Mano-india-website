@@ -4,6 +4,7 @@ import BookingModal from "../components/BookingModal";
 import Reviews from "../components/Reviews";
 
 import API from "../services/api";
+import Button from "../components/ui/Button";
 
 export default function VenueDetails() {
   const { id } = useParams();
@@ -45,11 +46,23 @@ export default function VenueDetails() {
     <div className="space-y-12">
       {/* Top Section: Image & Details */}
       <div className="grid md:grid-cols-2 gap-10">
-        
+
         {/* Image Placeholder - Dark Gradient */}
         <div className="h-96 bg-gradient-to-br from-gray-800 to-black rounded-2xl flex items-center justify-center text-gray-500 shadow-2xl border border-gray-800 relative overflow-hidden group">
+          {venue.images && venue.images.length > 0 ? (
+            <img
+              src={venue.images[0]}
+              alt={venue.name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "https://via.placeholder.com/800x600?text=Venue+Image";
+              }}
+            />
+          ) : (
+            <span className="text-lg font-medium">Venue Image</span>
+          )}
           <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-          <span className="text-lg font-medium">Venue Image</span>
         </div>
 
         {/* Venue Info */}
@@ -61,7 +74,7 @@ export default function VenueDetails() {
               </span>
               <span className="text-gray-500 text-sm">• {venue.city}</span>
             </div>
-            
+
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
               {venue.name}
             </h1>
@@ -113,12 +126,13 @@ export default function VenueDetails() {
                 </div>
               </div>
 
-              <button
+              <Button
                 onClick={() => setOpenBooking(true)}
-                className="bg-amber-600 text-white px-8 py-4 rounded-lg hover:bg-amber-500 font-bold text-lg transition-all shadow-lg shadow-amber-900/40 transform hover:-translate-y-1"
+                size="lg"
+                className="shadow-amber-900/40 transform hover:-translate-y-1"
               >
                 📅 Book Venue
-              </button>
+              </Button>
             </div>
           </div>
         </div>

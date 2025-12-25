@@ -8,7 +8,6 @@ import Venues from "./pages/Venues";
 import VenueDetails from "./pages/VenueDetails";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UserDashboard from "./dashboards/user/UserDashboard";
 import ArtistDashboard from "./dashboards/artist/ArtistDashboard";
@@ -17,7 +16,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminArtists from "./pages/admin/AdminArtists";
 import AdminVenues from "./pages/admin/AdminVenues";
 import AdminBookings from "./pages/admin/AdminBookings";
-import CreateVenue from "./pages/CreateVenue";
+import AdminGallery from "./pages/admin/AdminGallery";
 import UserBookings from "./pages/userBooking";
 import Events from "./pages/Events";
 
@@ -32,68 +31,55 @@ export default function App() {
           <Route path="/venues" element={<Venues />} />
           <Route path="/venues/:id" element={<VenueDetails />} />
           <Route path="/signup" element={<Signup />} />
-          
-          <Route path="/events" element={<Events />} /> 
-
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} /> 
+          <Route path="/events" element={<Events />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/my-bookings" element={<UserBookings />} />
+
           <Route
-  path="/dashboard"
-  element={
-    <ProtectedRoute>
-      <UserDashboard />
-    </ProtectedRoute>
-  }
-/>
-0
-<Route
-  path="/dashboard/artist"
-  element={
-    <ProtectedRoute role="artist">
-      <ArtistDashboard />
-    </ProtectedRoute>
-  }
-/>
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <UserDashboard />
+              </ProtectedRoute>
+            }
+          />
 
-<Route
-  path="/dashboard/venue"
-  element={
-    <ProtectedRoute>
-      <VenueDashboard />
-    </ProtectedRoute>
-  }
-/>
+          <Route
+            path="/dashboard/artist"
+            element={
+              <ProtectedRoute role="artist">
+                <ArtistDashboard />
+              </ProtectedRoute>
+            }
+          />
 
-<Route
-  path="/create-venue"
-  element={
-    <ProtectedRoute>
-      <CreateVenue />
-    </ProtectedRoute>
-  }
-/>
+          <Route
+            path="/dashboard/venue"
+            element={
+              <ProtectedRoute>
+                <VenueDashboard />
+              </ProtectedRoute>
+            }
+          />
 
-<Route
-  path="/admin"
-  element={
-    <ProtectedRoute role="admin">
-      <AdminDashboard />
-    </ProtectedRoute>
-  }
->
-  <Route path="artists" element={<AdminArtists />} />
-  <Route path="venues" element={<AdminVenues />} />
-  <Route path="bookings" element={<AdminBookings />} />
-</Route>
-<Route path="/admin" element={<AdminLayout />}>
-  <Route index element={<AdminDashboard />} />
-  <Route path="bookings" element={<AdminBookings />} />
-</Route>
-
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute role="admin">
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path="artists" element={<AdminArtists />} />
+            <Route path="venues" element={<AdminVenues />} />
+            <Route path="bookings" element={<AdminBookings />} />
+            <Route path="gallery" element={<AdminGallery />} />
+          </Route>
 
         </Routes>
       </MainLayout>
     </BrowserRouter>
   );
+
 }

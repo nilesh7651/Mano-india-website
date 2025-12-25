@@ -1,13 +1,16 @@
 const Venue = require("../models/Venue");
 
 // CREATE VENUE (OWNER)
+// CREATE VENUE (OWNER)
 const createVenue = async (req, res) => {
   try {
+    const { images } = req.body;
     // Ensure isVerified is explicitly set to false for admin approval
     const venue = await Venue.create({
       owner: req.user._id,
       isVerified: false, // Explicitly set to false for admin approval
       ...req.body,
+      images: images || [],
     });
 
     res.status(201).json({
@@ -21,8 +24,12 @@ const createVenue = async (req, res) => {
 
 // GET VERIFIED VENUES (PUBLIC)
 const getVenues = async (req, res) => {
-  const venues = await Venue.find({ isVerified: true });
-  res.json(venues);
+  try {
+    const venues = await Venue.find({ isVerified: true });
+    res.json(venues);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // GET VENUE BY ID (PUBLIC)

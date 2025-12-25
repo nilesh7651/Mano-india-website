@@ -4,10 +4,20 @@ export default function ArtistCard({ artist }) {
   return (
     <div className="group bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:shadow-lg hover:shadow-amber-900/20 hover:border-amber-500/50 transition-all duration-300">
       {/* Image placeholder - Updated to Dark Gradient */}
-      <div className="h-48 bg-gradient-to-br from-gray-800 to-black flex items-center justify-center text-gray-600">
-        {/* If you have an image URL in artist object, you can uncomment below: */}
-        {/* <img src={artist.imageUrl} alt={artist.name} className="w-full h-full object-cover" /> */}
-        <span className="text-sm">Artist Image</span>
+      <div className="h-48 bg-gradient-to-br from-gray-800 to-black flex items-center justify-center text-gray-600 relative">
+        {artist.images && artist.images.length > 0 ? (
+          <img
+            src={artist.images[0]}
+            alt={artist.name}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "https://via.placeholder.com/400x300?text=Artist+Image";
+            }}
+          />
+        ) : (
+          <span className="text-sm">Artist Image</span>
+        )}
       </div>
 
       <div className="p-5">

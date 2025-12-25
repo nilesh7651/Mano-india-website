@@ -31,7 +31,7 @@ export default function AdminVenues() {
 
   const rejectVenue = async (id) => {
     if (!confirm("Are you sure you want to reject this venue?")) return;
-    
+
     try {
       await API.delete(`/admin/venues/${id}/reject`);
       setVenues(venues.filter(v => v._id !== id));
@@ -101,17 +101,22 @@ export default function AdminVenues() {
                 </div>
 
                 <div className="flex gap-2">
-                  <button
-                    onClick={() => approveVenue(venue._id)}
-                    className="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium text-sm"
-                  >
-                    Approve
-                  </button>
+                  {!venue.isVerified && (
+                    <button
+                      onClick={() => approveVenue(venue._id)}
+                      className="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium text-sm"
+                    >
+                      Approve
+                    </button>
+                  )}
                   <button
                     onClick={() => rejectVenue(venue._id)}
-                    className="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium text-sm"
+                    className={`px-5 py-2 rounded-lg transition font-medium text-sm ${venue.isVerified
+                        ? "bg-red-100 text-red-700 border border-red-200 hover:bg-red-200"
+                        : "bg-red-600 text-white hover:bg-red-700"
+                      }`}
                   >
-                    Reject
+                    {venue.isVerified ? "Delete" : "Reject"}
                   </button>
                 </div>
               </div>

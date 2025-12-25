@@ -8,6 +8,10 @@ exports.getAdminDashboard = async (req, res) => {
     const pendingArtists = await Artist.countDocuments({ isVerified: false });
     const pendingVenues = await Venue.countDocuments({ isVerified: false });
 
+    // Total counts
+    const totalArtists = await Artist.countDocuments();
+    const totalVenues = await Venue.countDocuments();
+
     // Booking stats
     const totalBookings = await Booking.countDocuments();
 
@@ -26,6 +30,8 @@ exports.getAdminDashboard = async (req, res) => {
     res.json({
       pendingArtists,
       pendingVenues,
+      totalArtists,
+      totalVenues,
       totalBookings,
       totalRevenue,
       totalCommission,

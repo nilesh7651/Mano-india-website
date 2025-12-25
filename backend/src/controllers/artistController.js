@@ -3,7 +3,7 @@ const Artist = require("../models/Artist");
 // CREATE ARTIST PROFILE
 const createArtistProfile = async (req, res) => {
   try {
-    const { name, category, city, pricePerEvent, bio } = req.body;
+    const { name, category, city, pricePerEvent, bio, images } = req.body;
 
     if (!name || !category || !city || !pricePerEvent) {
       return res.status(400).json({ message: "All required fields missing" });
@@ -24,6 +24,7 @@ const createArtistProfile = async (req, res) => {
       city,
       pricePerEvent,
       bio,
+      images: images || [],
       isVerified: false, // Explicitly set to false for admin approval
     });
 
@@ -39,7 +40,7 @@ const createArtistProfile = async (req, res) => {
 // GET ALL ARTISTS (PUBLIC)
 const getAllArtists = async (req, res) => {
   try {
-    const artists = await Artist.find().populate(
+    const artists = await Artist.find({ isVerified: true }).populate(
       "user",
       "name email role"
     );
@@ -67,8 +68,27 @@ const getArtistById = async (req, res) => {
   }
 };
 
+// GET CURRENT ARTIST PROFILE (PROTECTED)
+const getCurrentArtist = async (req, res) => {
+  try {
+    const artist = await Artist.findOne({ user: req.user._id }).populate(
+      "user",
+      "name email role"
+    );
+
+    if (!artist) {
+      return res.status(404).json({ message: "Artist profile not found" });
+    }
+
+    res.json(artist);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createArtistProfile,
   getAllArtists,
   getArtistById,
+  getCurrentArtist,
 };

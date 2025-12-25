@@ -9,11 +9,21 @@ export default function VenueCard({ venue }) {
       {/* Image Placeholder - Dark Gradient */}
       <div className="h-48 bg-gradient-to-br from-gray-800 to-black flex items-center justify-center text-gray-600 relative overflow-hidden">
         {/* Optional: Add a subtle overlay effect on hover */}
-        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-        
-        {/* If you have an image URL: */}
-        {/* <img src={venue.imageUrl} alt={venue.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" /> */}
-        <span className="text-sm z-10">Venue Image</span>
+        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
+
+        {venue.images && venue.images.length > 0 ? (
+          <img
+            src={venue.images[0]}
+            alt={venue.name}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "https://via.placeholder.com/400x300?text=Venue+Image";
+            }}
+          />
+        ) : (
+          <span className="text-sm z-10">Venue Image</span>
+        )}
       </div>
 
       <div className="p-5">
@@ -23,7 +33,7 @@ export default function VenueCard({ venue }) {
         <p className="text-sm text-gray-400 mb-1">
           {venue.venueType} • {venue.city}
         </p>
-        
+
         {venue.capacity && (
           <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
             <span className="text-amber-500/80">👥</span> Capacity: {venue.capacity} guests
@@ -35,7 +45,7 @@ export default function VenueCard({ venue }) {
             ₹ {venue.pricePerDay?.toLocaleString() || venue.pricePerDay}{" "}
             <span className="text-xs text-gray-500 font-normal">/ day</span>
           </p>
-          
+
           <span className="text-xs font-medium text-gray-500 uppercase tracking-wide group-hover:text-white transition-colors">
             View Details →
           </span>

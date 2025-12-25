@@ -48,7 +48,7 @@ export default function AdminArtists() {
 
   const rejectArtist = async (id) => {
     if (!confirm("Are you sure you want to reject this artist?")) return;
-    
+
     try {
       await API.delete(`/admin/artists/${id}/reject`);
       refreshData();
@@ -72,21 +72,19 @@ export default function AdminArtists() {
         <div className="flex gap-2">
           <button
             onClick={() => setViewMode("pending")}
-            className={`px-4 py-2 rounded-lg transition ${
-              viewMode === "pending"
+            className={`px-4 py-2 rounded-lg transition ${viewMode === "pending"
                 ? "bg-blue-600 text-white"
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-            }`}
+              }`}
           >
             Pending ({artists.length})
           </button>
           <button
             onClick={() => setViewMode("all")}
-            className={`px-4 py-2 rounded-lg transition ${
-              viewMode === "all"
+            className={`px-4 py-2 rounded-lg transition ${viewMode === "all"
                 ? "bg-blue-600 text-white"
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-            }`}
+              }`}
           >
             All Artists ({allArtists.length})
           </button>
@@ -132,11 +130,10 @@ export default function AdminArtists() {
                     ₹ {artist.pricePerEvent?.toLocaleString()} / event
                   </p>
                   <div className="mt-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      artist.isVerified 
-                        ? "bg-green-100 text-green-700" 
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${artist.isVerified
+                        ? "bg-green-100 text-green-700"
                         : "bg-yellow-100 text-yellow-700"
-                    }`}>
+                      }`}>
                       {artist.isVerified ? "✓ Verified" : "⏳ Pending"}
                     </span>
                   </div>
@@ -160,10 +157,16 @@ export default function AdminArtists() {
                 )}
 
                 {artist.isVerified && (
-                  <div className="px-4 py-2 bg-green-50 border border-green-200 rounded-lg">
-                    <span className="text-green-700 font-semibold text-sm">
+                  <div className="flex items-center gap-3">
+                    <span className="px-4 py-2 bg-green-50 border border-green-200 rounded-lg text-green-700 font-semibold text-sm">
                       ✓ Approved
                     </span>
+                    <button
+                      onClick={() => rejectArtist(artist._id)}
+                      className="px-4 py-2 bg-red-100 text-red-700 border border-red-200 rounded-lg hover:bg-red-200 transition font-medium text-sm"
+                    >
+                      Delete
+                    </button>
                   </div>
                 )}
               </div>

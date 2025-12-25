@@ -14,6 +14,8 @@ export default function AdminDashboard() {
         setStats({
           pendingArtists: 0,
           pendingVenues: 0,
+          totalArtists: 0,
+          totalVenues: 0,
           totalBookings: 0,
           totalRevenue: 0,
           totalCommission: 0,
@@ -39,40 +41,47 @@ export default function AdminDashboard() {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid md:grid-cols-3 gap-6">
-        <StatCard 
-          label="Pending Artists" 
+      <div className="grid md:grid-cols-4 gap-6">
+        <StatCard
+          label="Total Artists"
+          value={stats?.totalArtists || 0}
+          link="/admin/artists"
+          color="blue"
+        />
+        <StatCard
+          label="Total Venues"
+          value={stats?.totalVenues || 0}
+          link="/admin/venues"
+          color="green"
+        />
+        <StatCard
+          label="Pending Artists"
           value={stats?.pendingArtists || 0}
           link="/admin/artists"
           color="yellow"
         />
-        <StatCard 
-          label="Pending Venues" 
+        <StatCard
+          label="Pending Venues"
           value={stats?.pendingVenues || 0}
           link="/admin/venues"
           color="yellow"
-        />
-        <StatCard 
-          label="Total Bookings" 
-          value={stats?.totalBookings || 0}
-          color="blue"
         />
       </div>
 
       {/* Financial Stats */}
       <div className="grid md:grid-cols-3 gap-6">
-        <StatCard 
-          label="Total Revenue" 
+        <StatCard
+          label="Total Revenue"
           value={`₹ ${(stats?.totalRevenue || 0).toLocaleString()}`}
           color="green"
         />
-        <StatCard 
-          label="Platform Commission" 
+        <StatCard
+          label="Platform Commission"
           value={`₹ ${(stats?.totalCommission || 0).toLocaleString()}`}
           color="purple"
         />
-        <StatCard 
-          label="Pending Payouts" 
+        <StatCard
+          label="Pending Payouts"
           value={`₹ ${(stats?.pendingPayouts || 0).toLocaleString()}`}
           link="/admin/bookings"
           color="orange"

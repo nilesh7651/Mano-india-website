@@ -4,9 +4,13 @@ const router = express.Router();
 const protect = require("../middleware/authMiddleware");
 const { createVenue, getVenues, getVenueById, getMyVenue } = require("../controllers/venueController");
 
-router.post("/", protect, createVenue);     // venue owner
-router.get("/", getVenues);                 // public
-router.get("/my", protect, getMyVenue);     // get user's own venue
-router.get("/:id", getVenueById);           // public
+// CREATE VENUE
+router.post("/", protect, createVenue);
+// PUBLIC LIST
+router.get("/", getVenues);
+// GET OWN VENUE PROFILE
+router.get("/profile", protect, getMyVenue);
+// GET SINGLE VENUE
+router.get("/:id", getVenueById);
 
 module.exports = router;

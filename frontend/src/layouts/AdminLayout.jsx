@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, Link } from "react-router-dom";
 
 export default function AdminLayout() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -8,10 +8,47 @@ export default function AdminLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6 py-10">
-        <Outlet />
-      </div>
+    <div className="min-h-screen bg-gray-100 flex">
+      {/* Sidebar */}
+      <aside className="w-64 bg-gray-900 text-white p-6 flex flex-col">
+        <div className="text-2xl font-bold mb-8 text-amber-400">Admin Panel</div>
+        <nav className="flex-grow">
+          <ul>
+            <li>
+              <Link
+                to="/admin"
+                className="block py-2 px-4 rounded hover:bg-gray-800 transition"
+              >
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/admin/bookings"
+                className="block py-2 px-4 rounded hover:bg-gray-800 transition"
+              >
+                Bookings
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/admin/gallery"
+                className="block py-2 px-4 rounded hover:bg-gray-800 transition text-amber-400"
+              >
+                Gallery Manager
+              </Link>
+            </li>
+          </ul>
+        </nav>
+        {/* You can add a logout link or other footer items here */}
+      </aside>
+
+      {/* Main content */}
+      <main className="flex-1 p-6">
+        <div className="max-w-7xl mx-auto">
+          <Outlet />
+        </div>
+      </main>
     </div>
   );
 }

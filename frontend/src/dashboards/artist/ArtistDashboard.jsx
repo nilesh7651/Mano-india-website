@@ -1,105 +1,225 @@
 import { useEffect, useState } from "react";
 import API from "../../services/api";
+import ImageUpload from "../../components/ImageUpload";
+import Button from "../../components/ui/Button";
+import Input from "../../components/ui/Input";
+import Card from "../../components/ui/Card";
 
 export default function ArtistDashboard() {
+  const [profile, setProfile] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [form, setForm] = useState({
+    name: "",
+    category: "",
+    city: "",
+    pricePerEvent: "",
+    bio: "",
+    images: "",
+  });
 
-  const loadBookings = () => {
-    API.get("/bookings/artist")
-      .then((res) => setBookings(res.data))
-      .finally(() => setLoading(false));
+  const loadData = async () => {
+    try {
+      const profileRes = await API.get("/artists/profile");
+      setProfile(profileRes.data);
+      if (profileRes.data) {
+        const bookingsRes = await API.get("/bookings/artist");
+        setBookings(bookingsRes.data);
+      }
+    } catch (err) {
+      if (err.response?.status === 404) {
+        setProfile(null);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    loadBookings();
+    loadData();
   }, []);
 
   const handleAction = async (id, action) => {
     await API.put(`/bookings/${id}/${action}`);
-    loadBookings();
+    loadData();
+  };
+
+  const handleCreateProfile = async (e) => {
+    e.preventDefault();
+    try {
+      const imageArray = form.images.includes(",")
+        ? form.images.split(",").map((img) => img.trim())
+        : [form.images];
+
+      await API.post("/artists", { ...form, images: imageArray });
+      loadData();
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to create profile");
+    }
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-gray-500">Loading artist bookings...</p>
+        <p className="text-gray-500 animate-pulse">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="max-w-2xl mx-auto py-8">
+        <Card>
+          <h2 className="text-2xl font-bold mb-6 text-gray-900">Create Artist Profile</h2>
+          <form onSubmit={handleCreateProfile} className="space-y-6">
+            <Input
+              label="Stage Name"
+              placeholder="e.g. DJ Snake"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              required
+            />
+            <Input
+              label="Category"
+              placeholder="e.g. DJ, Singer, Magician"
+              value={form.category}
+              onChange={(e) => setForm({ ...form, category: e.target.value })}
+              required
+            />
+            <div className="grid grid-cols-2 gap-4">
+              <Input
+                label="City"
+                placeholder="e.g. Mumbai"
+                value={form.city}
+                onChange={(e) => setForm({ ...form, city: e.target.value })}
+                required
+              />
+              <Input
+                label="Price per Event (₹)"
+                type="number"
+                placeholder="e.g. 15000"
+                value={form.pricePerEvent}
+                onChange={(e) => setForm({ ...form, pricePerEvent: e.target.value })}
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Bio</label>
+              <textarea
+                placeholder="Tell us about yourself..."
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all duration-200"
+                value={form.bio}
+                onChange={(e) => setForm({ ...form, bio: e.target.value })}
+                rows="4"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-sm font-medium text-gray-700">Profile Image</label>
+              <ImageUpload
+                onUpload={(url) => setForm({ ...form, images: url })}
+                existingImage={form.images}
+              />
+            </div>
+
+            <Button type="submit" className="w-full">
+              Create Profile
+            </Button>
+          </form>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!profile.isVerified) {
+    return (
+      <div className="flex justify-center py-20">
+        <Card className="text-center max-w-md w-full border-yellow-200 bg-yellow-50">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-100 text-yellow-600 mb-4 text-2xl">
+            ⏳
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Profile Pending</h2>
+          <p className="text-gray-600">
+            Your artist profile is currently under review by our admin team. You will be notified once approved.
+          </p>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-semibold text-gray-900 mb-2">Incoming Bookings</h1>
-        <p className="text-gray-600">Manage your booking requests</p>
+    <div className="space-y-8">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl">Artist Dashboard</h1>
+          <p className="text-gray-600 mt-1">Manage your bookings and profile</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold border border-green-200">
+            ✓ Verified
+          </span>
+          <span className="font-semibold text-gray-900">{profile.name}</span>
+        </div>
       </div>
 
-      {bookings.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-xl border border-gray-200">
-          <p className="text-gray-500 mb-2">No booking requests yet.</p>
-          <p className="text-sm text-gray-400">Your bookings will appear here</p>
-        </div>
-      ) : (
-        <div className="grid gap-4">
-          {bookings.map((b) => (
-            <div
-              key={b._id}
-              className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition-all duration-200 flex justify-between items-center"
-            >
-            <div>
-              <h2 className="font-semibold">{b.user?.name || b.user?.email || "Guest"}</h2>
-              <p className="text-sm text-gray-600">
-                📅 {new Date(b.eventDate).toDateString()}
-              </p>
-              {b.eventLocation && (
-                <p className="text-xs text-gray-500 mt-1">
-                  📍 {b.eventLocation}
-                </p>
-              )}
-              <p className="text-sm font-medium mt-1">₹ {b.amount}</p>
-            </div>
-
-              {b.status === "PENDING" ? (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleAction(b._id, "accept")}
-                    className="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 transition font-medium text-sm"
-                  >
-                    Accept
-                  </button>
-                  <button
-                    onClick={() => handleAction(b._id, "reject")}
-                    className="bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700 transition font-medium text-sm"
-                  >
-                    Reject
-                  </button>
+      <div>
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Incoming Bookings</h2>
+        {bookings.length === 0 ? (
+          <Card className="text-center py-16 border-dashed">
+            <p className="text-gray-500 mb-2 text-lg">No booking requests yet.</p>
+            <p className="text-gray-400">Your profile is visible to users. Stay tuned!</p>
+          </Card>
+        ) : (
+          <div className="grid gap-4">
+            {bookings.map((b) => (
+              <Card
+                key={b._id}
+                className="hover:shadow-md transition-all duration-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+              >
+                <div>
+                  <h3 className="font-bold text-lg mb-1">{b.user?.name || "Guest User"}</h3>
+                  <div className="flex gap-4 text-sm text-gray-600">
+                    <span className="flex items-center gap-1">📅 {new Date(b.eventDate).toDateString()}</span>
+                    <span className="flex items-center gap-1 font-semibold text-gray-900">₹ {b.amount}</span>
+                  </div>
                 </div>
-              ) : b.status === "ACCEPTED" ? (
-                <div className="flex flex-col items-end gap-2">
-                  <span className="px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+
+                {b.status === "PENDING" ? (
+                  <div className="flex gap-3">
+                    <Button
+                      variant="primary"
+                      className="bg-green-600 hover:bg-green-700 shadow-green-600/20"
+                      onClick={() => handleAction(b._id, "accept")}
+                      size="sm"
+                    >
+                      Accept
+                    </Button>
+                    <Button
+                      variant="danger"
+                      onClick={() => handleAction(b._id, "reject")}
+                      size="sm"
+                    >
+                      Reject
+                    </Button>
+                  </div>
+                ) : (
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${b.status === "ACCEPTED"
+                        ? "bg-green-100 text-green-800"
+                        : b.status === "REJECTED"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-blue-100 text-blue-800"
+                      }`}
+                  >
                     {b.status}
                   </span>
-                  <button
-                    onClick={() => handleAction(b._id, "complete")}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
-                  >
-                    Mark Complete
-                  </button>
-                </div>
-              ) : (
-                <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
-                  b.status === "COMPLETED"
-                    ? "bg-blue-100 text-blue-700"
-                    : "bg-gray-100 text-gray-700"
-                }`}>
-                  {b.status}
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+                )}
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

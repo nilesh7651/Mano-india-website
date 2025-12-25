@@ -1,10 +1,30 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HeroSlider from "../components/HeroSlider";
+import API from "../services/api";
 
 export default function Home() {
   // State for Gallery Scroll functionality
   const scrollContainerRef = useRef(null);
+  const [galleryItems, setGalleryItems] = useState([]);
+
+  useEffect(() => {
+    API.get("/gallery")
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          // If we have dynamic items, verify if we need to merge or replace
+          // Requirement: "do keep demo pics". 
+          // Strategy: Show dynamic items FIRST, then demo items.
+          setGalleryItems([...res.data, ...demoGallery]);
+        } else {
+          setGalleryItems(demoGallery);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch gallery", err);
+        setGalleryItems(demoGallery);
+      });
+  }, []);
 
   const scroll = (direction) => {
     const container = scrollContainerRef.current;
@@ -15,36 +35,36 @@ export default function Home() {
     }
   };
 
-  const galleryEvents = [
+  const demoGallery = [
     {
       title: "Wedding Celebration",
       type: "Wedding Event",
-      img: "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac",
+      imageUrl: "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac",
     },
     {
       title: "Live Concert Night",
       type: "Music Concert",
-      img: "https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2",
+      imageUrl: "https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2",
     },
     {
       title: "Corporate Meetup",
       type: "Corporate Event",
-      img: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
+      imageUrl: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
     },
     {
       title: "Birthday Bash",
       type: "Private Party",
-      img: "https://images.unsplash.com/photo-1515169067865-5387ec356754",
+      imageUrl: "https://images.unsplash.com/photo-1515169067865-5387ec356754",
     },
     {
       title: "DJ Night",
       type: "Club Event",
-      img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30",
+      imageUrl: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30",
     },
     {
       title: "College Fest",
       type: "Fest Event",
-      img: "https://images.unsplash.com/photo-1518972559570-7cc1309f3229",
+      imageUrl: "https://images.unsplash.com/photo-1518972559570-7cc1309f3229",
     },
   ];
 
@@ -332,7 +352,7 @@ export default function Home() {
           "
           style={{ scrollBehavior: "smooth", scrollbarWidth: "none" }}
         >
-          {galleryEvents.map((event, i) => (
+          {galleryItems.map((event, i) => (
             <div
               key={i}
               className="
@@ -346,7 +366,7 @@ export default function Home() {
               {/* Image */}
               <div className="overflow-hidden h-80 w-full">
                 <img
-                  src={event.img}
+                  src={event.imageUrl}
                   alt={event.title}
                   className="
                     w-full h-full object-cover
