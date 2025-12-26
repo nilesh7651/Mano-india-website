@@ -53,16 +53,11 @@ const createBooking = async (req, res) => {
       eventDate,
       eventLocation,
       amount,
-      status: "PENDING",
-      commissionRate: 0.1,
+      status: "AWAITING_PAYMENT",
+      commissionRate: 0.05,
     });
 
-    // 🔔 Notify owner
-    await notify(
-      ownerId,
-      "New Booking Request",
-      "You have received a new booking request."
-    );
+    // Notification will be sent after payment verification
 
     res.status(201).json(booking);
   } catch (err) {
@@ -75,8 +70,8 @@ const createBooking = async (req, res) => {
 const getUserBookings = async (req, res) => {
   try {
     const bookings = await Booking.find({ user: req.user._id })
-      .populate("artist", "name category")
-      .populate("venue", "name venueType")
+      .populate("artist", "name category phone")
+      .populate("venue", "name venueType phone")
       .sort({ createdAt: -1 });
 
     res.json(bookings);
@@ -95,7 +90,7 @@ const acceptBooking = async (req, res) => {
     }
 
     // Check if user is the owner (artist or venue owner)
-    const isOwner = 
+    const isOwner =
       (booking.artist && (await Artist.findById(booking.artist))?.user?.toString() === req.user._id.toString()) ||
       (booking.venue && (await Venue.findById(booking.venue))?.owner?.toString() === req.user._id.toString());
 
@@ -104,7 +99,7 @@ const acceptBooking = async (req, res) => {
     }
 
     booking.status = "ACCEPTED";
-    
+
     // Calculate payout amounts
     booking.commissionAmount = booking.amount * booking.commissionRate;
     booking.payoutAmount = booking.amount - booking.commissionAmount;
@@ -135,7 +130,7 @@ const rejectBooking = async (req, res) => {
     }
 
     // Check if user is the owner
-    const isOwner = 
+    const isOwner =
       (booking.artist && (await Artist.findById(booking.artist))?.user?.toString() === req.user._id.toString()) ||
       (booking.venue && (await Venue.findById(booking.venue))?.owner?.toString() === req.user._id.toString());
 
@@ -169,7 +164,7 @@ const completeBooking = async (req, res) => {
     }
 
     // Check if user is the owner
-    const isOwner = 
+    const isOwner =
       (booking.artist && (await Artist.findById(booking.artist))?.user?.toString() === req.user._id.toString()) ||
       (booking.venue && (await Venue.findById(booking.venue))?.owner?.toString() === req.user._id.toString());
 
@@ -206,7 +201,10 @@ const getArtistBookings = async (req, res) => {
       return res.status(403).json({ message: "Artist profile not found" });
     }
 
-    const bookings = await Booking.find({ artist: artist._id })
+    const bookings = await Booking.find({
+      artist: artist._id,
+      status: { $ne: "AWAITING_PAYMENT" }
+    })
       .populate("user", "name email")
       .populate("venue", "name")
       .sort({ createdAt: -1 });
@@ -225,7 +223,10 @@ const getVenueBookings = async (req, res) => {
       return res.status(403).json({ message: "Venue not found" });
     }
 
-    const bookings = await Booking.find({ venue: venue._id })
+    const bookings = await Booking.find({
+      venue: venue._id,
+      status: { $ne: "AWAITING_PAYMENT" }
+    })
       .populate("user", "name email")
       .populate("artist", "name")
       .sort({ createdAt: -1 });

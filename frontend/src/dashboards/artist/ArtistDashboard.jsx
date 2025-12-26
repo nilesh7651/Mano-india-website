@@ -16,8 +16,16 @@ export default function ArtistDashboard() {
     phone: "",
     pricePerEvent: "",
     bio: "",
+    bio: "",
     images: "",
+    bankDetails: {
+      accountHolderName: "",
+      accountNumber: "",
+      bankName: "",
+      ifscCode: "",
+    },
   });
+  const [editingBank, setEditingBank] = useState(false);
 
   const loadData = async () => {
     try {
@@ -26,6 +34,10 @@ export default function ArtistDashboard() {
       if (profileRes.data) {
         const bookingsRes = await API.get("/bookings/artist");
         setBookings(bookingsRes.data);
+        // Pre-fill form for editing (if needed later)
+        if (profileRes.data.bankDetails) {
+          setForm(prev => ({ ...prev, bankDetails: profileRes.data.bankDetails }));
+        }
       }
     } catch (err) {
       if (err.response?.status === 404) {
@@ -43,6 +55,17 @@ export default function ArtistDashboard() {
   const handleAction = async (id, action) => {
     await API.put(`/bookings/${id}/${action}`);
     loadData();
+  };
+
+  const handleUpdateBankDetails = async () => {
+    try {
+      await API.put("/artists/profile", { bankDetails: form.bankDetails });
+      alert("Bank details updated!");
+      setEditingBank(false);
+      loadData();
+    } catch (err) {
+      alert("Failed to update bank details");
+    }
   };
 
   const handleCreateProfile = async (e) => {
@@ -87,6 +110,37 @@ export default function ArtistDashboard() {
               onChange={(e) => setForm({ ...form, category: e.target.value })}
               required
             />
+
+            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+              <h3 className="font-bold text-gray-700 mb-4">Bank Details (For Payouts)</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  label="Account Holder Name"
+                  placeholder="Name as per bank"
+                  value={form.bankDetails.accountHolderName}
+                  onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, accountHolderName: e.target.value } })}
+                />
+                <Input
+                  label="Account Number"
+                  placeholder="Account No."
+                  value={form.bankDetails.accountNumber}
+                  onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, accountNumber: e.target.value } })}
+                />
+                <Input
+                  label="Bank Name"
+                  placeholder="e.g. HDFC Bank"
+                  value={form.bankDetails.bankName}
+                  onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, bankName: e.target.value } })}
+                />
+                <Input
+                  label="IFSC Code"
+                  placeholder="IFSC Code"
+                  value={form.bankDetails.ifscCode}
+                  onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, ifscCode: e.target.value } })}
+                />
+              </div>
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <Input
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
@@ -184,6 +238,9 @@ export default function ArtistDashboard() {
               >
                 <div>
                   <h3 className="font-bold text-lg mb-1">{b.user?.name || "Guest User"}</h3>
+                  <div className="text-xs text-gray-500 mb-2">
+                    📞 {b.user?.phone || "No Phone"}
+                  </div>
                   <div className="flex gap-4 text-sm text-gray-600">
                     <span className="flex items-center gap-1">📅 {new Date(b.eventDate).toDateString()}</span>
                     <span className="flex items-center gap-1 font-semibold text-gray-900">₹ {b.amount}</span>
@@ -225,6 +282,67 @@ export default function ArtistDashboard() {
           </div>
         )}
       </div>
+
+      {/* Bank Details Section for Existing Users */}
+      <Card>
+        <div className="flex justify-between items-start mb-4">
+          <h2 className="text-xl font-bold text-gray-900">Bank Details</h2>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setEditingBank(!editingBank)}
+          >
+            {editingBank ? "Cancel" : "Edit"}
+          </Button>
+        </div>
+
+        {editingBank ? (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <Input
+                label="Account Holder Name"
+                value={form.bankDetails.accountHolderName}
+                onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, accountHolderName: e.target.value } })}
+              />
+              <Input
+                label="Account Number"
+                value={form.bankDetails.accountNumber}
+                onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, accountNumber: e.target.value } })}
+              />
+              <Input
+                label="Bank Name"
+                value={form.bankDetails.bankName}
+                onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, bankName: e.target.value } })}
+              />
+              <Input
+                label="IFSC Code"
+                value={form.bankDetails.ifscCode}
+                onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, ifscCode: e.target.value } })}
+              />
+            </div>
+            <Button onClick={handleUpdateBankDetails}>Save Bank Details</Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-sm">
+            <div>
+              <span className="block text-gray-500 text-xs uppercase tracking-wider">Account Holder</span>
+              <span className="font-medium text-gray-900">{profile.bankDetails?.accountHolderName || "Not set"}</span>
+            </div>
+            <div>
+              <span className="block text-gray-500 text-xs uppercase tracking-wider">Account Number</span>
+              <span className="font-medium text-gray-900">{profile.bankDetails?.accountNumber || "Not set"}</span>
+            </div>
+            <div>
+              <span className="block text-gray-500 text-xs uppercase tracking-wider">Bank Name</span>
+              <span className="font-medium text-gray-900">{profile.bankDetails?.bankName || "Not set"}</span>
+            </div>
+            <div>
+              <span className="block text-gray-500 text-xs uppercase tracking-wider">IFSC Code</span>
+              <span className="font-medium text-gray-900">{profile.bankDetails?.ifscCode || "Not set"}</span>
+            </div>
+          </div>
+        )}
+      </Card>
     </div>
   );
 }

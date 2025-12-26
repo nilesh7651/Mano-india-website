@@ -6,10 +6,10 @@ const Booking = require("../models/Booking");
 exports.getPayoutQueue = async (req, res) => {
   try {
     const bookings = await Booking.find({
-      status: { $in: ["ACCEPTED", "COMPLETED"] },
+      status: "COMPLETED",
     })
-      .populate("artist", "name")
-      .populate("venue", "name")
+      .populate("artist", "name bankDetails")
+      .populate("venue", "name bankDetails")
       .populate("user", "name email")
       .sort({ createdAt: -1 });
 

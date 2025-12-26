@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import { createOrder, verifyPayment } from "../services/payment";
+import ReceiptModal from "../components/ReceiptModal";
 
 export default function UserBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedBookingForReceipt, setSelectedBookingForReceipt] = useState(null);
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -37,6 +40,56 @@ export default function UserBookings() {
       </div>
     );
   }
+
+  const handlePayment = async (booking) => {
+    const loadRazorpay = () => {
+      return new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.onload = () => resolve(true);
+        script.onerror = () => resolve(false);
+        document.body.appendChild(script);
+      });
+    };
+
+    const res = await loadRazorpay();
+    if (!res) {
+      alert("Razorpay SDK failed to load.");
+      return;
+    }
+
+    try {
+      const orderData = await createOrder(booking._id);
+      const options = {
+        key: orderData.key,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: "Mano India",
+        description: "Booking Payment",
+        order_id: orderData.orderId,
+        handler: async function (response) {
+          try {
+            await verifyPayment({
+              ...response,
+              bookingId: booking._id,
+            });
+            // Refresh bookings
+            const updatedRes = await API.get("/bookings/user");
+            setBookings(updatedRes.data);
+            alert("Payment Successful!");
+          } catch (err) {
+            alert("Payment verification failed");
+          }
+        },
+        theme: { color: "#F59E0B" }
+      };
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    } catch (err) {
+      console.error("Payment error", err);
+      alert("Failed to start payment");
+    }
+  };
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
@@ -73,42 +126,54 @@ export default function UserBookings() {
                 <p className="text-sm text-gray-400 flex items-center gap-2">
                   💰 Amount: <span className="text-white font-medium">₹ {booking.amount?.toLocaleString()}</span>
                 </p>
+                {(booking.status === "ACCEPTED" || booking.status === "CONFIRMED" || booking.status === "PENDING") && (
+                  <p className="text-sm text-amber-500 flex items-center gap-2 font-medium">
+                    📞 {booking.artist?.phone || booking.venue?.phone || "Contact Info Hidden"}
+                  </p>
+                )}
               </div>
 
               <div className="mt-4">
                 <span
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
-                    booking.status === "PENDING"
-                      ? "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20"
-                      : booking.status === "ACCEPTED" || booking.status === "CONFIRMED"
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${booking.status === "PENDING"
+                    ? "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20"
+                    : booking.status === "ACCEPTED" || booking.status === "CONFIRMED"
                       ? "bg-green-500/10 text-green-500 border border-green-500/20"
                       : booking.status === "REJECTED" || booking.status === "CANCELLED"
-                      ? "bg-red-500/10 text-red-500 border border-red-500/20"
-                      : "bg-gray-700 text-gray-300"
-                  }`}
+                        ? "bg-red-500/10 text-red-500 border border-red-500/20"
+                        : "bg-gray-700 text-gray-300"
+                    }`}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full ${
-                    booking.status === "PENDING" ? "bg-yellow-500" :
-                    booking.status === "ACCEPTED" || booking.status === "CONFIRMED" ? "bg-green-500" :
-                    booking.status === "REJECTED" || booking.status === "CANCELLED" ? "bg-red-500" : "bg-gray-400"
-                  }`}></span>
-                  {booking.status}
+                  <span className={`w-1.5 h-1.5 rounded-full ${booking.status === "PENDING" ? "bg-yellow-500" :
+                    booking.status === "AWAITING_PAYMENT" ? "bg-orange-500" :
+                      booking.status === "ACCEPTED" || booking.status === "CONFIRMED" ? "bg-green-500" :
+                        booking.status === "REJECTED" || booking.status === "CANCELLED" ? "bg-red-500" : "bg-gray-400"
+                    }`}></span>
+                  {booking.status === "AWAITING_PAYMENT" ? "PAYMENT PENDING" : booking.status}
                 </span>
               </div>
             </div>
 
             {/* Action Section */}
             <div className="flex flex-col items-end gap-3 w-full md:w-auto">
-              {booking.status === "PENDING" ? (
-                <button className="w-full md:w-auto bg-amber-600 text-white px-6 py-2.5 rounded-lg hover:bg-amber-500 font-medium transition-all shadow-lg shadow-amber-900/20">
-                  Proceed to Pay
+              {booking.status === "AWAITING_PAYMENT" ? (
+                <button
+                  onClick={() => handlePayment(booking)}
+                  className="w-full md:w-auto bg-amber-600 text-white px-6 py-2.5 rounded-lg hover:bg-amber-500 font-medium transition-all shadow-lg shadow-amber-900/20"
+                >
+                  Pay Now
                 </button>
+              ) : booking.status === "PENDING" ? (
+                <span className="text-yellow-500 text-sm italic">Waiting for approval</span>
               ) : booking.status === "ACCEPTED" || booking.status === "CONFIRMED" ? (
-                 <button className="w-full md:w-auto border border-gray-700 text-gray-300 px-6 py-2.5 rounded-lg hover:bg-gray-800 transition-colors">
+                <button
+                  onClick={() => setSelectedBookingForReceipt(booking)}
+                  className="w-full md:w-auto border border-gray-700 text-gray-300 px-6 py-2.5 rounded-lg hover:bg-gray-800 transition-colors"
+                >
                   View Receipt
                 </button>
               ) : null}
-              
+
               <p className="text-xs text-gray-500">
                 ID: {booking._id.slice(-6).toUpperCase()}
               </p>
@@ -116,6 +181,13 @@ export default function UserBookings() {
           </div>
         ))}
       </div>
+
+      {selectedBookingForReceipt && (
+        <ReceiptModal
+          booking={selectedBookingForReceipt}
+          onClose={() => setSelectedBookingForReceipt(null)}
+        />
+      )}
     </div>
   );
 }

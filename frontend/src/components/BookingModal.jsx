@@ -1,5 +1,6 @@
 import { useState } from "react";
 import API from "../services/api";
+import { createOrder, verifyPayment } from "../services/payment";
 
 export default function BookingModal({
   artistId,
@@ -14,6 +15,71 @@ export default function BookingModal({
 
   const bookingType = venueId ? "Venue" : "Artist";
 
+  const loadRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handlePayment = async (booking) => {
+    const res = await loadRazorpay();
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+
+    try {
+      const orderData = await createOrder(booking._id);
+
+      const options = {
+        key: orderData.key,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: "Mano India",
+        description: "Booking Payment",
+        order_id: orderData.orderId,
+        handler: async function (response) {
+          try {
+            await verifyPayment({
+              ...response,
+              bookingId: booking._id,
+            });
+            onSuccess?.();
+            onClose();
+          } catch (err) {
+            alert("Payment verification failed");
+          }
+        },
+        prefill: {
+          name: "User", // You might want to pass user details here if available
+          email: "user@example.com",
+          contact: "9999999999",
+        },
+        theme: {
+          color: "#F59E0B",
+        },
+        modal: {
+          ondismiss: function () {
+            // If user closes payment, we still close the modal but maybe notify them
+            // Or we can keep it open. For now, let's close and let them pay from "My Bookings"
+            onClose();
+            alert("Booking created but payment pending. Please go to 'My Bookings' to complete payment.");
+          }
+        }
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    } catch (err) {
+      console.error("Payment Error:", err);
+      setError("Failed to initiate payment");
+    }
+  };
+
   const handleSubmit = async () => {
     setError("");
 
@@ -25,28 +91,28 @@ export default function BookingModal({
     try {
       setLoading(true);
 
-      await API.post("/bookings", {
+      const res = await API.post("/bookings", {
         artistId,
         venueId,
         eventDate,
         eventLocation,
       });
 
-      onSuccess?.();
-      onClose();
+      // Booking created (AWAITING_PAYMENT), now trigger payment
+      await handlePayment(res.data);
+
     } catch (err) {
       setError(
         err.response?.data?.message || "Failed to create booking"
       );
-    } finally {
-      setLoading(false);
+      setLoading(false); // Only stop loading if booking creation failed
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-md shadow-2xl shadow-amber-900/20 transform transition-all">
-        
+
         {/* Header */}
         <div className="p-6 border-b border-gray-800">
           <h2 className="text-xl font-bold text-white">

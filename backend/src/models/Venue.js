@@ -39,6 +39,12 @@ const venueSchema = mongoose.Schema(
       default: false,
     },
     images: [{ type: String }],
+    bankDetails: {
+      accountHolderName: String,
+      accountNumber: String,
+      bankName: String,
+      ifscCode: String,
+    },
   },
   { timestamps: true }
 );

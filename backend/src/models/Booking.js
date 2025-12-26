@@ -35,13 +35,13 @@ const bookingSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["PENDING", "ACCEPTED", "REJECTED", "COMPLETED"],
+      enum: ["AWAITING_PAYMENT", "PENDING", "ACCEPTED", "REJECTED", "COMPLETED"],
       default: "PENDING",
     },
 
     commissionRate: {
       type: Number,
-      default: 0.1, // 10%
+      default: 0.05, // 5%
     },
 
     commissionAmount: {
@@ -54,24 +54,24 @@ const bookingSchema = new mongoose.Schema(
       default: 0,
     },
     payoutStatus: {
-  type: String,
-  enum: ["NOT_READY", "PENDING", "PAID"],
-  default: "NOT_READY",
-},
+      type: String,
+      enum: ["NOT_READY", "PENDING", "PAID"],
+      default: "NOT_READY",
+    },
 
-paymentStatus: {
-  type: String,
-  enum: ["PENDING", "PAID", "FAILED"],
-  default: "PENDING",
-},
+    paymentStatus: {
+      type: String,
+      enum: ["PENDING", "PAID", "FAILED"],
+      default: "PENDING",
+    },
 
-razorpayOrderId: String,
-razorpayPaymentId: String,
+    razorpayOrderId: String,
+    razorpayPaymentId: String,
 
 
-paidAt: {
-  type: Date,
-},
+    paidAt: {
+      type: Date,
+    },
 
 
     completedAt: {

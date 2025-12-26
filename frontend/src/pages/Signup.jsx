@@ -7,6 +7,7 @@ export default function Signup() {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    phone: "",
     password: "",
     role: "user",
   });
@@ -32,7 +33,7 @@ export default function Signup() {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Signup failed. Please try again."
+        "Signup failed. Please try again."
       );
     }
   };
@@ -48,7 +49,7 @@ export default function Signup() {
             "url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1400&auto=format&fit=crop')",
         }}
       />
-      
+
       {/* Dark overlay for contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
 
@@ -95,6 +96,20 @@ export default function Signup() {
                 name="email"
                 type="email"
                 placeholder="you@example.com"
+                onChange={handleChange}
+                required
+                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-2">
+                Phone Number
+              </label>
+              <input
+                name="phone"
+                type="tel"
+                placeholder="+91 9876543210"
                 onChange={handleChange}
                 required
                 className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
@@ -161,10 +176,10 @@ export default function Signup() {
 
         {/* ================= RIGHT : GOLD PANEL ================= */}
         <div className="hidden md:flex flex-col items-center justify-center text-center bg-gradient-to-br from-amber-600 via-amber-700 to-amber-800 text-white p-12 relative overflow-hidden">
-          
+
           {/* Subtle Texture Overlay */}
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-          
+
           <div className="relative z-10">
             <h2 className="text-4xl font-bold mb-6">
               Welcome Back!

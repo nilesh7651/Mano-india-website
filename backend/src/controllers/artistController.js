@@ -3,7 +3,7 @@ const Artist = require("../models/Artist");
 // CREATE ARTIST PROFILE
 const createArtistProfile = async (req, res) => {
   try {
-    const { name, category, city, phone, pricePerEvent, bio, images } = req.body;
+    const { name, category, city, phone, pricePerEvent, bio, images, bankDetails } = req.body;
 
     if (!name || !category || !city || !pricePerEvent || !phone) {
       return res.status(400).json({ message: "All required fields missing" });
@@ -26,6 +26,7 @@ const createArtistProfile = async (req, res) => {
       pricePerEvent,
       bio,
       images: images || [],
+      bankDetails: bankDetails || {},
       isVerified: false, // Explicitly set to false for admin approval
     });
 
@@ -87,9 +88,38 @@ const getCurrentArtist = async (req, res) => {
   }
 };
 
+// UPDATE ARTIST PROFILE
+const updateArtistProfile = async (req, res) => {
+  try {
+    const artist = await Artist.findOne({ user: req.user._id });
+
+    if (!artist) {
+      return res.status(404).json({ message: "Artist profile not found" });
+    }
+
+    const { name, category, city, phone, pricePerEvent, bio, images, bankDetails } = req.body;
+
+    artist.name = name || artist.name;
+    artist.category = category || artist.category;
+    artist.city = city || artist.city;
+    artist.phone = phone || artist.phone;
+    artist.pricePerEvent = pricePerEvent || artist.pricePerEvent;
+    artist.bio = bio || artist.bio;
+    if (images) artist.images = images;
+    if (bankDetails) artist.bankDetails = bankDetails;
+
+    await artist.save();
+
+    res.json({ message: "Profile updated successfully", artist });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createArtistProfile,
   getAllArtists,
   getArtistById,
   getCurrentArtist,
+  updateArtistProfile,
 };

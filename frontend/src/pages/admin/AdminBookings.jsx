@@ -50,6 +50,7 @@ export default function AdminBookings() {
                 <th className="p-4 text-left font-semibold text-gray-900">User</th>
                 <th className="p-4 text-left font-semibold text-gray-900">Type</th>
                 <th className="p-4 text-left font-semibold text-gray-900">Provider</th>
+                <th className="p-4 text-left font-semibold text-gray-900">Bank Details</th>
                 <th className="p-4 text-right font-semibold text-gray-900">Amount</th>
                 <th className="p-4 text-right font-semibold text-gray-900">Commission</th>
                 <th className="p-4 text-right font-semibold text-gray-900">Payout</th>
@@ -63,14 +64,25 @@ export default function AdminBookings() {
                 <tr key={b._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                   <td className="p-4">{b.user?.name || b.user?.email || "N/A"}</td>
                   <td className="p-4">
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      b.artist ? "bg-blue-100 text-blue-700" : "bg-green-100 text-green-700"
-                    }`}>
+                    <span className={`px-2 py-1 rounded-full text-xs ${b.artist ? "bg-blue-100 text-blue-700" : "bg-green-100 text-green-700"
+                      }`}>
                       {b.artist ? "Artist" : "Venue"}
                     </span>
                   </td>
                   <td className="p-4">
                     {b.artist?.name || b.venue?.name || "N/A"}
+                  </td>
+                  <td className="p-4 text-xs text-gray-600">
+                    {b.artist?.bankDetails?.accountNumber || b.venue?.bankDetails?.accountNumber ? (
+                      <div>
+                        <p className="font-bold">{b.artist?.bankDetails?.bankName || b.venue?.bankDetails?.bankName}</p>
+                        <p>Acc: {b.artist?.bankDetails?.accountNumber || b.venue?.bankDetails?.accountNumber}</p>
+                        <p>IFSC: {b.artist?.bankDetails?.ifscCode || b.venue?.bankDetails?.ifscCode}</p>
+                        <p>Holder: {b.artist?.bankDetails?.accountHolderName || b.venue?.bankDetails?.accountHolderName}</p>
+                      </div>
+                    ) : (
+                      <span className="text-red-500 italic">No Bank Info</span>
+                    )}
                   </td>
                   <td className="p-4 text-right font-medium">
                     ₹ {b.amount?.toLocaleString() || 0}
@@ -82,20 +94,18 @@ export default function AdminBookings() {
                     ₹ {b.payoutAmount?.toLocaleString() || 0}
                   </td>
                   <td className="p-4">
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      b.status === "COMPLETED" ? "bg-green-100 text-green-700" :
-                      b.status === "ACCEPTED" ? "bg-blue-100 text-blue-700" :
-                      "bg-yellow-100 text-yellow-700"
-                    }`}>
+                    <span className={`px-2 py-1 rounded-full text-xs ${b.status === "COMPLETED" ? "bg-green-100 text-green-700" :
+                        b.status === "ACCEPTED" ? "bg-blue-100 text-blue-700" :
+                          "bg-yellow-100 text-yellow-700"
+                      }`}>
                       {b.status}
                     </span>
                   </td>
                   <td className="p-4">
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      b.payoutStatus === "PAID" ? "bg-green-100 text-green-700" :
-                      b.payoutStatus === "PENDING" ? "bg-yellow-100 text-yellow-700" :
-                      "bg-gray-100 text-gray-700"
-                    }`}>
+                    <span className={`px-2 py-1 rounded-full text-xs ${b.payoutStatus === "PAID" ? "bg-green-100 text-green-700" :
+                        b.payoutStatus === "PENDING" ? "bg-yellow-100 text-yellow-700" :
+                          "bg-gray-100 text-gray-700"
+                      }`}>
                       {b.payoutStatus || "NOT_READY"}
                     </span>
                   </td>

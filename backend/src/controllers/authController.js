@@ -5,9 +5,9 @@ const generateToken = require("../utils/generateToken");
 // REGISTER USER
 exports.registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, phone, password, role } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !phone) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -33,6 +33,7 @@ exports.registerUser = async (req, res) => {
     const user = await User.create({
       name,
       email,
+      phone,
       password: hashedPassword,
       role: userRole,
     });
@@ -51,7 +52,7 @@ exports.registerUser = async (req, res) => {
       const messages = Object.values(error.errors).map(err => err.message);
       return res.status(400).json({ message: messages.join(", ") });
     }
-    
+
     // Handle duplicate key error
     if (error.code === 11000) {
       return res.status(400).json({ message: "Email already exists" });

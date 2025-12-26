@@ -1,6 +1,9 @@
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const Booking = require("../models/Booking");
+const Artist = require("../models/Artist");
+const Venue = require("../models/Venue");
+const notify = require("../utils/createNotification");
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -74,9 +77,31 @@ exports.verifyPayment = async (req, res) => {
     }
 
     booking.paymentStatus = "PAID";
+    // Change status from AWAITING_PAYMENT to PENDING (waiting for artist/venue approval)
+    if (booking.status === "AWAITING_PAYMENT") {
+      booking.status = "PENDING";
+    }
     booking.razorpayPaymentId = razorpay_payment_id;
 
     await booking.save();
+
+    // 🔔 Notify Owner that payment is done and request is ready
+    let ownerId;
+    if (booking.artist) {
+      const artist = await Artist.findById(booking.artist);
+      if (artist) ownerId = artist.user;
+    } else if (booking.venue) {
+      const venue = await Venue.findById(booking.venue);
+      if (venue) ownerId = venue.owner;
+    }
+
+    if (ownerId) {
+      await notify(
+        ownerId,
+        "New Booking Request",
+        "You have received a new booking request (Payment Verified)."
+      );
+    }
 
     res.json({ message: "Payment verified", booking });
   } catch (error) {

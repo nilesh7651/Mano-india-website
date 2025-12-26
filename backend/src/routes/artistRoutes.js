@@ -3,9 +3,9 @@ const router = express.Router();
 
 const {
   createArtistProfile,
-  getAllArtists,
   getArtistById,
   getCurrentArtist,
+  updateArtistProfile,
 } = require("../controllers/artistController");
 
 const protect = require("../middleware/authMiddleware");
@@ -19,5 +19,6 @@ router.get("/:id", getArtistById);
 
 // Protected route (artist only)
 router.post("/", protect, artistOnly, createArtistProfile);
+router.put("/profile", protect, artistOnly, updateArtistProfile);
 
 module.exports = router;
