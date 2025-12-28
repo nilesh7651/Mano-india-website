@@ -48,12 +48,20 @@ export default function Navbar() {
             <Link to="/login" className="text-gray-700 hover:text-black transition">
               Login
             </Link>
-            <Link
+            {/* <Link
               to="/signup"
               className="bg-black text-white px-4 py-2 rounded-lg hover:opacity-90 transition font-medium"
             >
               Sign Up
-            </Link>
+            </Link> */}
+            <Link
+  to="/signup"
+  className="bg-[#C2185B] text-white px-4 py-2 rounded-lg 
+             hover:bg-[#AD1457] transition font-medium shadow-md"
+>
+  Sign Up
+</Link>
+
           </div>
         ) : (
           <div className="relative">

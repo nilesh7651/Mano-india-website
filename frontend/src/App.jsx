@@ -34,65 +34,59 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
           {/* <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />  */}
-  <Route path="/events" element={<Events />} />
-
+          <Route path="/events" element={<Events />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} /> 
+          <Route path="/login" element={<Login />} />
           <Route path="/my-bookings" element={<UserBookings />} />
           <Route
-  path="/dashboard"
-  element={
-    <ProtectedRoute>
-      <UserDashboard />
-    </ProtectedRoute>
-  }
-/>
-0
-<Route
-  path="/dashboard/artist"
-  element={
-    <ProtectedRoute role="artist">
-      <ArtistDashboard />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/dashboard/venue"
-  element={
-    <ProtectedRoute>
-      <VenueDashboard />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/create-venue"
-  element={
-    <ProtectedRoute>
-      <CreateVenue />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/admin"
-  element={
-    <ProtectedRoute role="admin">
-      <AdminDashboard />
-    </ProtectedRoute>
-  }
->
-  <Route path="artists" element={<AdminArtists />} />
-  <Route path="venues" element={<AdminVenues />} />
-  <Route path="bookings" element={<AdminBookings />} />
-</Route>
-<Route path="/admin" element={<AdminLayout />}>
-  <Route index element={<AdminDashboard />} />
-  <Route path="bookings" element={<AdminBookings />} />
-</Route>
-
-
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <UserDashboard />
+              </ProtectedRoute>
+            }
+          />
+          0
+          <Route
+            path="/dashboard/artist"
+            element={
+              <ProtectedRoute role="artist">
+                <ArtistDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/venue"
+            element={
+              <ProtectedRoute>
+                <VenueDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create-venue"
+            element={
+              <ProtectedRoute>
+                <CreateVenue />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute role="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="artists" element={<AdminArtists />} />
+            <Route path="venues" element={<AdminVenues />} />
+            <Route path="bookings" element={<AdminBookings />} />
+          </Route>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="bookings" element={<AdminBookings />} />
+          </Route>
         </Routes>
       </MainLayout>
     </BrowserRouter>

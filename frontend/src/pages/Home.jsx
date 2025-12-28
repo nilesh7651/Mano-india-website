@@ -20,14 +20,14 @@ export default function Home() {
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
               to="/artists"
-              className="bg-black text-white px-6 py-3 rounded-lg hover:opacity-90 transition font-medium shadow-md"
+              className="bg-[#AD1457] text-white px-6 py-3 rounded-lg hover:opacity-90 transition font-medium shadow-md"
             >
               Explore Artists
             </Link>
 
             <Link
               to="/venues"
-              className="border-2 border-black px-6 py-3 rounded-lg hover:bg-black hover:text-white transition font-medium"
+              className="border-2 border-black px-6 py-3 rounded-lg hover:bg-[#AD1457] hover:text-white transition font-medium"
             >
               Find Venues
             </Link>
@@ -234,7 +234,7 @@ export default function Home() {
 
         <Link
           to="/artists"
-          className="inline-block bg-black text-white px-8 py-4 rounded-lg text-lg hover:opacity-90 transition font-medium shadow-md"
+          className="inline-block bg-[#AD1457] text-white px-8 py-4 rounded-lg text-lg hover:opacity-90 transition font-medium shadow-md"
         >
           Get Started
         </Link>
