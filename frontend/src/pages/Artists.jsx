@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
 import ArtistCard from "../components/ArtistCard";
+import SEO from "../components/SEO";
 
 export default function Artists() {
   const [artists, setArtists] = useState([]);

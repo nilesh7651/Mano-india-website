@@ -23,16 +23,8 @@ export default function ImageUpload({ onUpload, existingImage }) {
 
             const { data } = await API.post("/upload", formData, config);
 
-            // Backend returns relative path: /uploads/filename.jpg
-            // We prepend the server origin for display if needed, but for now we store the relative path
-            // Actually, let's store the full URL if possible or just the relative one.
-            // The current frontend displays images directly from the URL string.
-            // If we store "/uploads/...", we need to make sure the img src handles it.
-            // Let's prepend the localhost:5000 for now to make it a full URL, 
-            // or handle it in the Card components. 
-            // For simplicity, let's store the full URL in the DB so existing external URLs still work.
-
-            const fullUrl = `http://localhost:5000${data.imageUrl}`;
+            // Backend now returns the full Cloudinary URL in data.imageUrl
+            const fullUrl = data.imageUrl;
 
             setPreview(fullUrl);
             onUpload(fullUrl);

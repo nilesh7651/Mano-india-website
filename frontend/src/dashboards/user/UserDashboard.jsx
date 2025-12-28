@@ -70,36 +70,37 @@ export default function UserDashboard() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 min-h-screen bg-black text-gray-100 p-6 md:p-12">
       <div>
-        <h1 className="text-3xl">My Bookings</h1>
-        <p className="text-gray-600 mt-1">View and manage your event bookings</p>
+        <h1 className="text-3xl font-bold text-white">My Bookings</h1>
+        <p className="text-gray-400 mt-1">View and manage your event bookings</p>
       </div>
 
       {bookings.length === 0 ? (
-        <Card className="text-center py-16 border-dashed">
-          <p className="text-gray-500 mb-4 text-lg">No bookings yet.</p>
-          <p className="text-gray-400">Start by browsing artists or venues to make your first booking.</p>
+        <Card variant="dark" className="text-center py-16 border-dashed border-gray-800 bg-gray-900/50">
+          <p className="text-gray-400 mb-4 text-lg">No bookings yet.</p>
+          <p className="text-gray-500">Start by browsing artists or venues to make your first booking.</p>
         </Card>
       ) : (
         <div className="grid gap-6">
           {bookings.map((b) => (
             <Card
               key={b._id}
-              className="hover:shadow-md transition-all duration-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
+              variant="dark"
+              className="hover:shadow-lg hover:shadow-amber-900/20 transition-all duration-300 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
             >
               <div>
                 <div className="flex items-center gap-3">
-                  <h2 className="text-lg font-bold">
+                  <h2 className="text-lg font-bold text-white">
                     {b.artist?.name || b.venue?.name}
                   </h2>
-                  <span className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${b.artist ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
+                  <span className={`text-xs px-2.5 py-0.5 rounded-full font-medium border ${b.artist ? 'bg-purple-900/30 text-purple-300 border-purple-800' : 'bg-blue-900/30 text-blue-300 border-blue-800'}`}>
                     {b.artist ? "Artist" : "Venue"}
                   </span>
                 </div>
 
                 <div className="mt-3 space-y-1">
-                  <p className="text-sm text-gray-600 flex items-center gap-2">
+                  <p className="text-sm text-gray-400 flex items-center gap-2">
                     <span>📅</span> {new Date(b.eventDate).toDateString()}
                   </p>
                   {b.eventLocation && (
@@ -108,7 +109,7 @@ export default function UserDashboard() {
                     </p>
                   )}
                   {b.amount && (
-                    <p className="text-sm font-bold text-gray-900 mt-2">
+                    <p className="text-sm font-bold text-amber-500 mt-2">
                       ₹ {b.amount.toLocaleString()}
                     </p>
                   )}
@@ -117,30 +118,33 @@ export default function UserDashboard() {
 
               <div className="flex flex-col items-end gap-3 w-full md:w-auto">
                 <span
-                  className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${b.status === "PENDING"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : b.status === "ACCEPTED"
-                        ? "bg-green-100 text-green-800"
-                        : b.status === "COMPLETED"
-                          ? "bg-blue-100 text-blue-800"
-                          : "bg-red-100 text-red-800"
+                  className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${b.status === "PENDING"
+                    ? "bg-yellow-900/30 text-yellow-500 border-yellow-800"
+                    : b.status === "ACCEPTED"
+                      ? "bg-green-900/30 text-green-400 border-green-800"
+                      : b.status === "COMPLETED"
+                        ? "bg-blue-900/30 text-blue-400 border-blue-800"
+                        : b.status === "AWAITING_PAYMENT"
+                          ? "bg-orange-900/30 text-orange-400 border-orange-800"
+                          : "bg-red-900/30 text-red-400 border-red-800"
                     }`}
                 >
-                  {b.status}
+                  {b.status === "AWAITING_PAYMENT" ? "Payment Pending" : b.status}
                 </span>
 
                 <div className="flex items-center gap-3">
-                  {b.status === "ACCEPTED" && b.paymentStatus !== "PAID" && (
+                  {(b.status === "AWAITING_PAYMENT" || (b.status === "ACCEPTED" && b.paymentStatus !== "PAID")) && (
                     <Button
                       onClick={() => handlePayment(b)}
                       size="sm"
+                      className="bg-amber-600 hover:bg-amber-700 text-white"
                     >
                       Pay Now
                     </Button>
                   )}
 
                   {b.paymentStatus === "PAID" && (
-                    <span className="flex items-center gap-1 text-sm font-bold text-green-600">
+                    <span className="flex items-center gap-1 text-sm font-bold text-green-500">
                       <span>✓</span> Paid
                     </span>
                   )}

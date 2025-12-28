@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   createArtistProfile,
+  getAllArtists,
   getArtistById,
   getCurrentArtist,
   updateArtistProfile,

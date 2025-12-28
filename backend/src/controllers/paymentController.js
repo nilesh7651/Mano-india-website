@@ -44,6 +44,7 @@ exports.createOrder = async (req, res) => {
       key: process.env.RAZORPAY_KEY_ID,
     });
   } catch (error) {
+    console.error("Razorpay Create Order Error:", error);
     res.status(500).json({ message: error.message });
   }
 };

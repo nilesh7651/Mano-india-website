@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import HeroSlider from "../components/HeroSlider";
 import API from "../services/api";
 
+import SEO from "../components/SEO";
+
 export default function Home() {
   // State for Gallery Scroll functionality
   const scrollContainerRef = useRef(null);
@@ -25,15 +27,6 @@ export default function Home() {
         setGalleryItems(demoGallery);
       });
   }, []);
-
-  const scroll = (direction) => {
-    const container = scrollContainerRef.current;
-    if (container) {
-      // Scroll by one card width (approx 300-400px based on screen)
-      const scrollAmount = direction === "left" ? -400 : 400;
-      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    }
-  };
 
   const demoGallery = [
     {
@@ -70,6 +63,10 @@ export default function Home() {
 
   return (
     <div className="space-y-24 bg-black text-gray-100">
+      <SEO
+        title="Book Artists & Venues"
+        description="Discover and book professional artists and venues for your events, weddings, and parties across India. Reliable, verified, and premium."
+      />
       {/* NOTE: Added bg-black to body/container to match the dark theme of the logo 
          If your global layout is white, you can remove 'bg-black text-gray-100' above
       */}
@@ -326,81 +323,57 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Slider Controls */}
-          <div className="flex gap-4">
-            <button
-              onClick={() => scroll("left")}
-              className="w-12 h-12 rounded-full border border-gray-600 hover:border-amber-500 hover:text-amber-500 flex items-center justify-center transition"
-            >
-              ←
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              className="w-12 h-12 rounded-full border border-gray-600 hover:border-amber-500 hover:text-amber-500 flex items-center justify-center transition"
-            >
-              →
-            </button>
-          </div>
+          {/* Slider Controls Removed - Using Grid Layout */}
         </div>
 
+
         {/* Gallery Carousel Container */}
-        <div
-          ref={scrollContainerRef}
-          className="
-            flex gap-6 overflow-x-auto snap-x snap-mandatory pb-10
-            scrollbar-hide 
-          "
-          style={{ scrollBehavior: "smooth", scrollbarWidth: "none" }}
-        >
-          {galleryItems.map((event, i) => (
+        {/* Gallery Grid Container - Matching Events.jsx Structure */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {galleryItems.slice(0, 3).map((event, i) => (
             <div
               key={i}
               className="
-                min-w-[85%] sm:min-w-[45%] lg:min-w-[30%]
-                snap-center
-                relative overflow-hidden rounded-2xl
-                shadow-lg cursor-pointer
-                group/card border border-gray-800
+                group relative bg-gray-900 rounded-2xl overflow-hidden 
+                border border-gray-800 hover:border-amber-500/50 
+                transition-all duration-500 shadow-lg hover:shadow-amber-900/20
               "
             >
-              {/* Image */}
-              <div className="overflow-hidden h-80 w-full">
+              {/* Image Container */}
+              <div className="relative h-64 overflow-hidden">
                 <img
                   src={event.imageUrl}
                   alt={event.title}
-                  className="
-                    w-full h-full object-cover
-                    transition-transform duration-700
-                    group-hover/card:scale-110
-                  "
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+
+                {/* Overlay Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60" />
+
+                {/* Type Badge */}
+                <div className="absolute top-4 left-4">
+                  <span className="bg-black/60 backdrop-blur-md border border-gray-700 text-amber-500 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded">
+                    {event.type}
+                  </span>
+                </div>
               </div>
 
-              {/* Dark Gradient Overlay */}
-              <div
-                className="
-                  absolute inset-0
-                  bg-gradient-to-t from-black/90 via-black/40 to-transparent
-                  opacity-80 group-hover/card:opacity-100
-                  transition-opacity duration-500
-                "
-              />
-
-              {/* Text Overlay */}
-              <div
-                className="
-                  absolute bottom-0 left-0 right-0 p-6
-                  translate-y-2 group-hover/card:translate-y-0
-                  transition-transform duration-500
-                "
-              >
-                <div className="w-10 h-1 bg-amber-500 mb-3 rounded-full opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-                <h3 className="text-xl font-bold text-white mb-1">
+              {/* Content */}
+              <div className="p-6 relative">
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">
                   {event.title}
                 </h3>
-                <p className="text-sm text-amber-400 font-medium">
-                  {event.type}
+
+                <p className="text-gray-400 text-sm leading-relaxed line-clamp-2 mb-4">
+                  {event.description || "A spectacular event curated by ManoIndia."}
                 </p>
+
+                <div className="flex items-center gap-2 text-sm font-semibold text-amber-600 group-hover:text-amber-500 transition-colors">
+                  <span>View Details</span>
+                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
               </div>
             </div>
           ))}
@@ -419,10 +392,10 @@ export default function Home() {
             View All Events
           </Link>
         </div>
-      </section>
+      </section >
 
       {/* VIDEO SECTION */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
+      < section className="max-w-6xl mx-auto px-6 pb-24" >
         <div className="rounded-2xl overflow-hidden shadow-lg shadow-amber-900/20 border border-gray-800">
           <video
             className="w-full h-[260px] md:h-[420px] object-cover"
@@ -438,7 +411,7 @@ export default function Home() {
           Discover how ManoIndia simplifies artist & venue booking for every
           event.
         </p>
-      </section>
-    </div>
+      </section >
+    </div >
   );
 }

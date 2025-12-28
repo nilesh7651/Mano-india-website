@@ -11,12 +11,10 @@ router.post("/", protect, upload.single("image"), (req, res) => {
         return res.status(400).json({ message: "No file uploaded" });
     }
 
-    // Return the path relative to the server domain
-    // We'll serve the 'public' folder as static
-    const imagePath = `/uploads/${req.file.filename}`;
+    // Return the Cloudinary URL
     res.json({
         message: "Image uploaded successfully",
-        imageUrl: imagePath
+        imageUrl: req.file.path
     });
 });
 

@@ -1,172 +1,132 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-
-const events = [
-  {
-    title: "Royal Wedding",
-    desc: "A fairytale wedding with live classical music & premium floral decor.",
-    images: [
-      "https://images.unsplash.com/photo-1519225468063-5078e2e1e975?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80",
-    ],
-    type: "Wedding",
-  },
-  {
-    title: "Luxury Concert",
-    desc: "An electrifying night with top-tier sound systems and artists.",
-    images: [
-      "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&q=80",
-    ],
-    type: "Concert",
-  },
-  {
-    title: "Corporate Gala",
-    desc: "Professional networking event with elegant dining and ambience.",
-    images: [
-      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80",
-    ],
-    type: "Corporate",
-  },
-  {
-    title: "Private Birthday",
-    desc: "Intimate celebration with DJ, catering, and custom themes.",
-    images: [
-      "https://images.unsplash.com/photo-1530103862676-de3c9a59af38?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1464349686614-2c5af756976c?auto=format&fit=crop&q=80",
-    ],
-    type: "Party",
-  },
-  {
-    title: "College Fest",
-    desc: "High-energy festival with bands, dance offs, and huge crowds.",
-    images: [
-      "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1514525253440-b393452e2729?auto=format&fit=crop&q=80",
-    ],
-    type: "Fest",
-  },
-  {
-    title: "Award Night",
-    desc: "Glitz and glamour with red carpet moments and grand stages.",
-    images: [
-      "https://images.unsplash.com/photo-1475721027760-f756dcb6e4c7?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1560523160-754a9e25c68f?auto=format&fit=crop&q=80",
-    ],
-    type: "Ceremony",
-  },
-];
-
-function ImageSlider({ images }) {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % images.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [images.length]);
-
-  return (
-    <img
-      src={images[index]}
-      alt="Event"
-      className="
-        w-full h-full object-cover
-        transition-transform duration-1000 ease-in-out
-        group-hover:scale-110
-      "
-    />
-  );
-}
+import { Link } from "react-router-dom";
+import API from "../services/api";
+import SEO from "../components/SEO";
 
 export default function Events() {
-  return (
-    <div className="min-h-screen bg-black text-gray-200 px-6 py-16">
-      <div className="max-w-7xl mx-auto">
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    API.get("/gallery")
+      .then((res) => {
+        setEvents(res.data);
+      })
+      .catch((err) => {
+        console.error("Failed to load events", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-black text-gray-100 px-6 py-20">
+      <SEO
+        title="Event Gallery - Weddings, Concerts & Parties"
+        description="Explore our gallery of past events including royal weddings, corporate gatherings, and energetic concerts managed by ManoIndia."
+      />
+      <div className="max-w-7xl mx-auto">
         {/* HEADER */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Our <span className="text-amber-500">Events</span>
+        <div className="text-center mb-20">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            Signature <span className="text-amber-500">Events</span>
           </h1>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            Explore premium experiences curated by ManoIndia — from royal weddings
-            to high-voltage concerts.
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
+            Immerse yourself in a portfolio of exquisite celebrations.
+            From royal weddings to high-energy concerts, we curate experiences that leave a lasting legacy.
           </p>
         </div>
 
         {/* EVENTS GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {events.map((event, i) => (
-            <div
-              key={i}
-              className="
-                group relative overflow-hidden rounded-3xl
-                bg-gray-900 border border-gray-800
-                hover:shadow-2xl hover:shadow-amber-900/20 hover:border-amber-500/30
-                transition-all duration-500
-              "
-            >
-              {/* SLIDESHOW */}
-              <div className="relative h-64 overflow-hidden">
-                <ImageSlider images={event.images} />
+        {events.length === 0 ? (
+          <div className="text-center py-20 border border-gray-800 border-dashed rounded-xl">
+            <p className="text-gray-500 text-xl">No events found in the gallery.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {events.map((event) => (
+              <div
+                key={event._id}
+                className="group relative bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 hover:border-amber-500/50 transition-all duration-500 shadow-lg hover:shadow-amber-900/20"
+              >
+                {/* Image Container */}
+                <div className="relative h-80 overflow-hidden">
+                  <img
+                    src={event.imageUrl}
+                    alt={event.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
 
-                {/* GRADIENT OVERLAY */}
-                <div className="
-                  absolute inset-0
-                  bg-gradient-to-t from-gray-900 via-gray-900/20 to-transparent
-                " />
+                  {/* Overlay Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-80" />
 
-                {/* BADGE */}
-                <span className="
-                  absolute top-4 left-4
-                  bg-amber-600/90 backdrop-blur text-white text-xs font-bold uppercase tracking-wider
-                  px-3 py-1 rounded-md
-                  shadow-lg
-                ">
-                  {event.type}
-                </span>
+                  {/* Type Badge */}
+                  <div className="absolute top-4 left-4">
+                    <span className="bg-black/60 backdrop-blur-md border border-gray-700 text-amber-500 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded">
+                      {event.type}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-8 relative">
+                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-amber-500 transition-colors">
+                    {event.title}
+                  </h3>
+
+                  <p className="text-gray-400 text-sm leading-relaxed line-clamp-2 mb-6">
+                    {event.description || "A spectacular event curated by ManoIndia."}
+                  </p>
+
+                  <Link
+                    to="/artists"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-white group-hover:text-amber-500 transition-colors"
+                  >
+                    Plan Similar Event
+                    <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </Link>
+                </div>
               </div>
+            ))}
+          </div>
+        )}
 
-              {/* CONTENT */}
-              <div className="p-6 relative">
-                <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">
-                  {event.title}
-                </h3>
-                <p className="text-sm text-gray-400 mb-6 leading-relaxed">
-                  {event.desc}
-                </p>
-
-                <Link
-                  to="/artists"
-                  className="
-                    inline-flex items-center gap-2 text-sm font-semibold text-amber-500
-                    hover:text-amber-400 transition tracking-wide
-                  "
-                >
-                  Explore Artists <span className="text-lg">→</span>
-                </Link>
-              </div>
+        {/* CTA SECTION */}
+        <div className="mt-32 relative rounded-3xl overflow-hidden text-center py-24 px-6 border border-gray-800">
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-black z-0" />
+          <div className="relative z-10 max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              Ready to Create Your Own Masterpiece?
+            </h2>
+            <p className="text-gray-400 mb-10 text-lg">
+              Connect with India's finest artists and premium venues to bring your vision to life.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/artists"
+                className="bg-amber-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-amber-500 transition-colors shadow-lg shadow-amber-900/40"
+              >
+                Find Artists
+              </Link>
+              <Link
+                to="/venues"
+                className="bg-transparent border border-gray-600 text-white px-8 py-4 rounded-lg font-bold hover:border-amber-500 hover:text-amber-500 transition-colors"
+              >
+                Browse Venues
+              </Link>
             </div>
-          ))}
-        </div>
-
-        {/* CTA */}
-        <div className="text-center mt-20">
-          <Link
-            to="/artists"
-            className="
-              inline-block px-10 py-4 rounded-lg
-              bg-amber-600 text-white font-bold text-lg
-              hover:bg-amber-500 transition-all transform hover:-translate-y-1
-              shadow-lg shadow-amber-900/40
-            "
-          >
-            Book Your Event Now
-          </Link>
+          </div>
         </div>
 
       </div>
