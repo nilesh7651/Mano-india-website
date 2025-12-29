@@ -55,6 +55,7 @@ export default function AdminBookings() {
                 <th className="p-4 text-right font-semibold text-gray-900">Commission</th>
                 <th className="p-4 text-right font-semibold text-gray-900">Payout</th>
                 <th className="p-4 text-left font-semibold text-gray-900">Status</th>
+                <th className="p-4 text-center font-semibold text-gray-900">Completion</th>
                 <th className="p-4 text-left font-semibold text-gray-900">Payout Status</th>
                 <th className="p-4 text-left font-semibold text-gray-900">Actions</th>
               </tr>
@@ -95,25 +96,39 @@ export default function AdminBookings() {
                   </td>
                   <td className="p-4">
                     <span className={`px-2 py-1 rounded-full text-xs ${b.status === "COMPLETED" ? "bg-green-100 text-green-700" :
-                        b.status === "ACCEPTED" ? "bg-blue-100 text-blue-700" :
-                          "bg-yellow-100 text-yellow-700"
+                      b.status === "ACCEPTED" ? "bg-blue-100 text-blue-700" :
+                        "bg-yellow-100 text-yellow-700"
                       }`}>
                       {b.status}
                     </span>
                   </td>
+                  <td className="p-4 text-center">
+                    <div className="flex flex-col gap-1 text-xs">
+                      <span className={b.artistCompleted ? "text-green-600 font-bold" : "text-gray-400"}>
+                        {b.artist ? "Artist" : "Venue"}: {b.artistCompleted ? "✓" : "⏳"}
+                      </span>
+                      <span className={b.userCompleted ? "text-green-600 font-bold" : "text-gray-400"}>
+                        User: {b.userCompleted ? "✓" : "⏳"}
+                      </span>
+                    </div>
+                  </td>
                   <td className="p-4">
                     <span className={`px-2 py-1 rounded-full text-xs ${b.payoutStatus === "PAID" ? "bg-green-100 text-green-700" :
-                        b.payoutStatus === "PENDING" ? "bg-yellow-100 text-yellow-700" :
-                          "bg-gray-100 text-gray-700"
+                      b.payoutStatus === "PENDING" ? "bg-yellow-100 text-yellow-700" :
+                        "bg-gray-100 text-gray-700"
                       }`}>
                       {b.payoutStatus || "NOT_READY"}
                     </span>
                   </td>
                   <td className="p-4">
-                    {b.payoutStatus !== "PAID" && b.status !== "PENDING" && (
+                    {b.payoutStatus !== "PAID" && (
                       <button
                         onClick={() => markAsPaid(b._id)}
-                        className="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium text-xs"
+                        disabled={b.payoutStatus !== "PENDING"} // Only enable if PENDING (which means COMPLETED)
+                        className={`px-3 py-1.5 rounded-lg transition font-medium text-xs ${b.payoutStatus === "PENDING"
+                            ? "bg-green-600 text-white hover:bg-green-700"
+                            : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                          }`}
                       >
                         Mark Paid
                       </button>
@@ -123,8 +138,9 @@ export default function AdminBookings() {
               ))}
             </tbody>
           </table>
-        </div>
-      )}
-    </div>
+        </div >
+      )
+      }
+    </div >
   );
 }

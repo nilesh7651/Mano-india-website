@@ -7,6 +7,39 @@ export default function UserBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBookingForReceipt, setSelectedBookingForReceipt] = useState(null);
+  const [reviewModal, setReviewModal] = useState({ isOpen: false, bookingId: null });
+  const [reviewForm, setReviewForm] = useState({ rating: 5, comment: "" });
+
+  const handleAction = async (id, action) => {
+    try {
+      await API.put(`/bookings/${id}/${action}`);
+      // Refresh
+      const res = await API.get("/bookings/user");
+      setBookings(res.data);
+    } catch (err) {
+      alert("Failed to update booking");
+    }
+  };
+
+  const openReviewModal = (booking) => {
+    setReviewModal({ isOpen: true, bookingId: booking._id });
+    setReviewForm({ rating: 5, comment: "" });
+  };
+
+  const submitReview = async () => {
+    try {
+      await API.post("/reviews", {
+        bookingId: reviewModal.bookingId,
+        rating: reviewForm.rating,
+        comment: reviewForm.comment
+      });
+      alert("Review submitted successfully!");
+      setReviewModal({ isOpen: false, bookingId: null });
+      // Optionally refresh to remove review button or show "Reviewed"
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to submit review");
+    }
+  };
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -165,13 +198,46 @@ export default function UserBookings() {
                 </button>
               ) : booking.status === "PENDING" ? (
                 <span className="text-yellow-500 text-sm italic">Waiting for approval</span>
-              ) : booking.status === "ACCEPTED" || booking.status === "CONFIRMED" ? (
-                <button
-                  onClick={() => setSelectedBookingForReceipt(booking)}
-                  className="w-full md:w-auto border border-gray-700 text-gray-300 px-6 py-2.5 rounded-lg hover:bg-gray-800 transition-colors"
-                >
-                  View Receipt
-                </button>
+              ) : booking.status === "ACCEPTED" ? (
+                <div className="flex flex-col gap-2 w-full md:w-auto">
+                  <button
+                    onClick={() => setSelectedBookingForReceipt(booking)}
+                    className="w-full md:w-auto border border-gray-700 text-gray-300 px-6 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-sm"
+                  >
+                    View Receipt
+                  </button>
+                  {!booking.userCompleted && (
+                    <button
+                      onClick={() => handleAction(booking._id, "complete")}
+                      className="w-full md:w-auto bg-green-600 text-white px-6 py-2.5 rounded-lg hover:bg-green-500 font-medium transition-all shadow-lg shadow-green-900/20 text-sm"
+                    >
+                      Mark Complete
+                    </button>
+                  )}
+                  {booking.userCompleted && (
+                    <span className="text-xs text-green-500 text-center italic">Waiting for provider confirmation...</span>
+                  )}
+                </div>
+              ) : booking.status === "COMPLETED" ? (
+                <div className="flex flex-col gap-2 w-full md:w-auto">
+                  <button
+                    onClick={() => setSelectedBookingForReceipt(booking)}
+                    className="w-full md:w-auto border border-gray-700 text-gray-300 px-6 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-sm"
+                  >
+                    View Receipt
+                  </button>
+                  {/* Check if already reviewed? Need logic or just let them try and fail? Best to check. 
+                        For now, assuming button is always shown until we fetch reviews. 
+                        The user didn't ask to HIDE it if reviewed, but it's good UX.
+                        Let's add a simple "Review" button that opens a modal.
+                    */}
+                  <button
+                    onClick={() => openReviewModal(booking)}
+                    className="w-full md:w-auto bg-amber-600 text-white px-6 py-2.5 rounded-lg hover:bg-amber-500 font-medium transition-all shadow-lg shadow-amber-900/20 text-sm"
+                  >
+                    Write Review
+                  </button>
+                </div>
               ) : null}
 
               <p className="text-xs text-gray-500">
@@ -187,6 +253,48 @@ export default function UserBookings() {
           booking={selectedBookingForReceipt}
           onClose={() => setSelectedBookingForReceipt(null)}
         />
+      )}
+
+      {reviewModal.isOpen && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 border border-amber-500/30 rounded-2xl p-6 w-full max-w-md relative">
+            <button onClick={() => setReviewModal({ isOpen: false, bookingId: null })} className="absolute top-4 right-4 text-gray-500 hover:text-white">✕</button>
+            <h3 className="text-xl font-bold text-white mb-4">Write a Review</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">Rating</label>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setReviewForm({ ...reviewForm, rating: star })}
+                      className={`text-2xl transition-colors ${reviewForm.rating >= star ? "text-amber-500" : "text-gray-600"}`}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">Comment</label>
+                <textarea
+                  className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3 focus:border-amber-500 focus:outline-none"
+                  rows="4"
+                  placeholder="Share your experience..."
+                  value={reviewForm.comment}
+                  onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
+                />
+              </div>
+              <button
+                onClick={submitReview}
+                className="w-full bg-amber-600 text-white py-2 rounded-lg font-bold hover:bg-amber-500"
+              >
+                Submit Review
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

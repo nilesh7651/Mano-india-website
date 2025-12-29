@@ -10,7 +10,10 @@ const reviewSchema = mongoose.Schema(
     artist: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Artist",
-      required: true,
+    },
+    venue: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Venue",
     },
     booking: {
       type: mongoose.Schema.Types.ObjectId,

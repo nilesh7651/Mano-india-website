@@ -1,13 +1,9 @@
 const express = require("express");
 const router = express.Router();
-
 const protect = require("../middleware/authMiddleware");
-const {
-  createReview,
-  getArtistReviews,
-} = require("../controllers/reviewController");
+const { createReview, getReviews } = require("../controllers/reviewController");
 
 router.post("/", protect, createReview);
-router.get("/artist/:artistId", getArtistReviews);
+router.get("/", getReviews);
 
 module.exports = router;

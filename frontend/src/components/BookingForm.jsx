@@ -3,6 +3,7 @@ import API from "../services/api";
 
 export default function BookingForm({ itemId, type, onClose }) {
   const [date, setDate] = useState("");
+  const [location, setLocation] = useState("");
   const [notes, setNotes] = useState("");
   const [success, setSuccess] = useState(false);
 
@@ -13,6 +14,7 @@ export default function BookingForm({ itemId, type, onClose }) {
         itemId,
         bookingType: type, // "artist" or "venue"
         eventDate: date,
+        eventLocation: location,
         notes,
       });
       setSuccess(true);
@@ -24,9 +26,9 @@ export default function BookingForm({ itemId, type, onClose }) {
   return (
     <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-gray-900 border border-amber-500/30 rounded-2xl p-8 w-full max-w-md shadow-2xl shadow-amber-900/20 relative">
-        
+
         {/* Close Button (X) - Absolute Position */}
-        <button 
+        <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"
         >
@@ -60,6 +62,18 @@ export default function BookingForm({ itemId, type, onClose }) {
               <p className="text-sm text-gray-500 mt-1">
                 Fill in the details below to send a request.
               </p>
+            </div>
+
+            {/* Location Input */}
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-gray-400 ml-1">Event Location</label>
+              <input
+                type="text"
+                placeholder="e.g. Grand Hotel, Mumbai or 123 Street Name"
+                required
+                onChange={(e) => setLocation(e.target.value)}
+                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-500"
+              />
             </div>
 
             {/* Date Input */}

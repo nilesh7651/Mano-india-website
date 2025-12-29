@@ -355,6 +355,11 @@ export default function ArtistDashboard() {
                     <span className="flex items-center gap-1">📅 {new Date(b.eventDate).toDateString()}</span>
                     <span className="flex items-center gap-1 font-semibold text-amber-500">₹ {b.amount}</span>
                   </div>
+                  {b.eventLocation && (
+                    <div className="text-xs text-gray-500 mt-2 flex items-center gap-1">
+                      📍 {b.eventLocation}
+                    </div>
+                  )}
                 </div>
 
                 {b.status === "PENDING" ? (
@@ -378,16 +383,30 @@ export default function ArtistDashboard() {
                     </Button>
                   </div>
                 ) : (
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${b.status === "ACCEPTED"
-                      ? "bg-green-900/30 text-green-400 border-green-800"
-                      : b.status === "REJECTED"
-                        ? "bg-red-900/30 text-red-400 border-red-800"
-                        : "bg-blue-900/30 text-blue-400 border-blue-800"
-                      }`}
-                  >
-                    {b.status}
-                  </span>
+                  <div className="flex flex-col items-end gap-2">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${b.status === "ACCEPTED"
+                        ? "bg-green-900/30 text-green-400 border-green-800"
+                        : b.status === "REJECTED"
+                          ? "bg-red-900/30 text-red-400 border-red-800"
+                          : "bg-blue-900/30 text-blue-400 border-blue-800"
+                        }`}
+                    >
+                      {b.status}
+                    </span>
+                    {b.status === "ACCEPTED" && !b.artistCompleted && (
+                      <Button
+                        size="sm"
+                        onClick={() => handleAction(b._id, "complete")}
+                        className="bg-gray-800 border border-gray-700 text-gray-300 hover:text-white text-xs"
+                      >
+                        Mark Complete
+                      </Button>
+                    )}
+                    {b.status === "ACCEPTED" && b.artistCompleted && (
+                      <span className="text-xs text-green-500 italic">Marked as done ✓</span>
+                    )}
+                  </div>
                 )}
               </Card>
             ))}

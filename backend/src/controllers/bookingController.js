@@ -163,12 +163,12 @@ const completeBooking = async (req, res) => {
       return res.status(404).json({ message: "Booking not found" });
     }
 
-    // Check if user is the owner
-    const isOwner =
-      (booking.artist && (await Artist.findById(booking.artist))?.user?.toString() === req.user._id.toString()) ||
-      (booking.venue && (await Venue.findById(booking.venue))?.owner?.toString() === req.user._id.toString());
+    const userId = req.user._id.toString();
+    const isArtist = booking.artist && (await Artist.findById(booking.artist))?.user?.toString() === userId;
+    const isVenue = booking.venue && (await Venue.findById(booking.venue))?.owner?.toString() === userId;
+    const isUser = booking.user.toString() === userId;
 
-    if (!isOwner) {
+    if (!isArtist && !isVenue && !isUser) {
       return res.status(403).json({ message: "Not authorized" });
     }
 
@@ -176,17 +176,32 @@ const completeBooking = async (req, res) => {
       return res.status(400).json({ message: "Booking must be accepted first" });
     }
 
-    booking.status = "COMPLETED";
-    booking.completedAt = new Date();
+    // Update flags
+    if (isArtist || isVenue) {
+      booking.artistCompleted = true;
+    }
+    if (isUser) {
+      booking.userCompleted = true;
+    }
+
+    // Check if BOTH are completed
+    if (booking.artistCompleted && booking.userCompleted) {
+      booking.status = "COMPLETED";
+      booking.completedAt = new Date();
+      // Ready for payout
+      booking.payoutStatus = "PENDING";
+
+      // Notify both parties
+      // Notify user
+      await notify(
+        booking.user,
+        "Booking Completed",
+        "Your event is marked as fully completed. You can now leave a review."
+      );
+      // Notify Artist/Venue? (Optional, maybe not needed as they probably just marked it)
+    }
+
     await booking.save();
-
-    // Notify user
-    await notify(
-      booking.user,
-      "Booking Completed",
-      "Your booking has been marked as completed. You can now leave a review."
-    );
-
     res.json(booking);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -205,7 +220,7 @@ const getArtistBookings = async (req, res) => {
       artist: artist._id,
       status: { $ne: "AWAITING_PAYMENT" }
     })
-      .populate("user", "name email")
+      .populate("user", "name email phone")
       .populate("venue", "name")
       .sort({ createdAt: -1 });
 
@@ -227,7 +242,7 @@ const getVenueBookings = async (req, res) => {
       venue: venue._id,
       status: { $ne: "AWAITING_PAYMENT" }
     })
-      .populate("user", "name email")
+      .populate("user", "name email phone")
       .populate("artist", "name")
       .sort({ createdAt: -1 });
 

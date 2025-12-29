@@ -36,14 +36,14 @@ export default function Navbar() {
 
         {/* Center Links */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-          <Link 
-            to="/artists" 
+          <Link
+            to="/artists"
             className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
           >
             Artists
           </Link>
-          <Link 
-            to="/venues" 
+          <Link
+            to="/venues"
             className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
           >
             Venues
@@ -53,8 +53,8 @@ export default function Navbar() {
         {/* Right Side */}
         {!user ? (
           <div className="flex items-center gap-4 text-sm font-medium">
-            <Link 
-              to="/login" 
+            <Link
+              to="/login"
               className="text-gray-300 hover:text-white transition-colors"
             >
               Login
@@ -118,10 +118,18 @@ export default function Navbar() {
                       My Dashboard
                     </Link>
                   )}
+
+                  <Link
+                    to="/profile"
+                    onClick={() => setOpen(false)}
+                    className="block px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-amber-500 transition-colors"
+                  >
+                    My Profile
+                  </Link>
                 </div>
 
                 <div className="border-t border-gray-800"></div>
-                
+
                 <button
                   onClick={handleLogout}
                   className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-gray-800 hover:text-red-300 transition-colors font-medium"

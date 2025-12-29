@@ -59,6 +59,16 @@ const bookingSchema = new mongoose.Schema(
       default: "NOT_READY",
     },
 
+    artistCompleted: {
+      type: Boolean,
+      default: false,
+    },
+
+    userCompleted: {
+      type: Boolean,
+      default: false,
+    },
+
     paymentStatus: {
       type: String,
       enum: ["PENDING", "PAID", "FAILED"],

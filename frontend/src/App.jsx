@@ -22,6 +22,7 @@ import Events from "./pages/Events";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import RefundPolicy from "./pages/RefundPolicy";
+import UserProfile from "./pages/UserProfile";
 
 export default function App() {
   return (
@@ -40,6 +41,15 @@ export default function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-and-conditions" element={<Terms />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <UserProfile />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/dashboard"

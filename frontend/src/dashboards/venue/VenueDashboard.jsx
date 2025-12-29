@@ -513,12 +513,39 @@ export default function VenueDashboard() {
                     </Button>
                   </div>
                 ) : (
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${b.status === "COMPLETED"
-                    ? "bg-blue-900/30 text-blue-400 border-blue-800"
-                    : "bg-gray-800 text-gray-400 border-gray-700"
-                    }`}>
-                    {b.status}
-                  </span>
+                  <div className="flex flex-col items-end gap-2">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${b.status === "ACCEPTED"
+                        ? "bg-green-900/30 text-green-400 border-green-800"
+                        : b.status === "REJECTED"
+                          ? "bg-red-900/30 text-red-400 border-red-800"
+                          : "bg-blue-900/30 text-blue-400 border-blue-800"
+                        }`}
+                    >
+                      {b.status}
+                    </span>
+                    {b.status === "ACCEPTED" && !b.artistCompleted && (
+                      // Note: For venue, it uses same completeBooking but logic checks user ID.
+                      // For venue booking, backend checks venue owner.
+                      // BUT wait, booking controller sets `artistCompleted` if `isArtist || isVenue`.
+                      // Yes, backend logic: `if (isArtist || isVenue) { booking.artistCompleted = true; }`
+                      // Ideally should be `venueCompleted` but sticking to `artistCompleted` field for "Provider Completion" to avoid schema migration issues or just simplicity as per plan?
+                      // Actually my plan said "update logic", and I used `artistCompleted` for both providers in my previous step?
+                      // Let me check my backend Step 83.
+                      // "if (isArtist || isVenue) { booking.artistCompleted = true; }"
+                      // So yes, I reusing `artistCompleted` to mean "Provider Completed".
+                      <Button
+                        size="sm"
+                        onClick={() => handleAction(b._id, "complete")}
+                        className="bg-gray-800 border border-gray-700 text-gray-300 hover:text-white text-xs"
+                      >
+                        Mark Complete
+                      </Button>
+                    )}
+                    {b.status === "ACCEPTED" && b.artistCompleted && (
+                      <span className="text-xs text-green-500 italic">Marked as done ✓</span>
+                    )}
+                  </div>
                 )}
               </Card>
             ))}
