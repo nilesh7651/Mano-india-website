@@ -7,6 +7,36 @@ import Card from "../../components/ui/Card";
 export default function UserDashboard() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [reviewModal, setReviewModal] = useState({ isOpen: false, bookingId: null });
+  const [reviewForm, setReviewForm] = useState({ rating: 5, comment: "" });
+
+  const handleAction = async (id, action) => {
+    try {
+      await API.put(`/bookings/${id}/${action}`);
+      loadBookings();
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to update booking");
+    }
+  };
+
+  const openReviewModal = (booking) => {
+    setReviewModal({ isOpen: true, bookingId: booking._id });
+    setReviewForm({ rating: 5, comment: "" });
+  };
+
+  const submitReview = async () => {
+    try {
+      await API.post("/reviews", {
+        bookingId: reviewModal.bookingId,
+        rating: reviewForm.rating,
+        comment: reviewForm.comment
+      });
+      alert("Review submitted successfully!");
+      setReviewModal({ isOpen: false, bookingId: null });
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to submit review");
+    }
+  };
 
   useEffect(() => {
     loadBookings();
@@ -148,10 +178,76 @@ export default function UserDashboard() {
                       <span>✓</span> Paid
                     </span>
                   )}
+
+                  {b.status === "ACCEPTED" && !b.userCompleted && (
+                    <Button
+                      onClick={() => handleAction(b._id, "complete")}
+                      size="sm"
+                      className="bg-green-600 hover:bg-green-700 text-white border-green-700"
+                    >
+                      Mark Complete
+                    </Button>
+                  )}
+
+                  {b.status === "ACCEPTED" && b.userCompleted && (
+                    <span className="text-xs text-green-500 italic">Waiting for provider...</span>
+                  )}
+
+                  {b.status === "COMPLETED" && (
+                    <Button
+                      onClick={() => openReviewModal(b)}
+                      size="sm"
+                      className="bg-amber-600 hover:bg-amber-700 text-white"
+                    >
+                      Write Review
+                    </Button>
+                  )}
                 </div>
               </div>
             </Card>
           ))}
+        </div>
+      )}
+
+      {reviewModal.isOpen && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 border border-amber-500/30 rounded-2xl p-6 w-full max-w-md relative">
+            <button onClick={() => setReviewModal({ isOpen: false, bookingId: null })} className="absolute top-4 right-4 text-gray-500 hover:text-white">✕</button>
+            <h3 className="text-xl font-bold text-white mb-4">Write a Review</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">Rating</label>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setReviewForm({ ...reviewForm, rating: star })}
+                      className={`text-2xl transition-colors ${reviewForm.rating >= star ? "text-amber-500" : "text-gray-600"}`}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">Comment</label>
+                <textarea
+                  className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3 focus:border-amber-500 focus:outline-none"
+                  rows="4"
+                  placeholder="Share your experience..."
+                  value={reviewForm.comment}
+                  onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
+                />
+              </div>
+              <button
+                onClick={submitReview}
+                className="w-full bg-amber-600 text-white py-2 rounded-lg font-bold hover:bg-amber-500"
+              >
+                Submit Review
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
