@@ -42,7 +42,8 @@ export default function UserProfile() {
             setIsEditing(false);
             alert("Profile updated successfully!");
         } catch (err) {
-            alert("Failed to update profile");
+            console.error(err);
+            alert(err.response?.data?.message || "Failed to update profile");
         }
     };
 

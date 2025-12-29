@@ -32,6 +32,7 @@ app.use("/api/notifications", require("./routes/notificationRoutes"));
 app.use("/api/payments", paymentRoutes); // Changed to use variable
 app.use("/api/upload", uploadRoutes); // Changed to use variable
 app.use("/api/gallery", galleryRoutes); // Added
+app.use("/api/users", require("./routes/userRoutes"));
 
 // Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
