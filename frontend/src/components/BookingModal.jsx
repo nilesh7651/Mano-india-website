@@ -83,7 +83,7 @@ export default function BookingModal({
   const handleSubmit = async () => {
     setError("");
 
-    if (!eventDate || !eventLocation) {
+    if (!eventDate || (!eventLocation && !venueId)) {
       setError("Please fill all fields");
       return;
     }
@@ -144,20 +144,28 @@ export default function BookingModal({
             />
           </div>
 
-          {/* Event Location */}
-          <div className="mb-8">
-            <label className="block text-sm font-medium text-gray-400 mb-2">
-              Event Location <span className="text-amber-500">*</span>
-            </label>
-            <input
-              type="text"
-              placeholder="e.g. Grand Hotel, Patna"
-              value={eventLocation}
-              onChange={(e) => setEventLocation(e.target.value)}
-              className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
-              required
-            />
-          </div>
+          {/* Event Location - Only show for Artists */}
+          {!venueId && (
+            <div className="mb-8">
+              <label className="block text-sm font-medium text-gray-400 mb-2">
+                Event Location <span className="text-amber-500">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. Grand Hotel, Patna"
+                value={eventLocation}
+                onChange={(e) => setEventLocation(e.target.value)}
+                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
+                required
+              />
+            </div>
+          )}
+
+          {venueId && (
+            <div className="mb-8 p-4 bg-gray-800/50 rounded-lg border border-gray-800">
+              <p className="text-sm text-gray-400">Location: <span className="text-white font-medium">At Venue</span></p>
+            </div>
+          )}
 
           {/* Actions */}
           <div className="flex gap-4">

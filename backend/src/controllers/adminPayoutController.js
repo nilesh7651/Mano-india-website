@@ -5,9 +5,7 @@ const Booking = require("../models/Booking");
  */
 exports.getPayoutQueue = async (req, res) => {
   try {
-    const bookings = await Booking.find({
-      status: "COMPLETED",
-    })
+    const bookings = await Booking.find({})
       .populate("artist", "name bankDetails")
       .populate("venue", "name bankDetails")
       .populate("user", "name email")

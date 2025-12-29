@@ -8,7 +8,7 @@ const createBooking = async (req, res) => {
     const { artistId, venueId, eventDate, eventLocation } = req.body;
 
     // ✅ Basic validation
-    if (!eventDate || !eventLocation) {
+    if (!eventDate || (!eventLocation && !venueId)) {
       return res.status(400).json({ message: "Event date & location required" });
     }
 
@@ -46,12 +46,15 @@ const createBooking = async (req, res) => {
       return res.status(400).json({ message: "Invalid booking amount" });
     }
 
+    // Default location for venue bookings if not provided
+    const finalLocation = eventLocation || (venueId ? "At Venue" : "Unknown Location");
+
     const booking = await Booking.create({
       user: req.user._id,
       artist: artistId || undefined,
       venue: venueId || undefined,
       eventDate,
-      eventLocation,
+      eventLocation: finalLocation,
       amount,
       status: "AWAITING_PAYMENT",
       commissionRate: 0.05,
