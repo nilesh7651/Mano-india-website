@@ -104,11 +104,11 @@ export default function AdminBookings() {
                   </td>
                   <td className="p-4 text-center">
                     <div className="flex flex-col gap-1 text-xs">
-                      <span className={b.artistCompleted ? "text-green-600 font-bold" : "text-gray-400"}>
-                        {b.artist ? "Artist" : "Venue"}: {b.artistCompleted ? "✓" : "⏳"}
+                      <span className={b.artistCompleted || b.status === "COMPLETED" ? "text-green-600 font-bold" : "text-gray-400"}>
+                        {b.artist ? "Artist" : "Venue"}: {b.artistCompleted || b.status === "COMPLETED" ? "✓" : "⏳"}
                       </span>
-                      <span className={b.userCompleted ? "text-green-600 font-bold" : "text-gray-400"}>
-                        User: {b.userCompleted ? "✓" : "⏳"}
+                      <span className={b.userCompleted || b.status === "COMPLETED" ? "text-green-600 font-bold" : "text-gray-400"}>
+                        User: {b.userCompleted || b.status === "COMPLETED" ? "✓" : "⏳"}
                       </span>
                     </div>
                   </td>
@@ -126,8 +126,8 @@ export default function AdminBookings() {
                         onClick={() => markAsPaid(b._id)}
                         disabled={b.payoutStatus !== "PENDING"} // Only enable if PENDING (which means COMPLETED)
                         className={`px-3 py-1.5 rounded-lg transition font-medium text-xs ${b.payoutStatus === "PENDING"
-                            ? "bg-green-600 text-white hover:bg-green-700"
-                            : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                          ? "bg-green-600 text-white hover:bg-green-700"
+                          : "bg-gray-200 text-gray-400 cursor-not-allowed"
                           }`}
                       >
                         Mark Paid
