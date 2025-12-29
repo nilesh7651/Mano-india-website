@@ -19,6 +19,9 @@ import AdminBookings from "./pages/admin/AdminBookings";
 import AdminGallery from "./pages/admin/AdminGallery";
 import UserBookings from "./pages/userBooking";
 import Events from "./pages/Events";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Terms from "./pages/Terms";
+import RefundPolicy from "./pages/RefundPolicy";
 
 export default function App() {
   return (
@@ -34,6 +37,9 @@ export default function App() {
           <Route path="/events" element={<Events />} />
           <Route path="/login" element={<Login />} />
           <Route path="/my-bookings" element={<UserBookings />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-and-conditions" element={<Terms />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
 
           <Route
             path="/dashboard"

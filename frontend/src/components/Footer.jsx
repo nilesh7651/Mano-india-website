@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
+
 export default function Footer() {
   return (
     <footer className="bg-black border-t border-gray-800 mt-20 text-gray-300">
       <div className="max-w-7xl mx-auto px-6 py-12 grid gap-8 md:grid-cols-4">
-        
+
         {/* Brand */}
         <div>
           <h2 className="text-2xl font-bold text-amber-500 tracking-wide">ManoIndia</h2>
@@ -36,14 +38,21 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Services */}
+
+
+        {/* Legal */}
         <div>
-          <h3 className="font-semibold text-white mb-4 uppercase tracking-wider text-sm">Our Services</h3>
+          <h3 className="font-semibold text-white mb-4 uppercase tracking-wider text-sm">Legal</h3>
           <ul className="text-sm text-gray-400 space-y-2">
-            <li className="hover:text-amber-500 transition-colors cursor-pointer">• Management</li>
-            <li className="hover:text-amber-500 transition-colors cursor-pointer">• Marketing</li>
-            <li className="hover:text-amber-500 transition-colors cursor-pointer">• Creative</li>
-            <li className="hover:text-amber-500 transition-colors cursor-pointer">• Analysis</li>
+            <li>
+              <Link to="/privacy-policy" className="hover:text-amber-500 transition-colors cursor-pointer">Privacy Policy</Link>
+            </li>
+            <li>
+              <Link to="/terms-and-conditions" className="hover:text-amber-500 transition-colors cursor-pointer">Terms & Conditions</Link>
+            </li>
+            <li>
+              <Link to="/refund-policy" className="hover:text-amber-500 transition-colors cursor-pointer">Refund Policy</Link>
+            </li>
           </ul>
         </div>
       </div>
