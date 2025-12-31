@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import BookingModal from "../components/BookingModal";
 import Reviews from "../components/Reviews";
+import SEO from "../components/SEO";
 
 import API from "../services/api";
 import Button from "../components/ui/Button";
@@ -44,6 +45,10 @@ export default function VenueDetails() {
 
   return (
     <div className="space-y-12">
+      <SEO
+        title={`${venue.name} | Book Wedding Hall & Venue`}
+        description={venue.description || `Book ${venue.name} for your next event.`}
+      />
       {/* Top Section: Image & Details */}
       <div className="grid md:grid-cols-2 gap-10">
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../services/api";
+import SEO from "../components/SEO";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -40,6 +41,10 @@ export default function Signup() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center px-4 bg-black">
+      <SEO
+        title="Sign Up | Mano India"
+        description="Create a new Mano India account to start booking artists and venues."
+      />
 
       {/* 🌄 OUTER BACKGROUND (Matches Login) */}
       <div

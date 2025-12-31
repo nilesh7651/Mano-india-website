@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import BookingModal from "../components/BookingModal";
 import Reviews from "../components/Reviews";
+import SEO from "../components/SEO";
 
 import API from "../services/api";
 import Button from "../components/ui/Button";
@@ -43,6 +44,10 @@ export default function ArtistDetails() {
 
   return (
     <div className="space-y-12">
+      <SEO
+        title={`${artist.name} | Book ${artist.category}`}
+        description={artist.bio || `Book ${artist.name} for your next event.`}
+      />
       {/* Top Section: Image & Details */}
       <div className="grid md:grid-cols-2 gap-10">
 

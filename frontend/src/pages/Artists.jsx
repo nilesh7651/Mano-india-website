@@ -47,6 +47,10 @@ export default function Artists() {
 
   return (
     <div className="space-y-8">
+      <SEO
+        title="Hire Top Artists | Musicians, Bands, DJs & More"
+        description="Explore and book verified artists for your event. Find singers, bands, DJs, and performers in your city."
+      />
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-gray-800 pb-8">
         <div>

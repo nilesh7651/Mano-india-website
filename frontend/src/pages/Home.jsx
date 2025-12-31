@@ -28,6 +28,17 @@ export default function Home() {
       });
   }, []);
 
+  // Scroll to hash if present
+  useEffect(() => {
+    if (window.location.hash) {
+      const id = window.location.hash.substring(1);
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [window.location.hash]); // Re-run when hash changes
+
   const demoGallery = [
     {
       title: "Wedding Celebration",
@@ -106,7 +117,7 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="relative py-24 mx-4 md:mx-8 rounded-3xl overflow-hidden">
+      <section id="how-it-works" className="relative py-24 mx-4 md:mx-8 rounded-3xl overflow-hidden">
         {/* Background image */}
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -196,7 +207,7 @@ export default function Home() {
       </section>
 
       {/* WHY MANO */}
-      <section className="relative py-24 mx-4 md:mx-8 rounded-3xl overflow-hidden">
+      <section id="about" className="relative py-24 mx-4 md:mx-8 rounded-3xl overflow-hidden">
         {/* Background image */}
         <div
           className="absolute inset-0 bg-cover bg-center"

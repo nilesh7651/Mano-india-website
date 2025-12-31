@@ -40,13 +40,25 @@ export default function Navbar() {
             to="/artists"
             className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
           >
-            Artists
+            Browse Artists
           </Link>
           <Link
             to="/venues"
             className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
           >
-            Venues
+            Browse Venues
+          </Link>
+          <Link
+            to="/#how-it-works"
+            className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
+          >
+            How it Works
+          </Link>
+          <Link
+            to="/#about"
+            className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
+          >
+            About
           </Link>
         </div>
 

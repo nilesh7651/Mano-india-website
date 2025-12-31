@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../services/api";
+import SEO from "../components/SEO";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -33,6 +34,10 @@ export default function Login() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center px-4 bg-black">
+      <SEO
+        title="Login | Mano India"
+        description="Login to your Mano India account to manage bookings and profile."
+      />
 
       {/* 🌄 OUTER BACKGROUND */}
       <div
@@ -42,7 +47,7 @@ export default function Login() {
             "url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1400&auto=format&fit=crop')",
         }}
       />
-      
+
       {/* Dark overlay for contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
 
@@ -117,10 +122,10 @@ export default function Login() {
 
         {/* ================= RIGHT : GOLD PANEL ================= */}
         <div className="hidden md:flex flex-col items-center justify-center text-center bg-gradient-to-br from-amber-600 via-amber-700 to-amber-800 text-white p-12 relative overflow-hidden">
-          
+
           {/* Subtle Texture Overlay */}
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-          
+
           <div className="relative z-10">
             <h2 className="text-4xl font-bold mb-6">
               New Here?
