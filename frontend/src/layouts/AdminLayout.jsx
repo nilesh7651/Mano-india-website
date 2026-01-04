@@ -8,7 +8,7 @@ export default function AdminLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen bg-black flex">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-white p-6 flex flex-col">
         <div className="text-2xl font-bold mb-8 text-amber-400">Admin Panel</div>

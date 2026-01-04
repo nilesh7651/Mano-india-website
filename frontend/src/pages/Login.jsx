@@ -35,8 +35,9 @@ export default function Login() {
   return (
     <div className="relative min-h-screen flex items-center justify-center px-4 bg-black">
       <SEO
-        title="Login | Mano India"
-        description="Login to your Mano India account to manage bookings and profile."
+        title="Login | Mano India - Artist & Venue Booking"
+        description="Login to your Mano India account to manage bookings, profiles, and events."
+        canonicalUrl="https://manoindia.in/login"
       />
 
       {/* 🌄 OUTER BACKGROUND */}

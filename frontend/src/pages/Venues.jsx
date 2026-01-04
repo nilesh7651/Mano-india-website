@@ -30,8 +30,10 @@ export default function Venues() {
   return (
     <div className="min-h-screen bg-black text-gray-100 p-8 md:p-12">
       <SEO
-        title="Book Verified Venues"
-        description="Find the perfect wedding hall, party lawn, or corporate venue for your event in India."
+        title="Book Best Event Venues | Wedding Halls, Party Lawns | Mano India"
+        description="Find the perfect wedding hall, party lawn, or corporate venue for your event in India with Mano India. Verified and premium venues."
+        keywords="venue booking, wedding halls, party lawns, corporate event venues, banquet halls, event spaces"
+        canonicalUrl="https://manoindia.in/venues"
       />
 
       <div className="max-w-7xl mx-auto space-y-8">

@@ -75,8 +75,10 @@ export default function Home() {
   return (
     <div className="space-y-24 bg-black text-gray-100">
       <SEO
-        title="Book Artists & Venues"
-        description="Discover and book professional artists and venues for your events, weddings, and parties across India. Reliable, verified, and premium."
+        title="Mano India | Book Top Artists & Venues for Events"
+        description="Mano India is the best platform to book top artists, singers, dancers, and event venues for weddings, corporate events, and parties."
+        keywords="artist booking, venue booking, event management, hire singers, book dancers, wedding venues, mano india"
+        canonicalUrl="https://manoindia.in/"
       />
       {/* NOTE: Added bg-black to body/container to match the dark theme of the logo 
          If your global layout is white, you can remove 'bg-black text-gray-100' above

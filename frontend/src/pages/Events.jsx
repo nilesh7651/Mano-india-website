@@ -31,8 +31,10 @@ export default function Events() {
   return (
     <div className="min-h-screen bg-black text-gray-100 px-6 py-20">
       <SEO
-        title="Event Gallery - Weddings, Concerts & Parties"
-        description="Explore our gallery of past events including royal weddings, corporate gatherings, and energetic concerts managed by ManoIndia."
+        title="Event Gallery - Weddings, Concerts & Parties | Mano India"
+        description="Explore our gallery of past events including royal weddings, corporate gatherings, and energetic concerts managed by Mano India."
+        keywords="event gallery, wedding photos, concert images, event management portfolio, past events"
+        canonicalUrl="https://manoindia.in/events"
       />
       <div className="max-w-7xl mx-auto">
         {/* HEADER */}

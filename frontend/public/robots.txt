@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://manoindia.in/sitemap.xml

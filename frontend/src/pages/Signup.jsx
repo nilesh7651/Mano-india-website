@@ -42,8 +42,9 @@ export default function Signup() {
   return (
     <div className="relative min-h-screen flex items-center justify-center px-4 bg-black">
       <SEO
-        title="Sign Up | Mano India"
-        description="Create a new Mano India account to start booking artists and venues."
+        title="Sign Up | Join Mano India"
+        description="Create a new Mano India account to start booking artists and venues, or list your services."
+        canonicalUrl="https://manoindia.in/signup"
       />
 
       {/* 🌄 OUTER BACKGROUND (Matches Login) */}

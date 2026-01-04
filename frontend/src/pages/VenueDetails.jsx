@@ -46,8 +46,11 @@ export default function VenueDetails() {
   return (
     <div className="space-y-12">
       <SEO
-        title={`${venue.name} | Book Wedding Hall & Venue`}
-        description={venue.description || `Book ${venue.name} for your next event.`}
+        title={`${venue.name} | Book ${venue.venueType} in ${venue.city} | Mano India`}
+        description={venue.description || `Book ${venue.name} for your wedding or event in ${venue.city}. Verified venue on Mano India.`}
+        keywords={`book ${venue.venueType}, ${venue.name}, ${venue.city} venues, wedding hall booking`}
+        image={venue.images?.[0]}
+        canonicalUrl={`https://manoindia.in/venues/${venue._id}`}
       />
       {/* Top Section: Image & Details */}
       <div className="grid md:grid-cols-2 gap-10">

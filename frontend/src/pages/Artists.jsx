@@ -48,8 +48,10 @@ export default function Artists() {
   return (
     <div className="space-y-8">
       <SEO
-        title="Hire Top Artists | Musicians, Bands, DJs & More"
-        description="Explore and book verified artists for your event. Find singers, bands, DJs, and performers in your city."
+        title="Book Top Artists | Singers, Dancers, DJs | Mano India"
+        description="Explore and book verified artists for your event. Find singers, bands, DJs, and performers in your city with Mano India."
+        keywords="hire artists, book singers, dj booking, live bands, event performers, artist booking india"
+        canonicalUrl="https://manoindia.in/artists"
       />
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-gray-800 pb-8">

@@ -45,8 +45,11 @@ export default function ArtistDetails() {
   return (
     <div className="space-y-12">
       <SEO
-        title={`${artist.name} | Book ${artist.category}`}
-        description={artist.bio || `Book ${artist.name} for your next event.`}
+        title={`${artist.name} | Book ${artist.category} | Mano India`}
+        description={artist.bio || `Book ${artist.name} for your next event with Mano India. Verified ${artist.category} in ${artist.city}.`}
+        keywords={`book ${artist.category}, hire ${artist.name}, ${artist.city} artists, mano india artist`}
+        image={artist.images?.[0]}
+        canonicalUrl={`https://manoindia.in/artists/${artist._id}`}
       />
       {/* Top Section: Image & Details */}
       <div className="grid md:grid-cols-2 gap-10">
