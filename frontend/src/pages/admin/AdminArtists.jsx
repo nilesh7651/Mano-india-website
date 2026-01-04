@@ -73,8 +73,8 @@ export default function AdminArtists() {
           <button
             onClick={() => setViewMode("pending")}
             className={`px-4 py-2 rounded-lg transition ${viewMode === "pending"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
           >
             Pending ({artists.length})
@@ -82,8 +82,8 @@ export default function AdminArtists() {
           <button
             onClick={() => setViewMode("all")}
             className={`px-4 py-2 rounded-lg transition ${viewMode === "all"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
           >
             All Artists ({allArtists.length})
@@ -118,6 +118,9 @@ export default function AdminArtists() {
                   <p className="text-gray-600 mt-1">
                     {artist.category} • {artist.city}
                   </p>
+                  <p className="text-gray-600 text-sm mt-1">
+                    📞 {artist.phone}
+                  </p>
                   {artist.user && (
                     <p className="text-sm text-gray-500 mt-1">
                       Owner: {artist.user.name} ({artist.user.email})
@@ -131,8 +134,8 @@ export default function AdminArtists() {
                   </p>
                   <div className="mt-2">
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${artist.isVerified
-                        ? "bg-green-100 text-green-700"
-                        : "bg-yellow-100 text-yellow-700"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-yellow-100 text-yellow-700"
                       }`}>
                       {artist.isVerified ? "✓ Verified" : "⏳ Pending"}
                     </span>

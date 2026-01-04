@@ -118,6 +118,9 @@ export default function AdminVenues() {
                   <p className="text-gray-600 mt-1">
                     {venue.venueType} • {venue.city}
                   </p>
+                  <p className="text-gray-600 text-sm mt-1">
+                    📞 {venue.phone}
+                  </p>
                   {venue.owner && (
                     <p className="text-sm text-gray-500 mt-1">
                       Owner: {venue.owner.name} ({venue.owner.email})
