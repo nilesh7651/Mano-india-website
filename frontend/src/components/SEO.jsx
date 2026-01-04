@@ -2,9 +2,23 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
 const SEO = ({ title, description, keywords, name, type, image, canonicalUrl }) => {
+
     const siteUrl = 'https://manoindia.in';
     const finalCanonicalUrl = canonicalUrl || siteUrl;
-    const finalImage = image || `${siteUrl}/favicon.png`; // Fallback to favicon or a specific OG image if available
+    const finalImage = image || `${siteUrl}/favicon.png`;
+    const logoUrl = `${siteUrl}/logo.png`; // Ensure this matches your actual logo path in public/
+
+    const orgSchema = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Mano India",
+        "url": siteUrl,
+        "logo": logoUrl,
+        "sameAs": [
+            "https://www.facebook.com/manoindia",
+            "https://www.instagram.com/manoindia"
+        ]
+    };
 
     return (
         <Helmet>
@@ -31,6 +45,10 @@ const SEO = ({ title, description, keywords, name, type, image, canonicalUrl }) 
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={finalImage} />
             { /* End Twitter tags */}
+
+            <script type="application/ld+json">
+                {JSON.stringify(orgSchema)}
+            </script>
         </Helmet>
     )
 }

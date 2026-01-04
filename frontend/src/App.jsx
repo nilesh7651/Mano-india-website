@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
 import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import Home from "./pages/Home";
@@ -25,6 +26,17 @@ import RefundPolicy from "./pages/RefundPolicy";
 import UserProfile from "./pages/UserProfile";
 
 export default function App() {
+  useEffect(() => {
+    console.log(
+      "%c Developed by Nilesh Kumar ",
+      "background: #000; color: #f59e0b; font-size: 14px; font-weight: bold; padding: 4px; border-radius: 4px;"
+    );
+    console.log(
+      "%c Want a premium website like this? Contact: nileshsingh7651@gmail.com ",
+      "background: #111; color: #aaa; font-size: 10px; padding: 4px;"
+    );
+  }, []);
+
   return (
     <BrowserRouter>
       <MainLayout>
@@ -97,5 +109,4 @@ export default function App() {
       </MainLayout>
     </BrowserRouter>
   );
-
 }

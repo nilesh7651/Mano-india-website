@@ -26,7 +26,7 @@ export default function Navbar() {
         <Link to="/" className="flex items-center gap-2">
           <img
             src={logo}
-            alt="Mano"
+            alt="Mano India Logo"
             className="h-8 w-auto object-contain"
           />
           <span className="font-semibold text-lg text-white tracking-wide">
@@ -48,18 +48,32 @@ export default function Navbar() {
           >
             Browse Venues
           </Link>
-          <Link
-            to="/#how-it-works"
-            className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
+          <button
+            onClick={() => {
+              if (window.location.pathname !== "/") {
+                navigate("/#how-it-works");
+              } else {
+                const element = document.getElementById("how-it-works");
+                if (element) element.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+            className="text-gray-300 hover:text-amber-500 transition-colors duration-200 bg-transparent border-none cursor-pointer"
           >
             How it Works
-          </Link>
-          <Link
-            to="/#about"
-            className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
+          </button>
+          <button
+            onClick={() => {
+              if (window.location.pathname !== "/") {
+                navigate("/#about");
+              } else {
+                const element = document.getElementById("about");
+                if (element) element.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+            className="text-gray-300 hover:text-amber-500 transition-colors duration-200 bg-transparent border-none cursor-pointer"
           >
             About
-          </Link>
+          </button>
         </div>
 
         {/* Right Side */}
