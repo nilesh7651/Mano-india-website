@@ -63,27 +63,27 @@ export default function AdminArtists() {
   const displayArtists = viewMode === "pending" ? artists : allArtists;
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-6 bg-black min-h-screen p-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-800 pb-6">
         <div>
-          <h1 className="text-3xl font-semibold text-gray-900 mb-2">Artist Management</h1>
-          <p className="text-gray-600 text-sm">Approve and manage artist profiles</p>
+          <h1 className="text-3xl font-semibold text-white mb-2">Artist Management</h1>
+          <p className="text-gray-400 text-sm">Approve and manage artist profiles</p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={() => setViewMode("pending")}
-            className={`px-4 py-2 rounded-lg transition ${viewMode === "pending"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            className={`px-4 py-2 rounded-lg transition border ${viewMode === "pending"
+              ? "bg-amber-600 text-black border-amber-600 font-bold"
+              : "bg-gray-900 text-gray-400 border-gray-700 hover:border-amber-500 hover:text-amber-500"
               }`}
           >
             Pending ({artists.length})
           </button>
           <button
             onClick={() => setViewMode("all")}
-            className={`px-4 py-2 rounded-lg transition ${viewMode === "all"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            className={`px-4 py-2 rounded-lg transition border ${viewMode === "all"
+              ? "bg-amber-600 text-black border-amber-600 font-bold"
+              : "bg-gray-900 text-gray-400 border-gray-700 hover:border-amber-500 hover:text-amber-500"
               }`}
           >
             All Artists ({allArtists.length})
@@ -92,33 +92,33 @@ export default function AdminArtists() {
       </div>
 
       {viewMode === "pending" && artists.length === 0 && (
-        <div className="text-center py-12 bg-gray-50 rounded-xl border border-gray-200">
+        <div className="text-center py-12 bg-gray-900 rounded-xl border border-gray-800 border-dashed">
           <p className="text-gray-500">No pending artist approvals.</p>
         </div>
       )}
 
       {viewMode === "all" && allArtists.length === 0 && (
-        <div className="text-center py-12 bg-gray-50 rounded-xl border border-gray-200">
+        <div className="text-center py-12 bg-gray-900 rounded-xl border border-gray-800 border-dashed">
           <p className="text-gray-500">No artists registered yet.</p>
         </div>
       )}
 
       {displayArtists.length > 0 && (
-        <div className="grid gap-4">
+        <div className="grid gap-6">
           {displayArtists.map(artist => (
             <div
               key={artist._id}
-              className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200"
+              className="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-lg hover:border-amber-500/50 transition-all duration-300"
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900">
+                  <h3 className="text-xl font-semibold text-white">
                     {artist.name}
                   </h3>
-                  <p className="text-gray-600 mt-1">
+                  <p className="text-gray-400 mt-1">
                     {artist.category} • {artist.city}
                   </p>
-                  <p className="text-gray-600 text-sm mt-1">
+                  <p className="text-amber-500 text-sm mt-1 font-mono">
                     📞 {artist.phone}
                   </p>
                   {artist.user && (
@@ -127,15 +127,15 @@ export default function AdminArtists() {
                     </p>
                   )}
                   {artist.bio && (
-                    <p className="text-gray-700 mt-2">{artist.bio}</p>
+                    <p className="text-gray-300 mt-2">{artist.bio}</p>
                   )}
-                  <p className="text-lg font-semibold mt-3">
+                  <p className="text-lg font-semibold mt-3 text-amber-500">
                     ₹ {artist.pricePerEvent?.toLocaleString()} / event
                   </p>
                   <div className="mt-2">
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${artist.isVerified
-                      ? "bg-green-100 text-green-700"
-                      : "bg-yellow-100 text-yellow-700"
+                      ? "bg-green-900/30 text-green-400 border border-green-800"
+                      : "bg-yellow-900/30 text-yellow-500 border border-yellow-800"
                       }`}>
                       {artist.isVerified ? "✓ Verified" : "⏳ Pending"}
                     </span>
@@ -146,13 +146,13 @@ export default function AdminArtists() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => approveArtist(artist._id)}
-                      className="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium text-sm"
+                      className="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-500 transition font-medium text-sm shadow-lg shadow-green-900/20"
                     >
                       Approve
                     </button>
                     <button
                       onClick={() => rejectArtist(artist._id)}
-                      className="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium text-sm"
+                      className="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition font-medium text-sm shadow-lg shadow-red-900/20"
                     >
                       Reject
                     </button>
@@ -161,12 +161,12 @@ export default function AdminArtists() {
 
                 {artist.isVerified && (
                   <div className="flex items-center gap-3">
-                    <span className="px-4 py-2 bg-green-50 border border-green-200 rounded-lg text-green-700 font-semibold text-sm">
+                    <span className="px-4 py-2 bg-green-900/20 border border-green-800 rounded-lg text-green-500 font-semibold text-sm">
                       ✓ Approved
                     </span>
                     <button
                       onClick={() => rejectArtist(artist._id)}
-                      className="px-4 py-2 bg-red-100 text-red-700 border border-red-200 rounded-lg hover:bg-red-200 transition font-medium text-sm"
+                      className="px-4 py-2 bg-red-900/20 text-red-500 border border-red-800 rounded-lg hover:bg-red-900/40 transition font-medium text-sm"
                     >
                       Delete
                     </button>

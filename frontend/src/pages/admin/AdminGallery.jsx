@@ -55,16 +55,16 @@ export default function AdminGallery() {
     };
 
     return (
-        <div className="space-y-8">
-            <div>
-                <h1 className="text-3xl font-bold">Gallery Manager</h1>
-                <p className="text-gray-600">Manage images in the Home Page carousel</p>
+        <div className="space-y-8 bg-black min-h-screen p-6">
+            <div className="border-b border-gray-800 pb-6">
+                <h1 className="text-3xl font-bold text-white">Gallery Manager</h1>
+                <p className="text-gray-400">Manage images in the Home Page carousel</p>
             </div>
 
             <div className="grid lg:grid-cols-3 gap-8">
                 {/* ADD FORM */}
-                <Card className="lg:col-span-1 h-fit">
-                    <h2 className="text-xl font-bold mb-4">Add New Image</h2>
+                <Card className="lg:col-span-1 h-fit bg-gray-900 border-gray-800 text-white">
+                    <h2 className="text-xl font-bold mb-4 text-white">Add New Image</h2>
                     <form onSubmit={handleAdd} className="space-y-4">
                         <Input
                             label="Title"
@@ -72,12 +72,13 @@ export default function AdminGallery() {
                             value={form.title}
                             onChange={(e) => setForm({ ...form, title: e.target.value })}
                             required
+                            className="bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:border-amber-500"
                         />
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                            <label className="block text-sm font-medium text-gray-400 mb-1">Type</label>
                             <select
-                                className="w-full px-4 py-2 rounded-xl border border-gray-200"
+                                className="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-800 text-white focus:outline-none focus:border-amber-500"
                                 value={form.type}
                                 onChange={(e) => setForm({ ...form, type: e.target.value })}
                             >
@@ -94,17 +95,18 @@ export default function AdminGallery() {
                             placeholder="Short description..."
                             value={form.description}
                             onChange={(e) => setForm({ ...form, description: e.target.value })}
+                            className="bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:border-amber-500"
                         />
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Upload Image</label>
+                            <label className="block text-sm font-medium text-gray-400 mb-1">Upload Image</label>
                             <ImageUpload
                                 onUpload={(url) => setForm({ ...form, imageUrl: url })}
                                 existingImage={form.imageUrl}
                             />
                         </div>
 
-                        <Button type="submit" className="w-full">
+                        <Button type="submit" className="w-full bg-amber-600 hover:bg-amber-700 text-white">
                             Add to Gallery
                         </Button>
                     </form>
@@ -112,29 +114,38 @@ export default function AdminGallery() {
 
                 {/* LIST */}
                 <div className="lg:col-span-2">
-                    <h2 className="text-xl font-bold mb-4">Current Images ({items.length})</h2>
+                    <h2 className="text-xl font-bold mb-4 text-white">Current Images ({items.length})</h2>
 
                     {loading ? (
-                        <p className="animate-pulse">Loading...</p>
+                        <p className="animate-pulse text-gray-500">Loading...</p>
                     ) : items.length === 0 ? (
-                        <p className="text-gray-500 italic">No images in gallery yet.</p>
+                        <div className="text-center py-12 bg-gray-900 rounded-xl border border-gray-800 border-dashed">
+                            <p className="text-gray-500 italic">No images in gallery yet.</p>
+                        </div>
                     ) : (
-                        <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="grid sm:grid-cols-2 gap-6">
                             {items.map(item => (
-                                <div key={item._id} className="group relative rounded-xl overflow-hidden border border-gray-200 shadow-sm">
-                                    <img
-                                        src={item.imageUrl}
-                                        alt={item.title}
-                                        className="w-full h-48 object-cover"
-                                    />
-                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
-                                        <Button variant="danger" size="sm" onClick={() => handleDelete(item._id)}>
-                                            Delete
-                                        </Button>
+                                <div key={item._id} className="group relative rounded-xl overflow-hidden border border-gray-800 shadow-lg bg-gray-900 hover:border-amber-500/50 transition-all duration-300">
+                                    <div className="h-48 overflow-hidden relative">
+                                        <img
+                                            src={item.imageUrl}
+                                            alt={item.title}
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
+                                            <Button variant="danger" size="sm" onClick={() => handleDelete(item._id)} className="bg-red-600 hover:bg-red-700 transform scale-110">
+                                                Delete Image
+                                            </Button>
+                                        </div>
+                                        <div className="absolute top-2 left-2">
+                                            <span className="bg-black/70 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-amber-500 border border-amber-500/30 uppercase tracking-wider">
+                                                {item.type}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div className="p-3 bg-white">
-                                        <h3 className="font-bold text-gray-900">{item.title}</h3>
-                                        <p className="text-xs text-amber-600 font-bold uppercase">{item.type}</p>
+                                    <div className="p-4 bg-gray-900">
+                                        <h3 className="font-bold text-white text-lg mb-1">{item.title}</h3>
+                                        <p className="text-sm text-gray-400 line-clamp-2">{item.description || "No description provided."}</p>
                                     </div>
                                 </div>
                             ))}

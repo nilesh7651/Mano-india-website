@@ -32,90 +32,90 @@ export default function AdminBookings() {
   if (loading) return <p className="text-gray-500">Loading payouts...</p>;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-semibold text-gray-900 mb-2">Payout Management</h1>
-        <p className="text-gray-600 text-sm">Manage artist and venue payouts</p>
+    <div className="space-y-6 bg-black min-h-screen p-6">
+      <div className="border-b border-gray-800 pb-6">
+        <h1 className="text-3xl font-semibold text-white mb-2">Payout Management</h1>
+        <p className="text-gray-400 text-sm">Manage artist and venue payouts</p>
       </div>
 
       {bookings.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-xl border border-gray-200">
+        <div className="text-center py-12 bg-gray-900 rounded-xl border border-gray-800 border-dashed">
           <p className="text-gray-500">No payouts pending.</p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-x-auto">
+        <div className="bg-gray-900 rounded-xl shadow-lg border border-gray-800 overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-gray-800 border-b border-gray-700">
               <tr>
-                <th className="p-4 text-left font-semibold text-gray-900">User</th>
-                <th className="p-4 text-left font-semibold text-gray-900">Type</th>
-                <th className="p-4 text-left font-semibold text-gray-900">Provider</th>
-                <th className="p-4 text-left font-semibold text-gray-900">Bank Details</th>
-                <th className="p-4 text-right font-semibold text-gray-900">Amount</th>
-                <th className="p-4 text-right font-semibold text-gray-900">Commission</th>
-                <th className="p-4 text-right font-semibold text-gray-900">Payout</th>
-                <th className="p-4 text-left font-semibold text-gray-900">Status</th>
-                <th className="p-4 text-center font-semibold text-gray-900">Completion</th>
-                <th className="p-4 text-left font-semibold text-gray-900">Payout Status</th>
-                <th className="p-4 text-left font-semibold text-gray-900">Actions</th>
+                <th className="p-4 text-left font-semibold text-gray-300">User</th>
+                <th className="p-4 text-left font-semibold text-gray-300">Type</th>
+                <th className="p-4 text-left font-semibold text-gray-300">Provider</th>
+                <th className="p-4 text-left font-semibold text-gray-300">Bank Details</th>
+                <th className="p-4 text-right font-semibold text-gray-300">Amount</th>
+                <th className="p-4 text-right font-semibold text-gray-300">Commission</th>
+                <th className="p-4 text-right font-semibold text-gray-300">Payout</th>
+                <th className="p-4 text-left font-semibold text-gray-300">Status</th>
+                <th className="p-4 text-center font-semibold text-gray-300">Completion</th>
+                <th className="p-4 text-left font-semibold text-gray-300">Payout Status</th>
+                <th className="p-4 text-left font-semibold text-gray-300">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-800">
               {bookings.map(b => (
-                <tr key={b._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                  <td className="p-4">{b.user?.name || b.user?.email || "N/A"}</td>
+                <tr key={b._id} className="hover:bg-gray-800/50 transition-colors">
+                  <td className="p-4 text-gray-300">{b.user?.name || b.user?.email || "N/A"}</td>
                   <td className="p-4">
-                    <span className={`px-2 py-1 rounded-full text-xs ${b.artist ? "bg-blue-100 text-blue-700" : "bg-green-100 text-green-700"
+                    <span className={`px-2 py-1 rounded-full text-xs font-bold border ${b.artist ? "bg-purple-900/30 text-purple-400 border-purple-800" : "bg-blue-900/30 text-blue-400 border-blue-800"
                       }`}>
                       {b.artist ? "Artist" : "Venue"}
                     </span>
                   </td>
-                  <td className="p-4">
+                  <td className="p-4 text-white font-medium">
                     {b.artist?.name || b.venue?.name || "N/A"}
                   </td>
-                  <td className="p-4 text-xs text-gray-600">
+                  <td className="p-4 text-xs text-gray-400">
                     {b.artist?.bankDetails?.accountNumber || b.venue?.bankDetails?.accountNumber ? (
                       <div>
-                        <p className="font-bold">{b.artist?.bankDetails?.bankName || b.venue?.bankDetails?.bankName}</p>
+                        <p className="font-bold text-gray-300">{b.artist?.bankDetails?.bankName || b.venue?.bankDetails?.bankName}</p>
                         <p>Acc: {b.artist?.bankDetails?.accountNumber || b.venue?.bankDetails?.accountNumber}</p>
                         <p>IFSC: {b.artist?.bankDetails?.ifscCode || b.venue?.bankDetails?.ifscCode}</p>
                         <p>Holder: {b.artist?.bankDetails?.accountHolderName || b.venue?.bankDetails?.accountHolderName}</p>
                       </div>
                     ) : (
-                      <span className="text-red-500 italic">No Bank Info</span>
+                      <span className="text-red-400 italic">No Bank Info</span>
                     )}
                   </td>
-                  <td className="p-4 text-right font-medium">
+                  <td className="p-4 text-right font-medium text-white">
                     ₹ {b.amount?.toLocaleString() || 0}
                   </td>
-                  <td className="p-4 text-right text-gray-600">
+                  <td className="p-4 text-right text-gray-400">
                     ₹ {b.commissionAmount?.toLocaleString() || 0}
                   </td>
-                  <td className="p-4 text-right font-semibold">
+                  <td className="p-4 text-right font-bold text-amber-500">
                     ₹ {b.payoutAmount?.toLocaleString() || 0}
                   </td>
                   <td className="p-4">
-                    <span className={`px-2 py-1 rounded-full text-xs ${b.status === "COMPLETED" ? "bg-green-100 text-green-700" :
-                      b.status === "ACCEPTED" ? "bg-blue-100 text-blue-700" :
-                        "bg-yellow-100 text-yellow-700"
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${b.status === "COMPLETED" ? "bg-green-900/30 text-green-400 border border-green-800" :
+                      b.status === "ACCEPTED" ? "bg-blue-900/30 text-blue-400 border border-blue-800" :
+                        "bg-yellow-900/30 text-yellow-500 border border-yellow-800"
                       }`}>
                       {b.status}
                     </span>
                   </td>
                   <td className="p-4 text-center">
                     <div className="flex flex-col gap-1 text-xs">
-                      <span className={b.artistCompleted || b.status === "COMPLETED" ? "text-green-600 font-bold" : "text-gray-400"}>
+                      <span className={b.artistCompleted || b.status === "COMPLETED" ? "text-green-400 font-bold" : "text-gray-500"}>
                         {b.artist ? "Artist" : "Venue"}: {b.artistCompleted || b.status === "COMPLETED" ? "✓" : "⏳"}
                       </span>
-                      <span className={b.userCompleted || b.status === "COMPLETED" ? "text-green-600 font-bold" : "text-gray-400"}>
+                      <span className={b.userCompleted || b.status === "COMPLETED" ? "text-green-400 font-bold" : "text-gray-500"}>
                         User: {b.userCompleted || b.status === "COMPLETED" ? "✓" : "⏳"}
                       </span>
                     </div>
                   </td>
                   <td className="p-4">
-                    <span className={`px-2 py-1 rounded-full text-xs ${b.payoutStatus === "PAID" ? "bg-green-100 text-green-700" :
-                      b.payoutStatus === "PENDING" ? "bg-yellow-100 text-yellow-700" :
-                        "bg-gray-100 text-gray-700"
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${b.payoutStatus === "PAID" ? "bg-green-900/30 text-green-400 border border-green-800" :
+                      b.payoutStatus === "PENDING" ? "bg-yellow-900/30 text-yellow-500 border border-yellow-800" :
+                        "bg-gray-800 text-gray-500 border border-gray-700"
                       }`}>
                       {b.payoutStatus || "NOT_READY"}
                     </span>
@@ -124,14 +124,17 @@ export default function AdminBookings() {
                     {b.payoutStatus !== "PAID" && (
                       <button
                         onClick={() => markAsPaid(b._id)}
-                        disabled={b.payoutStatus !== "PENDING"} // Only enable if PENDING (which means COMPLETED)
+                        disabled={b.payoutStatus !== "PENDING"}
                         className={`px-3 py-1.5 rounded-lg transition font-medium text-xs ${b.payoutStatus === "PENDING"
-                          ? "bg-green-600 text-white hover:bg-green-700"
-                          : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                          ? "bg-green-600 text-white hover:bg-green-500 shadow-lg shadow-green-900/20"
+                          : "bg-gray-800 text-gray-600 cursor-not-allowed border border-gray-700"
                           }`}
                       >
                         Mark Paid
                       </button>
+                    )}
+                    {b.payoutStatus === "PAID" && (
+                      <span className="text-green-500 font-bold text-xs">✓ Done</span>
                     )}
                   </td>
                 </tr>

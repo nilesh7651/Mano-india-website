@@ -34,10 +34,10 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-black min-h-screen p-6">
       <div>
-        <h1 className="text-3xl font-semibold text-gray-900 mb-2">Admin Dashboard</h1>
-        <p className="text-gray-600">Overview of platform statistics and management</p>
+        <h1 className="text-3xl font-semibold text-white mb-2">Admin Dashboard</h1>
+        <p className="text-gray-400">Overview of platform statistics and management</p>
       </div>
 
       {/* Quick Stats */}
@@ -46,25 +46,29 @@ export default function AdminDashboard() {
           label="Total Artists"
           value={stats?.totalArtists || 0}
           link="/admin/artists"
-          color="blue"
+          color="amber"
+          icon="🎤"
         />
         <StatCard
           label="Total Venues"
           value={stats?.totalVenues || 0}
           link="/admin/venues"
-          color="green"
+          color="amber"
+          icon="🏰"
         />
         <StatCard
           label="Pending Artists"
           value={stats?.pendingArtists || 0}
           link="/admin/artists"
-          color="yellow"
+          color="red"
+          icon="⏳"
         />
         <StatCard
           label="Pending Venues"
           value={stats?.pendingVenues || 0}
           link="/admin/venues"
-          color="yellow"
+          color="red"
+          icon="⏳"
         />
       </div>
 
@@ -74,39 +78,42 @@ export default function AdminDashboard() {
           label="Total Revenue"
           value={`₹ ${(stats?.totalRevenue || 0).toLocaleString()}`}
           color="green"
+          icon="💰"
         />
         <StatCard
           label="Platform Commission"
           value={`₹ ${(stats?.totalCommission || 0).toLocaleString()}`}
-          color="purple"
+          color="amber"
+          icon="✨"
         />
         <StatCard
           label="Pending Payouts"
           value={`₹ ${(stats?.pendingPayouts || 0).toLocaleString()}`}
           link="/admin/bookings"
-          color="orange"
+          color="blue"
+          icon="💸"
         />
       </div>
 
       {/* Quick Actions */}
       <div className="mt-8">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+        <h2 className="text-xl font-semibold text-white mb-4">Quick Actions</h2>
         <div className="flex flex-wrap gap-3">
           <Link
             to="/admin/artists"
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-sm"
+            className="px-6 py-3 bg-gray-900 border border-amber-500/30 text-amber-500 rounded-lg hover:bg-amber-900/20 transition font-medium shadow-sm hover:shadow-amber-900/20"
           >
             Review Artists
           </Link>
           <Link
             to="/admin/venues"
-            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium shadow-sm"
+            className="px-6 py-3 bg-gray-900 border border-amber-500/30 text-amber-500 rounded-lg hover:bg-amber-900/20 transition font-medium shadow-sm hover:shadow-amber-900/20"
           >
             Review Venues
           </Link>
           <Link
             to="/admin/bookings"
-            className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium shadow-sm"
+            className="px-6 py-3 bg-gray-900 border border-amber-500/30 text-amber-500 rounded-lg hover:bg-amber-900/20 transition font-medium shadow-sm hover:shadow-amber-900/20"
           >
             Manage Payouts
           </Link>
@@ -116,20 +123,25 @@ export default function AdminDashboard() {
   );
 }
 
-function StatCard({ label, value, link, color = "gray" }) {
+function StatCard({ label, value, link, color = "gray", icon }) {
   const colorClasses = {
-    yellow: "bg-yellow-50 border-yellow-200",
-    blue: "bg-blue-50 border-blue-200",
-    green: "bg-green-50 border-green-200",
-    purple: "bg-purple-50 border-purple-200",
-    orange: "bg-orange-50 border-orange-200",
-    gray: "bg-gray-50 border-gray-200",
+    yellow: "border-yellow-500/50 text-yellow-500",
+    blue: "border-blue-500/50 text-blue-400",
+    green: "border-green-500/50 text-green-400",
+    purple: "border-purple-500/50 text-purple-400",
+    orange: "border-orange-500/50 text-orange-400",
+    red: "border-red-500/50 text-red-500",
+    amber: "border-amber-500/50 text-amber-500",
+    gray: "border-gray-700 text-gray-400",
   };
 
   const content = (
-    <div className={`bg-white rounded-xl shadow-sm p-6 border-2 ${colorClasses[color]} hover:shadow-md transition-shadow duration-200`}>
-      <p className="text-gray-600 text-sm font-medium mb-1">{label}</p>
-      <h2 className="text-3xl font-bold text-gray-900">{value}</h2>
+    <div className={`bg-gray-900 rounded-xl shadow-lg p-6 border ${colorClasses[color]} hover:shadow-xl hover:shadow-amber-900/10 transition-all duration-300 relative overflow-hidden group`}>
+      <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-4xl grayscale-0">
+        {icon}
+      </div>
+      <p className="text-gray-400 text-sm font-medium mb-1 uppercase tracking-wider">{label}</p>
+      <h2 className="text-3xl font-bold text-white group-hover:text-amber-500 transition-colors">{value}</h2>
     </div>
   );
 

@@ -113,9 +113,9 @@ export default function VenueDashboard() {
   // If no venue, show create venue option
   if (!venue) {
     return (
-      <div className="max-w-3xl mx-auto py-8">
-        <Card>
-          <h2 className="text-2xl font-bold mb-6 text-gray-900">Create Venue Profile</h2>
+      <div className="max-w-3xl mx-auto py-8 px-4">
+        <Card variant="dark">
+          <h2 className="text-2xl font-bold mb-6 text-white">Create Venue Profile</h2>
           <form onSubmit={handleCreateVenue} className="grid md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <Input
@@ -124,43 +124,48 @@ export default function VenueDashboard() {
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 required
+                variant="dark"
               />
             </div>
 
-            <div className="md:col-span-2 bg-gray-50 p-4 rounded-xl border border-gray-200">
-              <h3 className="font-bold text-gray-700 mb-4">Bank Details (For Payouts)</h3>
+            <div className="md:col-span-2 bg-gray-800 p-4 rounded-xl border border-gray-700">
+              <h3 className="font-bold text-gray-300 mb-4">Bank Details (For Payouts)</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <Input
                   label="Account Holder Name"
                   placeholder="Name as per bank"
                   value={form.bankDetails.accountHolderName}
                   onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, accountHolderName: e.target.value } })}
+                  variant="dark"
                 />
                 <Input
                   label="Account Number"
                   placeholder="Account No."
                   value={form.bankDetails.accountNumber}
                   onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, accountNumber: e.target.value } })}
+                  variant="dark"
                 />
                 <Input
                   label="Bank Name"
                   placeholder="e.g. HDFC Bank"
                   value={form.bankDetails.bankName}
                   onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, bankName: e.target.value } })}
+                  variant="dark"
                 />
                 <Input
                   label="IFSC Code"
                   placeholder="IFSC Code"
                   value={form.bankDetails.ifscCode}
                   onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, ifscCode: e.target.value } })}
+                  variant="dark"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Venue Type</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1.5">Venue Type</label>
               <select
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all duration-200"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-700 bg-gray-800 text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all duration-200"
                 value={form.venueType}
                 onChange={(e) => setForm({ ...form, venueType: e.target.value })}
               >
@@ -178,6 +183,7 @@ export default function VenueDashboard() {
                 placeholder="e.g. Delhi"
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
                 required
+                variant="dark"
               />
             </div>
 
@@ -188,6 +194,7 @@ export default function VenueDashboard() {
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 required
+                variant="dark"
               />
             </div>
 
@@ -199,6 +206,7 @@ export default function VenueDashboard() {
                 value={form.capacity}
                 onChange={(e) => setForm({ ...form, capacity: e.target.value })}
                 required
+                variant="dark"
               />
             </div>
 
@@ -210,14 +218,15 @@ export default function VenueDashboard() {
                 value={form.pricePerDay}
                 onChange={(e) => setForm({ ...form, pricePerDay: e.target.value })}
                 required
+                variant="dark"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Description</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1.5">Description</label>
               <textarea
                 placeholder="Describe your venue..."
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all duration-200"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-700 bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all duration-200"
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
                 rows="4"
@@ -225,7 +234,7 @@ export default function VenueDashboard() {
             </div>
 
             <div className="md:col-span-2 space-y-1.5">
-              <label className="block text-sm font-medium text-gray-700">Venue Images</label>
+              <label className="block text-sm font-medium text-gray-400">Venue Images</label>
               <ImageUpload
                 onUpload={(url) => setForm({ ...form, images: url })}
                 existingImage={form.images}
@@ -233,7 +242,7 @@ export default function VenueDashboard() {
             </div>
 
             <div className="md:col-span-2">
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold">
                 Create Venue Profile
               </Button>
             </div>

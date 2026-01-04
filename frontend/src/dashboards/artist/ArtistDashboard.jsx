@@ -125,9 +125,9 @@ export default function ArtistDashboard() {
 
   if (!profile) {
     return (
-      <div className="max-w-2xl mx-auto py-8">
-        <Card>
-          <h2 className="text-2xl font-bold mb-6 text-gray-900">Create Artist Profile</h2>
+      <div className="max-w-2xl mx-auto py-8 px-4">
+        <Card variant="dark">
+          <h2 className="text-2xl font-bold mb-6 text-white">Create Artist Profile</h2>
           <form onSubmit={handleCreateProfile} className="space-y-6">
             <Input
               label="Stage Name"
@@ -135,6 +135,7 @@ export default function ArtistDashboard() {
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               required
+              variant="dark"
             />
             <Input
               label="Category"
@@ -142,42 +143,49 @@ export default function ArtistDashboard() {
               value={form.category}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
               required
+              variant="dark"
             />
 
-            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-              <h3 className="font-bold text-gray-700 mb-4">Bank Details (For Payouts)</h3>
+            <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
+              <h3 className="font-bold text-gray-300 mb-4">Bank Details (For Payouts)</h3>
               <div className="grid grid-cols-2 gap-4">
                 <Input
                   label="Account Holder Name"
                   placeholder="Name as per bank"
                   value={form.bankDetails.accountHolderName}
                   onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, accountHolderName: e.target.value } })}
+                  variant="dark"
                 />
                 <Input
                   label="Account Number"
                   placeholder="Account No."
                   value={form.bankDetails.accountNumber}
                   onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, accountNumber: e.target.value } })}
+                  variant="dark"
                 />
                 <Input
                   label="Bank Name"
                   placeholder="e.g. HDFC Bank"
                   value={form.bankDetails.bankName}
                   onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, bankName: e.target.value } })}
+                  variant="dark"
                 />
                 <Input
                   label="IFSC Code"
                   placeholder="IFSC Code"
                   value={form.bankDetails.ifscCode}
                   onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, ifscCode: e.target.value } })}
+                  variant="dark"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <Input
+                label="City"
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
                 required
+                variant="dark"
               />
               <Input
                 label="Phone Number"
@@ -185,6 +193,7 @@ export default function ArtistDashboard() {
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 required
+                variant="dark"
               />
               <Input
                 label="Price per Event (₹)"
@@ -193,14 +202,15 @@ export default function ArtistDashboard() {
                 value={form.pricePerEvent}
                 onChange={(e) => setForm({ ...form, pricePerEvent: e.target.value })}
                 required
+                variant="dark"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Bio</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1.5">Bio</label>
               <textarea
                 placeholder="Tell us about yourself..."
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all duration-200"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-700 bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all duration-200"
                 value={form.bio}
                 onChange={(e) => setForm({ ...form, bio: e.target.value })}
                 rows="4"
@@ -208,14 +218,14 @@ export default function ArtistDashboard() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-700">Profile Image</label>
+              <label className="block text-sm font-medium text-gray-400">Profile Image</label>
               <ImageUpload
                 onUpload={(url) => setForm({ ...form, images: url })}
                 existingImage={form.images}
               />
             </div>
 
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold">
               Create Profile
             </Button>
           </form>
@@ -226,13 +236,13 @@ export default function ArtistDashboard() {
 
   if (!profile.isVerified) {
     return (
-      <div className="flex justify-center py-20">
-        <Card className="text-center max-w-md w-full border-yellow-200 bg-yellow-50">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-100 text-yellow-600 mb-4 text-2xl">
+      <div className="flex justify-center py-20 px-4">
+        <Card className="text-center max-w-md w-full border-yellow-900/50 bg-yellow-900/10">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-900/30 text-yellow-500 mb-4 text-2xl border border-yellow-800">
             ⏳
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Profile Pending</h2>
-          <p className="text-gray-600">
+          <h2 className="text-2xl font-bold text-white mb-2">Profile Pending</h2>
+          <p className="text-gray-400">
             Your artist profile is currently under review by our admin team. You will be notified once approved.
           </p>
         </Card>
