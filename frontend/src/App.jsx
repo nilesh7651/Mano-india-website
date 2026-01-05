@@ -32,7 +32,7 @@ export default function App() {
       "background: #000; color: #f59e0b; font-size: 14px; font-weight: bold; padding: 4px; border-radius: 4px;"
     );
     console.log(
-      "%c Want a premium website like this? Contact: nileshsingh7651@gmail.com ",
+      "%c Contact: nileshsingh7651@gmail.com ",
       "background: #111; color: #aaa; font-size: 10px; padding: 4px;"
     );
   }, []);

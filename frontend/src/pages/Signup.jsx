@@ -14,6 +14,13 @@ export default function Signup() {
   });
   const [error, setError] = useState("");
 
+  // Verification State
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -22,13 +29,24 @@ export default function Signup() {
     e.preventDefault();
     setError("");
 
+    if (!isVerified) {
+      setError("Please verify your email address first.");
+      return;
+    }
+
+    if (!agreedToTerms) {
+      setError("You must agree to the Terms & Conditions.");
+      return;
+    }
+
     if (form.password.length < 6) {
       setError("Password must be at least 6 characters");
       return;
     }
 
     try {
-      await API.post("/auth/register", form);
+      // Include OTP in the registration payload for backend verification
+      await API.post("/auth/register", { ...form, otp });
       alert("Account created successfully! Please login.");
       navigate("/login");
     } catch (err) {
@@ -36,6 +54,42 @@ export default function Signup() {
         err.response?.data?.message ||
         "Signup failed. Please try again."
       );
+    }
+  };
+
+  const handleSendOtp = async () => {
+    if (!form.email) {
+      setError("Please enter your email address first");
+      return;
+    }
+
+    setIsVerifying(true);
+    setError("");
+
+    try {
+      await API.post("/auth/send-otp", { email: form.email });
+      setOtpSent(true);
+      alert("OTP sent to your email!");
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to send OTP");
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    if (!otp) {
+      setError("Please enter the OTP");
+      return;
+    }
+
+    try {
+      await API.post("/auth/verify-otp", { email: form.email, otp });
+      setIsVerified(true);
+      setOtpSent(false); // Hide OTP field
+      alert("Email verified successfully!");
+    } catch (err) {
+      setError(err.response?.data?.message || "Invalid OTP");
     }
   };
 
@@ -98,15 +152,60 @@ export default function Signup() {
               <label className="block text-sm font-medium text-gray-400 mb-2">
                 Email Address
               </label>
-              <input
-                name="email"
-                type="email"
-                placeholder="you@example.com"
-                onChange={handleChange}
-                required
-                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
-              />
+              <div className="flex gap-2">
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  onChange={handleChange}
+                  required
+                  disabled={isVerified}
+                  className={`flex-1 bg-gray-800 border ${isVerified ? "border-green-500 text-green-400" : "border-gray-700"} text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 transition-colors placeholder-gray-600`}
+                />
+                {!isVerified && (
+                  <button
+                    type="button"
+                    onClick={handleSendOtp}
+                    disabled={isVerifying || otpSent}
+                    className="bg-amber-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-amber-500 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  >
+                    {isVerifying ? "Sending..." : otpSent ? "Sent" : "Verify"}
+                  </button>
+                )}
+              </div>
+              {isVerified && (
+                <p className="text-green-500 text-xs mt-1">✓ Verified</p>
+              )}
             </div>
+
+            {/* OTP Input Field */}
+            {otpSent && !isVerified && (
+              <div className="bg-gray-800/50 p-4 rounded-lg border border-amber-500/30">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Enter Verification Code
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="123456"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    className="flex-1 bg-gray-900 border border-gray-600 text-white text-center tracking-widest text-xl rounded-lg px-4 py-2 focus:outline-none focus:border-amber-500"
+                    maxLength={6}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleVerifyOtp}
+                    className="bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-500 shadow-lg"
+                  >
+                    Verify
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Code sent to {form.email}. Check your spam folder.
+                </p>
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-2">
@@ -162,7 +261,11 @@ export default function Signup() {
 
             <button
               type="submit"
-              className="w-full bg-amber-600 text-white py-3.5 rounded-lg font-bold text-lg hover:bg-amber-500 transition-all shadow-lg shadow-amber-900/30 mt-4"
+              disabled={!isVerified}
+              className={`w-full py-3.5 rounded-lg font-bold text-lg transition-all shadow-lg mt-4 ${isVerified
+                ? "bg-amber-600 text-white hover:bg-amber-500 shadow-amber-900/30"
+                : "bg-gray-700 text-gray-400 cursor-not-allowed"
+                }`}
             >
               Create Account
             </button>
