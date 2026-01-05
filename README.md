@@ -12,7 +12,7 @@
 - [🛠 Tech Stack](#-tech-stack)
 - [📂 Project Structure](#-project-structure)
 - [🚀 Getting Started](#-getting-started)
-- [🔑 Environment Variables](#-environment-variables)
+
 - [🤝 Contributing](#-contributing)
 - [📞 Contact](#-contact)
 
@@ -142,23 +142,7 @@ npm run dev
 
 ---
 
-## 🔑 Environment Variables
 
-Create a `.env` file in the **backend** directory and add the following:
-
-```env
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-RAZORPAY_KEY_ID=your_razorpay_key_id
-RAZORPAY_KEY_SECRET=your_razorpay_key_secret
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-EMAIL_USER=your_email_address
-EMAIL_PASS=your_email_password
-FRONTEND_URL=http://localhost:5173
-```
 
 ---
 

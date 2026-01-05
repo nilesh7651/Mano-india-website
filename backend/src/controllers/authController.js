@@ -6,7 +6,7 @@ const { sendOtpEmail } = require("../utils/emailService");
 const crypto = require("crypto");
 
 // REGISTER USER
-exports.registerUser = async (req, res) => {
+const registerUser = async (req, res) => {
   try {
     const { name, email, phone, password, role } = req.body;
 
@@ -82,7 +82,7 @@ exports.registerUser = async (req, res) => {
 };
 
 // SEND EMAIL OTP
-exports.sendEmailOtp = async (req, res) => {
+const sendEmailOtp = async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
@@ -115,7 +115,7 @@ exports.sendEmailOtp = async (req, res) => {
 };
 
 // VERIFY EMAIL OTP
-exports.verifyEmailOtp = async (req, res) => {
+const verifyEmailOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
 
@@ -140,7 +140,7 @@ exports.verifyEmailOtp = async (req, res) => {
 };
 
 // LOGIN USER
-exports.loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
