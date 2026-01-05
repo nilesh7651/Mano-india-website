@@ -24,6 +24,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import RefundPolicy from "./pages/RefundPolicy";
 import UserProfile from "./pages/UserProfile";
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <MainLayout>
         <Routes>
           <Route path="/" element={<Home />} />

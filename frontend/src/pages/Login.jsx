@@ -33,122 +33,100 @@ export default function Login() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center px-4 bg-black">
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-black">
       <SEO
         title="Login | Mano India - Artist & Venue Booking"
         description="Login to your Mano India account to manage bookings, profiles, and events."
         canonicalUrl="https://manoindia.in/login"
       />
 
-      {/* 🌄 OUTER BACKGROUND */}
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-40"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1400&auto=format&fit=crop')",
-        }}
-      />
+      {/* 🌟 LUXURY ANIMATED BACKGROUND */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-amber-900/20 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-amber-600/10 rounded-full blur-[120px] animate-pulse delay-1000" />
+      </div>
 
-      {/* Dark overlay for contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
+      {/* 🌟 GLASS AUTH CARD */}
+      <div className="relative z-10 w-full max-w-4xl bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
 
-      {/* ================= AUTH CARD ================= */}
-      <div className="relative z-10 w-full max-w-5xl bg-gray-900 rounded-3xl shadow-2xl shadow-amber-900/20 overflow-hidden grid grid-cols-1 md:grid-cols-2 border border-gray-800">
+        {/* LEFT: FORM SECTION */}
+        <div className="p-8 md:p-12 flex flex-col justify-center relative">
 
-        {/* ================= LEFT : LOGIN FORM ================= */}
-        <div className="p-8 md:p-12 flex flex-col justify-center">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">
+          <div className="mb-8 text-center md:text-left">
+            <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 mb-2">
               Welcome Back
             </h1>
-            <p className="text-gray-400">
-              Login to access your premium dashboard
+            <p className="text-gray-400 text-sm">
+              Enter your credentials to access your dashboard.
             </p>
           </div>
 
           {error && (
-            <div className="mb-6 text-sm text-red-400 bg-red-900/20 border border-red-900/50 rounded-lg p-3 text-center">
-              ⚠ {error}
+            <div className="mb-6 bg-red-500/10 border border-red-500/20 text-red-200 px-4 py-3 rounded-xl text-sm flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 min-w-[1.25rem]" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">
-                Email Address
-              </label>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-xs uppercase tracking-wider text-gray-500 font-semibold ml-1">Email Address</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
+                placeholder="Ex. nilesh@manoindia.in"
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition-all font-light"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">
-                Password
-              </label>
+            <div className="space-y-2">
+              <label className="text-xs uppercase tracking-wider text-gray-500 font-semibold ml-1">Password</label>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors placeholder-gray-600"
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition-all font-light"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-amber-600 text-white py-3.5 rounded-lg font-bold text-lg hover:bg-amber-500 transition-all shadow-lg shadow-amber-900/30 mt-2"
+              className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-amber-900/20 transition-all transform hover:scale-[1.02] active:scale-[0.98]"
             >
-              Login
+              Sign In
             </button>
           </form>
 
-          {/* Mobile Sign up Link */}
-          <div className="mt-8 text-center text-sm text-gray-500 md:hidden">
-            Don’t have an account?{" "}
-            <Link
-              to="/signup"
-              className="text-amber-500 font-semibold hover:text-amber-400 transition-colors"
-            >
-              Sign up
+          <div className="mt-8 text-center text-gray-400 text-sm">
+            Don't have an account?{" "}
+            <Link to="/signup" className="text-amber-400 hover:text-amber-300 font-medium hover:underline transition-all">
+              Create Account
             </Link>
           </div>
         </div>
 
-        {/* ================= RIGHT : GOLD PANEL ================= */}
-        <div className="hidden md:flex flex-col items-center justify-center text-center bg-gradient-to-br from-amber-600 via-amber-700 to-amber-800 text-white p-12 relative overflow-hidden">
+        {/* RIGHT: IMAGE / BRAND SECTION */}
+        <div className="hidden md:block relative overflow-hidden bg-black/20">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-60 mix-blend-overlay"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
 
-          {/* Subtle Texture Overlay */}
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-
-          <div className="relative z-10">
-            <h2 className="text-4xl font-bold mb-6">
-              New Here?
+          <div className="absolute bottom-0 left-0 right-0 p-12 text-white">
+            <h2 className="text-3xl font-bold mb-4 leading-tight">
+              Elevate Your <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">Events Experience</span>
             </h2>
-            <p className="text-amber-100 mb-10 max-w-xs mx-auto text-lg leading-relaxed">
-              Join ManoIndia today to discover and book exclusive artists & venues for your events.
+            <p className="text-gray-400 font-light">
+              Connect with India's top artists and premium venues. Managing your bookings has never been this elegant.
             </p>
-
-            <Link
-              to="/signup"
-              className="
-                inline-block border-2 border-white px-10 py-3 rounded-full
-                font-bold tracking-wide
-                hover:bg-white hover:text-amber-700
-                transition-all duration-300
-                shadow-lg
-              "
-            >
-              SIGN UP
-            </Link>
           </div>
         </div>
+
       </div>
     </div>
   );
