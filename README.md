@@ -6,14 +6,14 @@
 ---
 
 ## 📖 Table of Contents
-- [Project Overview](#-project-overview)
-- [Key Features](#-key-features)
-- [Tech Stack](#-tech-stack)
-- [Installation & Setup](#-installation--setup)
-- [Project Structure](#-project-structure)
-- [Future Roadmap](#-future-roadmap)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [Project Overview](#🚀-project-overview)
+- [Key Features](#✨-key-features)
+- [Tech Stack](#🛠-tech-stack)
+- [Installation & Setup](#⚙️-installation--setup)
+- [Project Structure](#📂-project-structure)
+- [Future Roadmap](#🗺-future-roadmap)
+- [Contributing](#🤝-contributing)
+- [License](#📄-license)
 
 ---
 
@@ -38,6 +38,8 @@
 * **Service Discovery:** Dedicated landing pages for browsing Cooks, Artists, and Venues.
 * **Fast Performance:** Optimized build and hot-reloading using **Vite**.
 * **Component-Based Architecture:** Modular and reusable React components for scalability.
+
+---
 
 ### 🟡 In Development / Planned
 * **User Authentication:** Secure Login/Signup for Users and Vendors (JWT-based).
@@ -80,34 +82,40 @@ Follow these steps to run the project locally on your machine.
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/nilesh7651/Mano-india-website.git](https://github.com/nilesh7651/Mano-india-website.git)
+git clone https://github.com/nilesh7651/Mano-india-website.git
 cd Mano-india-website
-2. Install Dependencies
+```
+
+### 2. Install Dependencies
 Navigate to the frontend directory and install the required packages.
 
-Bash
-
+```bash
 cd frontend
 npm install
-3. Configure Environment Variables
-Create a .env file in the root of the frontend directory:
+```
 
-Code snippet
+### 3. Configure Environment Variables
+Create a `.env` file in the root of the frontend directory:
 
+```bash
 VITE_API_URL=http://localhost:5000/api  # Example backend URL
-4. Run the Application
+```
+
+### 4. Run the Application
 Start the development server.
 
-Bash
-
+```bash
 npm run dev
-The application will be accessible at http://localhost:5173 (or the port shown in your terminal).
+```
 
-📂 Project Structure
+The application will be accessible at `http://localhost:5173` (or the port shown in your terminal).
+
+---
+
+## 📂 Project Structure
 A modular folder structure ensures scalability and maintainability.
 
-Plaintext
-
+```plaintext
 Mano-india-website/
 ├── frontend/
 │   ├── public/             # Static assets (favicons, robots.txt)
@@ -125,36 +133,38 @@ Mano-india-website/
 │   └── vite.config.js      # Vite configuration
 ├── backend/ (Coming Soon)
 └── README.md
-🗺 Future Roadmap
-[x] Phase 1: Frontend UI Development & Architecture Setup
+```
 
-[ ] Phase 2: Backend API Development & Database Schema Design
+---
 
-[ ] Phase 3: Authentication & User Profile Management
+## 🗺 Future Roadmap
+- [x] Phase 1: Frontend UI Development & Architecture Setup
+- [ ] Phase 2: Backend API Development & Database Schema Design
+- [ ] Phase 3: Authentication & User Profile Management
+- [ ] Phase 4: Booking System Logic & Vendor Integration
+- [ ] Phase 5: Payment Gateway Integration & Deployment
 
-[ ] Phase 4: Booking System Logic & Vendor Integration
+---
 
-[ ] Phase 5: Payment Gateway Integration & Deployment
-
-🤝 Contributing
+## 🤝 Contributing
 Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
-Fork the Project
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-Create your Feature Branch (git checkout -b feature/AmazingFeature)
+---
 
-Commit your Changes (git commit -m 'Add some AmazingFeature')
-
-Push to the Branch (git push origin feature/AmazingFeature)
-
-Open a Pull Request
-
-📞 Contact & Support
+## 📞 Contact & Support
 Project Lead: Nilesh Kumar
 
 GitHub: @nilesh7651
 
-📄 License
+---
+
+## 📄 License
 This project is proprietary and intended for business purposes. Unauthorized copying or commercial use is strictly prohibited without permission.
 
 Copyright © 2026 Mano India. All Rights Reserved.
