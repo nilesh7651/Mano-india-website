@@ -1,145 +1,160 @@
-# Mano India – Event Management & Organization Platform
+# 🎉 Mano India – Event Management & Organization Platform
 
-Mano India is a web-based event management and organization platform that allows users to book cooks, artists, and venues for various functions such as weddings, parties, corporate events, and private gatherings. The platform aims to simplify event planning by providing a single place to discover and manage multiple service providers.
+![Mano India Banner](https://via.placeholder.com/1200x400?text=Mano+India+Event+Platform)  
+*Streamlining event planning with seamless bookings for venues, artists, and culinary experts.*
+
+---
+
+## 📖 Table of Contents
+- [Project Overview](#-project-overview)
+- [Key Features](#-key-features)
+- [Tech Stack](#-tech-stack)
+- [Installation & Setup](#-installation--setup)
+- [Project Structure](#-project-structure)
+- [Future Roadmap](#-future-roadmap)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
 ## 🚀 Project Overview
 
-Planning an event involves coordinating many vendors, which can be time-consuming and complex. Mano India solves this problem by offering a centralized system where users can:
+**Mano India** is a comprehensive full-stack web application designed to simplify the complex process of event management. Whether organizing a wedding, corporate gala, or an intimate private gathering, Mano India serves as a centralized marketplace connecting hosts with verified service providers.
 
-- Book professional cooks for events
-- Hire artists and performers
-- Discover and reserve venues
-- Manage event-related services easily
+**The Problem:** Event planning typically involves fragmented communication with multiple uncoordinated vendors.  
+**The Solution:** A unified platform where users can discover, compare, and book venues, artists, and catering professionals in a single workflow.
 
-The platform focuses on usability, scalability, and a clean user experience.
+**Core Value Proposition:**
+* **Centralized Booking:** Manage all event needs in one dashboard.
+* **Verified Vendors:** Curated lists of cooks, performers, and venues.
+* **Transparent Pricing:** Clear cost structures without hidden fees.
+
+---
+
+## ✨ Key Features
+
+### 🟢 Current Implementation
+* **Responsive UI/UX:** A mobile-first design ensuring accessibility across all devices, built with **Bootstrap 5** and **React**.
+* **Service Discovery:** Dedicated landing pages for browsing Cooks, Artists, and Venues.
+* **Fast Performance:** Optimized build and hot-reloading using **Vite**.
+* **Component-Based Architecture:** Modular and reusable React components for scalability.
+
+### 🟡 In Development / Planned
+* **User Authentication:** Secure Login/Signup for Users and Vendors (JWT-based).
+* **Booking Engine:** Real-time availability checks and slot reservation.
+* **Vendor Dashboard:** Dedicated portal for service providers to manage their profiles and bookings.
+* **Payment Gateway:** Secure online transactions via Razorpay/Stripe.
+* **Review System:** User ratings and feedback for quality assurance.
 
 ---
 
 ## 🛠 Tech Stack
 
 ### Frontend
-- React.js
-- Vite
-<<<<<<< HEAD
-- CSS3
-=======
-- Bootstrap 5
-- HTML5
-- CSS3
-- JavaScript (ES6+)
->>>>>>> 6281bc6 (venue booking frontend added)
+| Technology | Description |
+| :--- | :--- |
+| **React.js** | Component-based UI library |
+| **Vite** | Next-generation frontend tooling for speed |
+| **Bootstrap 5** | Responsive CSS framework |
+| **JavaScript (ES6+)** | Core logic and interactivity |
+| **CSS3** | Custom styling and animations |
 
-### Backend (Planned)
-- Node.js
-- Express.js
-- REST APIs
-- Database (MongoDB / SQL)
-- Authentication & Authorization
-
----
-
-## 📂 Project Structure
-
-Mano-india-website/
-│
-├── frontend/
-│ ├── public/
-│ │ └── vite.svg
-│ │
-│ ├── src/
-│ │ ├── assets/ # Images and static assets
-│ │ ├── components/ # Reusable React components
-│ │ ├── pages/ # Page-level components
-│ │ ├── App.jsx # Root component
-│ │ ├── main.jsx # Entry point
-│ │ ├── App.css # App-specific styles
-│ │ └── index.css # Global styles
-│ │
-│ ├── index.html # Main HTML file
-│ ├── package.json
-│ ├── vite.config.js
-│ └── eslint.config.js
-│
-├── README.md
-└── package-lock.json
-
+### Backend (Architecture Planned)
+| Technology | Description |
+| :--- | :--- |
+| **Node.js** | Runtime environment |
+| **Express.js** | Web application framework |
+| **MongoDB** | NoSQL Database for flexible data schemas |
+| **Mongoose** | ODM for MongoDB |
+| **JWT** | JSON Web Tokens for secure authentication |
 
 ---
 
 ## ⚙️ Installation & Setup
 
+Follow these steps to run the project locally on your machine.
+
 ### Prerequisites
-- Node.js (v16+ recommended)
-- npm or yarn
+* **Node.js** (v16.0.0 or higher)
+* **npm** (v8.0.0 or higher) or **yarn**
 
-### Steps to Run Locally
-
+### 1. Clone the Repository
 ```bash
-git clone https://github.com/nilesh7651/Mano-india-website.git
+git clone [https://github.com/nilesh7651/Mano-india-website.git](https://github.com/nilesh7651/Mano-india-website.git)
 cd Mano-india-website
+2. Install Dependencies
+Navigate to the frontend directory and install the required packages.
+
+Bash
+
+cd frontend
 npm install
+3. Configure Environment Variables
+Create a .env file in the root of the frontend directory:
+
+Code snippet
+
+VITE_API_URL=http://localhost:5000/api  # Example backend URL
+4. Run the Application
+Start the development server.
+
+Bash
+
 npm run dev
-✨ Features
-Current Features
+The application will be accessible at http://localhost:5173 (or the port shown in your terminal).
 
-Responsive frontend UI
+📂 Project Structure
+A modular folder structure ensures scalability and maintainability.
 
-Homepage layout for event services
+Plaintext
 
-Bootstrap-based design
+Mano-india-website/
+├── frontend/
+│   ├── public/             # Static assets (favicons, robots.txt)
+│   ├── src/
+│   │   ├── assets/         # Images, logos, and fonts
+│   │   ├── components/     # Reusable UI components (Navbar, Footer, Cards)
+│   │   ├── pages/          # Route-specific pages (Home, Venues, Artists)
+│   │   ├── context/        # Global state management (AuthContext, BookingContext)
+│   │   ├── services/       # API service calls (Axios setup)
+│   │   ├── App.jsx         # Main application component
+│   │   ├── main.jsx        # Entry point DOM rendering
+│   │   └── index.css       # Global styles
+│   ├── index.html          # HTML template
+│   ├── package.json        # Dependencies and scripts
+│   └── vite.config.js      # Vite configuration
+├── backend/ (Coming Soon)
+└── README.md
+🗺 Future Roadmap
+[x] Phase 1: Frontend UI Development & Architecture Setup
 
-Fast development using Vite
+[ ] Phase 2: Backend API Development & Database Schema Design
 
-Planned Features
+[ ] Phase 3: Authentication & User Profile Management
 
-User authentication (login/signup)
+[ ] Phase 4: Booking System Logic & Vendor Integration
 
-Booking system for cooks, artists, and venues
+[ ] Phase 5: Payment Gateway Integration & Deployment
 
-Admin dashboard
+🤝 Contributing
+Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
-Vendor profiles and availability
+Fork the Project
 
-Online payments
+Create your Feature Branch (git checkout -b feature/AmazingFeature)
 
-Reviews and ratings
+Commit your Changes (git commit -m 'Add some AmazingFeature')
 
-🎯 Project Goals
+Push to the Branch (git push origin feature/AmazingFeature)
 
-Build a real-world event management platform
+Open a Pull Request
 
-Practice React component architecture
+📞 Contact & Support
+Project Lead: Nilesh Kumar
 
-Implement scalable frontend structure
-
-Use as a portfolio or final-year academic project
-
-🤝 Contribution
-
-Contributions are welcome. You can help by:
-
-Improving UI/UX
-
-Adding new features
-
-Fixing bugs
-
-Optimizing performance
+GitHub: @nilesh7651
 
 📄 License
+This project is proprietary and intended for business purposes. Unauthorized copying or commercial use is strictly prohibited without permission.
 
-This project is intended for business purposes.
-
-<<<<<<< HEAD
-=======
-
-If you want, I can also:
-- Add **screenshots section**
-- Write a **backend README**
-- Make this **industry-grade**
-- Tailor it for **college submission**
-
-Just say the word 👍
->>>>>>> 6281bc6 (venue booking frontend added)
+Copyright © 2026 Mano India. All Rights Reserved.
