@@ -147,7 +147,7 @@ export default function Signup() {
 
               <div className="space-y-2">
                 <label className="text-xs uppercase tracking-wider text-gray-500 font-semibold ml-1">Email Address</label>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     name="email"
                     type="email"
@@ -155,14 +155,14 @@ export default function Signup() {
                     onChange={handleChange}
                     required
                     disabled={isVerified}
-                    className={`flex-1 bg-black/40 border ${isVerified ? "border-green-500/50 text-green-400" : "border-white/10"} rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 transition-all font-light`}
+                    className={`w-full sm:flex-1 bg-black/40 border ${isVerified ? "border-green-500/50 text-green-400" : "border-white/10"} rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 transition-all font-light`}
                   />
                   {!isVerified && (
                     <button
                       type="button"
                       onClick={handleSendOtp}
                       disabled={isVerifying || otpSent}
-                      className="bg-white/10 border border-white/10 text-amber-500 px-4 rounded-xl hover:bg-white/20 disabled:opacity-50 transition-all text-sm font-medium whitespace-nowrap"
+                      className="w-full sm:w-auto bg-white/10 border border-white/10 text-amber-500 px-4 py-3 sm:py-0 rounded-xl hover:bg-white/20 disabled:opacity-50 transition-all text-sm font-medium whitespace-nowrap"
                     >
                       {isVerifying ? "Sending..." : otpSent ? "Resend" : "Verify"}
                     </button>

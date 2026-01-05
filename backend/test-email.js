@@ -1,18 +1,18 @@
 require('dotenv').config();
 const { sendOtpEmail } = require('./src/utils/emailService');
 
-console.log('Testing Email Service...');
-console.log('User:', process.env.EMAIL_USER ? 'Set' : 'Not Set');
-console.log('Pass:', process.env.EMAIL_PASS ? 'Set' : 'Not Set');
+console.log('Testing Email Service Locally...');
+console.log('Email User:', process.env.EMAIL_USER ? 'Configured' : 'MISSING');
 
-async function test() {
+async function runTest() {
     try {
-        console.log('Attempting to send test email...');
+        console.log('Sending test OTP to nileshsingh7651@gmail.com...');
         await sendOtpEmail('nileshsingh7651@gmail.com', '123456');
-        console.log('Test Email Sent Successfully!');
+        console.log('✅ Success! OTP email sent successfully.');
     } catch (error) {
-        console.error('Test Failed:', error.message);
+        console.error('❌ Failed:', error.message);
+        console.error(error);
     }
 }
 
-test();
+runTest();
