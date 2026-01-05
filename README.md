@@ -9,7 +9,7 @@
 - [Project Overview](#🚀-project-overview)
 - [Key Features](#✨-key-features)
 - [Tech Stack](#🛠-tech-stack)
-- [Installation & Setup](#️️-installation--setup)
+- [Installation & Setup](#⚙️-installation--setup)
 - [Project Structure](#📂-project-structure)
 - [Future Roadmap](#🗺-future-roadmap)
 - [Contributing](#🤝-contributing)
