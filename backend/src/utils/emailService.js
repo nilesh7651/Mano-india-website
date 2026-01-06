@@ -2,42 +2,12 @@ const nodemailer = require("nodemailer");
 
 const sendOtpEmail = async (email, otp) => {
     try {
-        // If no credentials are setup, log to console (Mock Mode)
-        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-            console.log("==================================================");
-            console.log(`[MOCK EMAIL] To: ${email} | OTP: ${otp}`);
-            console.log("==================================================");
-            return;
-        }
-
-        // Resolve smtp.gmail.com to an IPv4 address manually
-        const dns = require('dns');
-        const util = require('util');
-        const resolve4 = util.promisify(dns.resolve4);
-
-        let smtpHost = 'smtp.gmail.com';
-        try {
-            const addresses = await resolve4('smtp.gmail.com');
-            if (addresses && addresses.length > 0) {
-                smtpHost = addresses[0];
-                console.log(`Resolved smtp.gmail.com to IPv4: ${smtpHost}`);
-            }
-        } catch (dnsErr) {
-            console.error('DNS Resolution failed, falling back to hostname:', dnsErr);
-        }
-
         const transporter = nodemailer.createTransport({
-            host: smtpHost,
-            port: 587,
-            secure: false, // STARTTLS
+            service: "gmail",
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
-            tls: {
-                servername: 'smtp.gmail.com', // Critical because we are connecting to an IP
-                rejectUnauthorized: false
-            }
         });
 
         const mailOptions = {
