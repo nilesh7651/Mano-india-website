@@ -28,14 +28,14 @@ const sendOtpEmail = async (email, otp) => {
 
         const transporter = nodemailer.createTransport({
             host: smtpHost,
-            port: 465,
-            secure: true,
+            port: 587,
+            secure: false, // STARTTLS
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
             tls: {
-                servername: 'smtp.gmail.com', // Necessary when using IP address
+                servername: 'smtp.gmail.com', // Critical because we are connecting to an IP
                 rejectUnauthorized: false
             }
         });
