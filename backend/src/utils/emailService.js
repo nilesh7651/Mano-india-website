@@ -11,20 +11,20 @@ const sendOtpEmail = async (email, otp) => {
             return;
         }
 
-                const apiKey = process.env.BREVO_API_KEY || process.env.EMAIL_PASS;
+        const apiKey = process.env.BREVO_API_KEY || process.env.EMAIL_PASS;
 
-                // Prefer Brevo HTTPS API to avoid SMTP port blocks on hosts like Render
-                if (apiKey) {
-                        await axios.post(
-                                "https://api.brevo.com/v3/smtp/email",
-                                {
-                                        sender: {
-                                                email: process.env.EMAIL_USER,
-                                                name: "Mano India",
-                                        },
-                                        to: [{ email }],
-                                        subject: "Mano India - Verify Your Email",
-                                        htmlContent: `
+        // Prefer Brevo HTTPS API to avoid SMTP port blocks on hosts like Render
+        if (apiKey) {
+            await axios.post(
+                "https://api.brevo.com/v3/smtp/email",
+                {
+                    sender: {
+                        email: process.env.EMAIL_USER,
+                        name: "Mano India",
+                    },
+                    to: [{ email }],
+                    subject: "Mano India - Verify Your Email",
+                    htmlContent: `
                 <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
                     <h2 style="color: #d97706;">Mano India Email Verification</h2>
                     <p>Please use the verification code below to complete your signup:</p>
@@ -35,19 +35,19 @@ const sendOtpEmail = async (email, otp) => {
                     <p>If you didn't request this, please ignore this email.</p>
                 </div>
             `,
-                                },
-                                {
-                                        headers: {
-                                                "api-key": apiKey,
-                                                "Content-Type": "application/json",
-                                        },
-                                        timeout: 15000,
-                                }
-                        );
-
-                        console.log("Email sent successfully via Brevo API");
-                        return;
+                },
+                {
+                    headers: {
+                        "api-key": apiKey,
+                        "Content-Type": "application/json",
+                    },
+                    timeout: 15000,
                 }
+            );
+
+            console.log("Email sent successfully via Brevo API");
+            return;
+        }
 
                 // Fallback to SMTP if API key is missing (may be blocked on some hosts)
                 const transporter = nodemailer.createTransport({
