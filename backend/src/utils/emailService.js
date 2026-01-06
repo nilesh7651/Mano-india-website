@@ -11,14 +11,22 @@ const sendOtpEmail = async (email, otp) => {
         }
 
         const transporter = nodemailer.createTransport({
-            service: 'gmail', // Use built-in service definition which handles host/port automatically
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false, // STARTTLS
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
             tls: {
-                rejectUnauthorized: false
-            }
+                rejectUnauthorized: false,
+                ciphers: "SSLv3",
+            },
+            // FORCE IPv4 to avoid Render IPv6 issues
+            family: 4,
+            // Increase timeouts
+            connectionTimeout: 20000,
+            socketTimeout: 20000,
         });
 
         const mailOptions = {
