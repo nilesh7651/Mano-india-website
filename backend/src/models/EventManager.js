@@ -45,6 +45,15 @@ const eventManagerSchema = new mongoose.Schema(
             default: false,
         },
         portfolio: [{ type: String }], // Array of image URLs
+        packages: [
+            {
+                name: { type: String, required: true },
+                price: { type: Number, required: true },
+                description: { type: String },
+                features: [{ type: String }]
+            }
+        ],
+        locationsServed: [{ type: String }], // e.g. ["Delhi", "Noida", "Gurgaon"]
         bankDetails: {
             accountHolderName: String,
             accountNumber: String,

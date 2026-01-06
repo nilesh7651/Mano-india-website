@@ -15,10 +15,13 @@ export default function EventManagerDashboard() {
         city: "",
         phone: "",
         experienceYears: "",
+        email: "", // Read-only from user object usually, but good to have
         pricePerEvent: "",
         servicesOffered: "", // Comma separated
+        locationsServed: "", // Comma separated
         bio: "",
-        portfolio: "", // Comma separated or single for now
+        portfolio: "", // Comma separated
+        packages: [], // Array of objects
         bankDetails: {
             accountHolderName: "",
             accountNumber: "",
@@ -46,8 +49,10 @@ export default function EventManagerDashboard() {
                     experienceYears: p.experienceYears || "",
                     pricePerEvent: p.pricePerEvent || "",
                     servicesOffered: p.servicesOffered ? p.servicesOffered.join(", ") : "",
+                    locationsServed: p.locationsServed ? p.locationsServed.join(", ") : "",
                     bio: p.bio || "",
                     portfolio: p.portfolio && p.portfolio.length > 0 ? p.portfolio.join(", ") : "",
+                    packages: p.packages || [],
                     bankDetails: p.bankDetails || { accountHolderName: "", accountNumber: "", bankName: "", ifscCode: "" }
                 });
             }
@@ -100,12 +105,15 @@ export default function EventManagerDashboard() {
         e.preventDefault();
         try {
             const servicesArray = form.servicesOffered.split(",").map(s => s.trim()).filter(Boolean);
+            const locationsArray = form.locationsServed.split(",").map(s => s.trim()).filter(Boolean);
             const portfolioArray = form.portfolio.split(",").map(img => img.trim()).filter(Boolean);
 
             await API.post("/event-managers", {
                 ...form,
                 servicesOffered: servicesArray,
-                portfolio: portfolioArray
+                locationsServed: locationsArray,
+                portfolio: portfolioArray,
+                packages: form.packages
             });
             loadData();
         } catch (err) {
@@ -116,12 +124,15 @@ export default function EventManagerDashboard() {
     const handleUpdateProfile = async () => {
         try {
             const servicesArray = typeof form.servicesOffered === 'string' ? form.servicesOffered.split(",").map(s => s.trim()).filter(Boolean) : form.servicesOffered;
+            const locationsArray = typeof form.locationsServed === 'string' ? form.locationsServed.split(",").map(s => s.trim()).filter(Boolean) : form.locationsServed;
             const portfolioArray = typeof form.portfolio === 'string' ? form.portfolio.split(",").map(img => img.trim()).filter(Boolean) : form.portfolio;
 
             await API.put("/event-managers/profile/me", {
                 ...form,
                 servicesOffered: servicesArray,
-                portfolio: portfolioArray
+                locationsServed: locationsArray,
+                portfolio: portfolioArray,
+                packages: form.packages
             });
             alert("Profile updated successfully!");
             setEditingProfile(false);
@@ -204,6 +215,13 @@ export default function EventManagerDashboard() {
                             placeholder="Ex. Wedding Planning, Corporate Events, Birthday Parties"
                             value={form.servicesOffered}
                             onChange={(e) => setForm({ ...form, servicesOffered: e.target.value })}
+                            variant="dark"
+                        />
+                        <Input
+                            label="Locations Served (Comma Separated)"
+                            placeholder="Ex. Delhi, Mumbai, Goa"
+                            value={form.locationsServed}
+                            onChange={(e) => setForm({ ...form, locationsServed: e.target.value })}
                             variant="dark"
                         />
 
@@ -348,6 +366,70 @@ export default function EventManagerDashboard() {
                                 <ImageUpload existingImage={form.portfolio} onUpload={(url) => setForm({ ...form, portfolio: url })} />
                             </div>
 
+
+                            {/* Package Management UI */}
+                            <div className="bg-gray-800 p-4 rounded-xl border border-gray-700 space-y-4">
+                                <h4 className="font-bold text-gray-300">Managed Packages</h4>
+                                {form.packages.map((pkg, idx) => (
+                                    <div key={idx} className="p-3 bg-gray-900 rounded border border-gray-700 space-y-2 relative">
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const newPackages = form.packages.filter((_, i) => i !== idx);
+                                                setForm({ ...form, packages: newPackages });
+                                            }}
+                                            className="absolute top-2 right-2 text-red-500 hover:text-red-400"
+                                        >✕</button>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <Input
+                                                label="Package Name"
+                                                value={pkg.name}
+                                                onChange={e => {
+                                                    const newPackages = [...form.packages];
+                                                    newPackages[idx].name = e.target.value;
+                                                    setForm({ ...form, packages: newPackages });
+                                                }}
+                                                variant="dark"
+                                                placeholder="Gold Package"
+                                            />
+                                            <Input
+                                                label="Price"
+                                                type="number"
+                                                value={pkg.price}
+                                                onChange={e => {
+                                                    const newPackages = [...form.packages];
+                                                    newPackages[idx].price = e.target.value;
+                                                    setForm({ ...form, packages: newPackages });
+                                                }}
+                                                variant="dark"
+                                            />
+                                        </div>
+                                        <textarea
+                                            className="w-full px-3 py-2 rounded border border-gray-700 bg-black text-white text-sm"
+                                            placeholder="Description..."
+                                            value={pkg.description}
+                                            onChange={e => {
+                                                const newPackages = [...form.packages];
+                                                newPackages[idx].description = e.target.value;
+                                                setForm({ ...form, packages: newPackages });
+                                            }}
+                                        />
+                                    </div>
+                                ))}
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => setForm({
+                                        ...form,
+                                        packages: [...form.packages, { name: "", price: "", description: "" }]
+                                    })}
+                                    className="w-full border-dashed border-gray-600 text-gray-400 hover:border-amber-500 hover:text-amber-500"
+                                >
+                                    + Add New Package
+                                </Button>
+                            </div>
+
                             <div className="flex justify-end gap-2">
                                 <Button variant="outline" onClick={() => setEditingProfile(false)} className="border-gray-700 text-gray-300 hover:text-white hover:bg-gray-800">Cancel</Button>
                                 <Button onClick={handleUpdateProfile}>Save Changes</Button>
@@ -373,6 +455,30 @@ export default function EventManagerDashboard() {
                                     ))}
                                 </div>
                             </div>
+                            <div>
+                                <p className="text-gray-400 text-sm">Locations Served</p>
+                                <div className="flex flex-wrap gap-2 mt-1">
+                                    {profile.locationsServed?.map(s => (
+                                        <span key={s} className="px-2 py-1 bg-gray-800 rounded text-xs text-gray-300 border border-gray-700">{s}</span>
+                                    ))}
+                                </div>
+                            </div>
+                            {profile.packages?.length > 0 && (
+                                <div className="col-span-2 mt-4">
+                                    <p className="text-gray-400 text-sm mb-2">Packages</p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {profile.packages.map((pkg, i) => (
+                                            <div key={i} className="bg-gray-800 p-3 rounded border border-gray-700">
+                                                <div className="flex justify-between items-start">
+                                                    <h5 className="font-bold text-white">{pkg.name}</h5>
+                                                    <span className="text-amber-500 font-bold">₹{pkg.price}</span>
+                                                </div>
+                                                <p className="text-gray-400 text-xs mt-1">{pkg.description}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                             <div>
                                 <p className="text-gray-400 text-sm">Base Price</p>
                                 <p className="text-lg font-semibold text-amber-500">₹ {profile.pricePerEvent}</p>
@@ -430,9 +536,9 @@ export default function EventManagerDashboard() {
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-3">
                                         <span className={`px-2 py-1 rounded text-xs font-bold uppercase tracking-wider ${booking.status === 'ACCEPTED' ? 'bg-green-900/40 text-green-400' :
-                                                booking.status === 'PENDING' ? 'bg-yellow-900/40 text-yellow-500' :
-                                                    booking.status === 'COMPLETED' ? 'bg-blue-900/40 text-blue-400' :
-                                                        'bg-gray-800 text-gray-400'
+                                            booking.status === 'PENDING' ? 'bg-yellow-900/40 text-yellow-500' :
+                                                booking.status === 'COMPLETED' ? 'bg-blue-900/40 text-blue-400' :
+                                                    'bg-gray-800 text-gray-400'
                                             }`}>
                                             {booking.status}
                                         </span>

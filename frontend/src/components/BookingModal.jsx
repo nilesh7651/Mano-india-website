@@ -89,6 +89,13 @@ export default function BookingModal({
       return;
     }
 
+    // Role Check
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || user.role !== "user") {
+      setError("Only registered users can make bookings.");
+      return;
+    }
+
     try {
       setLoading(true);
 

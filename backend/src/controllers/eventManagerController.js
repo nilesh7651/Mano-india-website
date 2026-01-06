@@ -24,7 +24,11 @@ const createProfile = async (req, res) => {
             servicesOffered: servicesOffered || [],
             pricePerEvent,
             bio,
+            pricePerEvent,
+            bio,
             portfolio: portfolio || [],
+            packages: req.body.packages || [],
+            locationsServed: req.body.locationsServed || [],
             bankDetails: bankDetails || {},
             isVerified: false, // Default to false
         });
@@ -108,6 +112,8 @@ const updateProfile = async (req, res) => {
 
         if (servicesOffered) manager.servicesOffered = servicesOffered;
         if (portfolio) manager.portfolio = portfolio;
+        if (req.body.packages) manager.packages = req.body.packages;
+        if (req.body.locationsServed) manager.locationsServed = req.body.locationsServed;
         if (bankDetails) manager.bankDetails = bankDetails;
 
         await manager.save();

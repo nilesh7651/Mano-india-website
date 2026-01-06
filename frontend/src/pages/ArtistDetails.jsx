@@ -107,7 +107,19 @@ export default function ArtistDetails() {
               </div>
 
               <Button
-                onClick={() => setOpenBooking(true)}
+                onClick={() => {
+                  const user = JSON.parse(localStorage.getItem("user"));
+                  if (!user) {
+                    alert("Please login to book an artist.");
+                    // window.location.href = "/login"; // Optional: Redirect to login
+                    return;
+                  }
+                  if (user.role !== "user") {
+                    alert("Only registered users can make bookings. Please login as a User.");
+                    return;
+                  }
+                  setOpenBooking(true);
+                }}
                 size="lg"
                 className="shadow-amber-900/40 transform hover:-translate-y-1"
               >

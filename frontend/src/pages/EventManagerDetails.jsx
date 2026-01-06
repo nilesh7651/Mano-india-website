@@ -86,7 +86,18 @@ export default function EventManagerDetails() {
                         </div>
                         <div className="text-sm text-gray-400">Starting Price Per Event</div>
                         <Button
-                            onClick={() => setOpenBooking(true)}
+                            onClick={() => {
+                                const user = JSON.parse(localStorage.getItem("user"));
+                                if (!user) {
+                                    alert("Please login to book an event manager.");
+                                    return;
+                                }
+                                if (user.role !== "user") {
+                                    alert("Only registered users can make bookings. Please login as a User.");
+                                    return;
+                                }
+                                setOpenBooking(true);
+                            }}
                             className="mt-2 bg-white text-black hover:bg-gray-200 font-bold px-8 py-3 text-lg rounded-full"
                         >
                             Contact to Book
@@ -106,6 +117,43 @@ export default function EventManagerDetails() {
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-8 leading-relaxed text-gray-300 text-lg">
                             {manager.bio || "No bio available."}
                         </div>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                            <span className="w-8 h-1 bg-amber-500 rounded-full"></span>
+                            Packages
+                        </h2>
+                        {manager.packages && manager.packages.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {manager.packages.map((pkg, idx) => (
+                                    <div key={idx} className="bg-gray-900 border border-gray-800 p-6 rounded-2xl hover:border-amber-500/50 transition-all group">
+                                        <div className="flex justify-between items-start mb-3">
+                                            <h3 className="text-xl font-bold text-white group-hover:text-amber-500 transition-colors">{pkg.name}</h3>
+                                            <span className="text-amber-500 font-bold text-lg">₹{pkg.price?.toLocaleString()}</span>
+                                        </div>
+                                        <p className="text-gray-400 text-sm leading-relaxed mb-4">{pkg.description}</p>
+                                        <Button
+                                            onClick={() => {
+                                                const user = JSON.parse(localStorage.getItem("user"));
+                                                if (!user || user.role !== "user") {
+                                                    alert("Please login as a user to book.");
+                                                    return;
+                                                }
+                                                setOpenBooking(true);
+                                            }}
+                                            variant="outline"
+                                            size="sm"
+                                            className="w-full border-gray-700 text-gray-300 hover:border-amber-500 hover:text-white"
+                                        >
+                                            Select Package
+                                        </Button>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-gray-500 italic">No specific packages listed. Contact for custom quotes.</p>
+                        )}
                     </section>
 
                     <section>
@@ -148,6 +196,24 @@ export default function EventManagerDetails() {
                                 </div>
                             </div>
 
+                            {manager.locationsServed && manager.locationsServed.length > 0 && (
+                                <div className="flex items-start gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400">
+                                        🗺️
+                                    </div>
+                                    <div>
+                                        <div className="text-sm text-gray-500 uppercase font-bold">Serving</div>
+                                        <div className="text-white text-sm mt-1 flex flex-wrap gap-1">
+                                            {manager.locationsServed.map(loc => (
+                                                <span key={loc} className="bg-gray-800 border border-gray-700 px-2 py-0.5 rounded text-xs text-gray-300">
+                                                    {loc}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="flex items-start gap-4">
                                 <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400">
                                     📞
@@ -160,7 +226,18 @@ export default function EventManagerDetails() {
                         </div>
 
                         <Button
-                            onClick={() => setOpenBooking(true)}
+                            onClick={() => {
+                                const user = JSON.parse(localStorage.getItem("user"));
+                                if (!user) {
+                                    alert("Please login to book an event manager.");
+                                    return;
+                                }
+                                if (user.role !== "user") {
+                                    alert("Only registered users can make bookings. Please login as a User.");
+                                    return;
+                                }
+                                setOpenBooking(true);
+                            }}
                             className="w-full shadow-lg shadow-amber-900/40"
                             size="lg"
                         >
