@@ -7,7 +7,7 @@ const {
     getCurrentEventManager,
     updateProfile,
 } = require("../controllers/eventManagerController");
-const { protect } = require("../middleware/authMiddleware");
+const protect = require("../middleware/authMiddleware");
 
 // Public Routes
 router.get("/", getAllEventManagers);
