@@ -10,20 +10,22 @@ const sendOtpEmail = async (email, otp) => {
             return;
         }
 
+        // Using Brevo (formerly Sendinblue) - Free tier: 300 emails/day
         const transporter = nodemailer.createTransport({
-            host: "smtp.sendgrid.net",
+            host: "smtp-relay.brevo.com",
             port: 587,
             secure: false,
             auth: {
-                user: "apikey",
-                pass: process.env.EMAIL_PASS, // SendGrid API key
+                user: process.env.EMAIL_USER, // Your Brevo email
+                pass: process.env.EMAIL_PASS, // Your Brevo SMTP key
             },
-            connectionTimeout: 10000, // 10 seconds
-            socketTimeout: 10000, // 10 seconds
+            connectionTimeout: 15000,
+            greetingTimeout: 15000,
+            socketTimeout: 15000,
         });
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: `"Mano India" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: "Mano India - Verify Your Email",
             html: `
@@ -40,7 +42,7 @@ const sendOtpEmail = async (email, otp) => {
         };
 
         const info = await transporter.sendMail(mailOptions);
-        console.log("Email sent: " + info.response);
+        console.log("Email sent successfully:", info.messageId);
     } catch (error) {
         console.error("Error sending email:", error);
         throw new Error("Failed to send verification email");
