@@ -11,12 +11,14 @@ const sendOtpEmail = async (email, otp) => {
         }
 
         const transporter = nodemailer.createTransport({
-            service: "gmail",
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true, // true for 465, false for other ports
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
-            // Still force IPv4 as it's critical for Render
+            // FORCE IPv4 to avoid Render IPv6 issues
             family: 4,
         });
 
