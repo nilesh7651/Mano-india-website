@@ -7,12 +7,15 @@ import Artists from "./pages/Artists";
 import ArtistDetails from "./pages/ArtistDetails";
 import Venues from "./pages/Venues";
 import VenueDetails from "./pages/VenueDetails";
+import EventManagers from "./pages/EventManagers";
+import EventManagerDetails from "./pages/EventManagerDetails";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UserDashboard from "./dashboards/user/UserDashboard";
 import ArtistDashboard from "./dashboards/artist/ArtistDashboard";
 import VenueDashboard from "./dashboards/venue/VenueDashboard";
+import EventManagerDashboard from "./dashboards/eventManager/EventManagerDashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminArtists from "./pages/admin/AdminArtists";
 import AdminVenues from "./pages/admin/AdminVenues";
@@ -48,6 +51,8 @@ export default function App() {
           <Route path="/artists/:id" element={<ArtistDetails />} />
           <Route path="/venues" element={<Venues />} />
           <Route path="/venues/:id" element={<VenueDetails />} />
+          <Route path="/event-managers" element={<EventManagers />} />
+          <Route path="/event-managers/:id" element={<EventManagerDetails />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/events" element={<Events />} />
           <Route path="/login" element={<Login />} />
@@ -88,6 +93,15 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <VenueDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard/event-manager"
+            element={
+              <ProtectedRoute role="event_manager">
+                <EventManagerDashboard />
               </ProtectedRoute>
             }
           />

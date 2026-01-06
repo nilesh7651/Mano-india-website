@@ -21,7 +21,7 @@ const registerUser = async (req, res) => {
     }
 
     // Validate role
-    const validRoles = ["user", "artist", "venue", "admin"];
+    const validRoles = ["user", "artist", "venue", "admin", "event_manager"];
     const userRole = role || "user";
     if (!validRoles.includes(userRole)) {
       return res.status(400).json({ message: `Invalid role. Must be one of: ${validRoles.join(", ")}` });

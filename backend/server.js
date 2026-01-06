@@ -9,12 +9,14 @@ const bookingRoutes = require("./src/routes/bookingRoutes");
 const uploadRoutes = require("./src/routes/uploadRoutes");
 const adminRoutes = require("./src/routes/adminRoutes");
 const reviewRoutes = require("./src/routes/reviewRoutes");
+const eventManagerRoutes = require("./src/routes/eventManagerRoutes");
 
 const PORT = process.env.PORT || 5000;
 
 // app.use("/api/users", userRoutes); // Moved to app.js
 app.use("/api/artists", artistRoutes);
 app.use("/api/venues", venueRoutes);
+app.use("/api/event-managers", eventManagerRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/admin", adminRoutes);

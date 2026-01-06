@@ -48,6 +48,12 @@ export default function Navbar() {
           >
             Browse Venues
           </Link>
+          <Link
+            to="/event-managers"
+            className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
+          >
+            Find Event Managers
+          </Link>
           <button
             onClick={() => {
               if (window.location.pathname !== "/") {
@@ -134,6 +140,14 @@ export default function Navbar() {
                       className="block px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-amber-500 transition-colors"
                     >
                       Venue Dashboard
+                    </Link>
+                  ) : user.role === "event_manager" ? (
+                    <Link
+                      to="/dashboard/event-manager"
+                      onClick={() => setOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-amber-500 transition-colors"
+                    >
+                      Event Manager Dashboard
                     </Link>
                   ) : (
                     <Link

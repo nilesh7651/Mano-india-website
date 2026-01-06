@@ -2,12 +2,24 @@ const nodemailer = require("nodemailer");
 
 const sendOtpEmail = async (email, otp) => {
     try {
+        // If no credentials are setup, log to console (Mock Mode)
+        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+            console.log("==================================================");
+            console.log(`[MOCK EMAIL] To: ${email} | OTP: ${otp}`);
+            console.log("==================================================");
+            return;
+        }
+
         const transporter = nodemailer.createTransport({
-            service: "gmail",
+            host: "smtp.sendgrid.net",
+            port: 587,
+            secure: false,
             auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
+                user: "apikey",
+                pass: process.env.EMAIL_PASS, // SendGrid API key
             },
+            connectionTimeout: 10000, // 10 seconds
+            socketTimeout: 10000, // 10 seconds
         });
 
         const mailOptions = {

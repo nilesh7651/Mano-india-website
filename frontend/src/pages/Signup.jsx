@@ -221,6 +221,7 @@ export default function Signup() {
                     <option value="user" className="bg-gray-900">User (Book Events)</option>
                     <option value="artist" className="bg-gray-900">Artist (List Services)</option>
                     <option value="venue" className="bg-gray-900">Venue Owner (List Space)</option>
+                    <option value="event_manager" className="bg-gray-900">Event Manager (Offer Services)</option>
                   </select>
                   <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-500">▼</div>
                 </div>
