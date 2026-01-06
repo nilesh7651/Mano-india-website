@@ -10,16 +10,34 @@ const sendOtpEmail = async (email, otp) => {
             return;
         }
 
+        // Resolve smtp.gmail.com to an IPv4 address manually
+        const dns = require('dns');
+        const util = require('util');
+        const resolve4 = util.promisify(dns.resolve4);
+
+        let smtpHost = 'smtp.gmail.com';
+        try {
+            const addresses = await resolve4('smtp.gmail.com');
+            if (addresses && addresses.length > 0) {
+                smtpHost = addresses[0];
+                console.log(`Resolved smtp.gmail.com to IPv4: ${smtpHost}`);
+            }
+        } catch (dnsErr) {
+            console.error('DNS Resolution failed, falling back to hostname:', dnsErr);
+        }
+
         const transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
+            host: smtpHost,
             port: 465,
-            secure: true, // true for 465, false for other ports
+            secure: true,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
-            // FORCE IPv4 to avoid Render IPv6 issues
-            family: 4,
+            tls: {
+                servername: 'smtp.gmail.com', // Necessary when using IP address
+                rejectUnauthorized: false
+            }
         });
 
         const mailOptions = {
