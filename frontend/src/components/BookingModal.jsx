@@ -5,6 +5,7 @@ import { createOrder, verifyPayment } from "../services/payment";
 export default function BookingModal({
   artistId,
   venueId,
+  eventManagerId,
   onClose,
   onSuccess,
 }) {
@@ -13,7 +14,7 @@ export default function BookingModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const bookingType = venueId ? "Venue" : "Artist";
+  const bookingType = venueId ? "Venue" : artistId ? "Artist" : "Event Manager";
 
   const loadRazorpay = () => {
     return new Promise((resolve) => {
@@ -94,6 +95,7 @@ export default function BookingModal({
       const res = await API.post("/bookings", {
         artistId,
         venueId,
+        eventManagerId,
         eventDate,
         eventLocation,
       });

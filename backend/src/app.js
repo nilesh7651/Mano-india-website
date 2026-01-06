@@ -25,6 +25,7 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/admin", require("./routes/adminArtistRoutes"));
 app.use("/api/admin", adminVenueRoutes);
+app.use("/api/admin", require("./routes/adminEventManagerRoutes")); // Added
 app.use("/api/venues", venueRoutes);
 app.use("/api/event-managers", eventManagerRoutes); // Added
 app.use("/api/admin", require("./routes/adminPayoutRoutes"));

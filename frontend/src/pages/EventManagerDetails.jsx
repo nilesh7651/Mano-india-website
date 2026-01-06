@@ -3,11 +3,15 @@ import { useParams, Link } from "react-router-dom";
 import API from "../services/api";
 import Button from "../components/ui/Button";
 import SEO from "../components/SEO";
+import BookingModal from "../components/BookingModal";
+import Reviews from "../components/Reviews";
 
 export default function EventManagerDetails() {
     const { id } = useParams();
     const [manager, setManager] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [reviews, setReviews] = useState([]);
+    const [openBooking, setOpenBooking] = useState(false);
 
     useEffect(() => {
         API.get(`/event-managers/${id}`)
@@ -19,6 +23,12 @@ export default function EventManagerDetails() {
                 console.error(err);
                 setLoading(false);
             });
+
+        // Fetch reviews
+        API.get(`/reviews?eventManagerId=${id}`)
+            .then(res => setReviews(res.data))
+            .catch(() => setReviews([]));
+
     }, [id]);
 
     if (loading) return <div className="text-center py-20 text-white">Loading profile...</div>;
@@ -75,7 +85,10 @@ export default function EventManagerDetails() {
                             ₹{manager.pricePerEvent.toLocaleString()}
                         </div>
                         <div className="text-sm text-gray-400">Starting Price Per Event</div>
-                        <Button className="mt-2 bg-white text-black hover:bg-gray-200 font-bold px-8 py-3 text-lg rounded-full">
+                        <Button
+                            onClick={() => setOpenBooking(true)}
+                            className="mt-2 bg-white text-black hover:bg-gray-200 font-bold px-8 py-3 text-lg rounded-full"
+                        >
                             Contact to Book
                         </Button>
                     </div>
@@ -141,20 +154,36 @@ export default function EventManagerDetails() {
                                 </div>
                                 <div>
                                     <div className="text-sm text-gray-500 uppercase font-bold">Phone</div>
-                                    {/* Mask phone for privacy until booking feature is live or show here */}
                                     <div className="text-white font-mono">{manager.phone}</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="p-4 bg-amber-900/10 border border-amber-500/20 rounded-xl">
-                            <p className="text-amber-200 text-sm text-center">
-                                Please contact this event manager directly via phone to check availability and negotiate.
-                            </p>
-                        </div>
+                        <Button
+                            onClick={() => setOpenBooking(true)}
+                            className="w-full shadow-lg shadow-amber-900/40"
+                            size="lg"
+                        >
+                            Request Booking
+                        </Button>
                     </div>
                 </div>
             </div>
+
+            <div className="max-w-7xl mx-auto px-6 border-t border-gray-800 pt-10">
+                <Reviews reviews={reviews} />
+            </div>
+
+            {openBooking && (
+                <BookingModal
+                    eventManagerId={manager._id}
+                    onClose={() => setOpenBooking(false)}
+                    onSuccess={() => {
+                        alert("Booking request sent successfully to the Event Manager!");
+                        setOpenBooking(false);
+                    }}
+                />
+            )}
         </div>
     );
 }

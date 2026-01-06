@@ -18,6 +18,11 @@ const bookingSchema = new mongoose.Schema(
       ref: "Venue",
     },
 
+    eventManager: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "EventManager",
+    },
+
     eventDate: {
       type: Date,
       required: true,

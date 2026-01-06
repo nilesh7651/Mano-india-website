@@ -145,10 +145,10 @@ export default function UserBookings() {
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <h2 className="text-xl font-bold text-white">
-                  {booking.artist?.name || booking.venue?.name}
+                  {booking.artist?.name || booking.venue?.name || booking.eventManager?.companyName || booking.eventManager?.name}
                 </h2>
                 <span className="text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded border border-gray-700 uppercase">
-                  {booking.artist ? "Artist" : "Venue"}
+                  {booking.artist ? "Artist" : booking.venue ? "Venue" : "Event Manager"}
                 </span>
               </div>
 
@@ -161,7 +161,7 @@ export default function UserBookings() {
                 </p>
                 {(booking.status === "ACCEPTED" || booking.status === "CONFIRMED" || booking.status === "PENDING") && (
                   <p className="text-sm text-amber-500 flex items-center gap-2 font-medium">
-                    📞 {booking.artist?.phone || booking.venue?.phone || "Contact Info Hidden"}
+                    📞 {booking.artist?.phone || booking.venue?.phone || booking.eventManager?.phone || "Contact Info Hidden"}
                   </p>
                 )}
               </div>

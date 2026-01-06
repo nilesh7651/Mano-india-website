@@ -11,6 +11,7 @@ const {
   completeBooking,
   getArtistBookings,
   getVenueBookings,
+  getEventManagerBookings,
 } = require("../controllers/bookingController");
 
 /**
@@ -24,6 +25,7 @@ router.get("/user", protect, getUserBookings);
  */
 router.get("/artist", protect, getArtistBookings);
 router.get("/venue", protect, getVenueBookings);
+router.get("/event-manager", protect, getEventManagerBookings);
 router.put("/:id/accept", protect, acceptBooking);
 router.put("/:id/reject", protect, rejectBooking);
 router.put("/:id/complete", protect, completeBooking);

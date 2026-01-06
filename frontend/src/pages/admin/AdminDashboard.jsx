@@ -41,7 +41,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid md:grid-cols-4 gap-6">
+      <div className="grid md:grid-cols-3 gap-6">
         <StatCard
           label="Total Artists"
           value={stats?.totalArtists || 0}
@@ -57,6 +57,13 @@ export default function AdminDashboard() {
           icon="🏰"
         />
         <StatCard
+          label="Event Managers"
+          value={stats?.totalEventManagers || 0}
+          link="/admin/event-managers"
+          color="amber"
+          icon="👔"
+        />
+        <StatCard
           label="Pending Artists"
           value={stats?.pendingArtists || 0}
           link="/admin/artists"
@@ -67,6 +74,13 @@ export default function AdminDashboard() {
           label="Pending Venues"
           value={stats?.pendingVenues || 0}
           link="/admin/venues"
+          color="red"
+          icon="⏳"
+        />
+        <StatCard
+          label="Pending Managers"
+          value={stats?.pendingEventManagers || 0}
+          link="/admin/event-managers"
           color="red"
           icon="⏳"
         />
@@ -110,6 +124,12 @@ export default function AdminDashboard() {
             className="px-6 py-3 bg-gray-900 border border-amber-500/30 text-amber-500 rounded-lg hover:bg-amber-900/20 transition font-medium shadow-sm hover:shadow-amber-900/20"
           >
             Review Venues
+          </Link>
+          <Link
+            to="/admin/event-managers"
+            className="px-6 py-3 bg-gray-900 border border-amber-500/30 text-amber-500 rounded-lg hover:bg-amber-900/20 transition font-medium shadow-sm hover:shadow-amber-900/20"
+          >
+            Review Managers
           </Link>
           <Link
             to="/admin/bookings"

@@ -19,6 +19,7 @@ import EventManagerDashboard from "./dashboards/eventManager/EventManagerDashboa
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminArtists from "./pages/admin/AdminArtists";
 import AdminVenues from "./pages/admin/AdminVenues";
+import AdminEventManagers from "./pages/admin/AdminEventManagers";
 import AdminBookings from "./pages/admin/AdminBookings";
 import AdminGallery from "./pages/admin/AdminGallery";
 import UserBookings from "./pages/userBooking";
@@ -117,6 +118,7 @@ export default function App() {
             <Route index element={<AdminDashboard />} />
             <Route path="artists" element={<AdminArtists />} />
             <Route path="venues" element={<AdminVenues />} />
+            <Route path="event-managers" element={<AdminEventManagers />} />
             <Route path="bookings" element={<AdminBookings />} />
             <Route path="gallery" element={<AdminGallery />} />
           </Route>

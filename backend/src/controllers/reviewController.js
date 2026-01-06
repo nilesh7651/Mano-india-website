@@ -2,6 +2,7 @@ const Review = require("../models/Review");
 const Booking = require("../models/Booking");
 const Artist = require("../models/Artist");
 const Venue = require("../models/Venue");
+const EventManager = require("../models/EventManager");
 
 // CREATE REVIEW
 const createReview = async (req, res) => {
@@ -36,6 +37,7 @@ const createReview = async (req, res) => {
       user: req.user._id,
       artist: booking.artist || undefined,
       venue: booking.venue || undefined,
+      eventManager: booking.eventManager || undefined,
       booking: bookingId,
       rating,
       comment,
@@ -47,14 +49,15 @@ const createReview = async (req, res) => {
   }
 };
 
-// GET REVIEWS FOR ARTIST/VENUE
+// GET REVIEWS FOR ARTIST/VENUE/EVENT MANAGER
 const getReviews = async (req, res) => {
   try {
-    const { artistId, venueId } = req.query;
+    const { artistId, venueId, eventManagerId } = req.query;
     let filter = {};
 
     if (artistId) filter.artist = artistId;
     if (venueId) filter.venue = venueId;
+    if (eventManagerId) filter.eventManager = eventManagerId;
 
     const reviews = await Review.find(filter).populate("user", "name").sort({ createdAt: -1 });
     res.json(reviews);

@@ -3,19 +3,21 @@ const Artist = require("../models/Artist");
 const Venue = require("../models/Venue");
 const notify = require("../utils/createNotification");
 
+const EventManager = require("../models/EventManager"); // Added import
+
 const createBooking = async (req, res) => {
   try {
-    const { artistId, venueId, eventDate, eventLocation } = req.body;
+    const { artistId, venueId, eventManagerId, eventDate, eventLocation } = req.body;
 
     // ✅ Basic validation
     if (!eventDate || (!eventLocation && !venueId)) {
       return res.status(400).json({ message: "Event date & location required" });
     }
 
-    if (!artistId && !venueId) {
+    if (!artistId && !venueId && !eventManagerId) {
       return res
         .status(400)
-        .json({ message: "Artist or Venue is required" });
+        .json({ message: "Artist, Venue, or Event Manager is required" });
     }
 
     let amount;
@@ -41,6 +43,16 @@ const createBooking = async (req, res) => {
       ownerId = venue.owner;
     }
 
+    // ✅ Event Manager booking
+    if (eventManagerId) {
+      const manager = await EventManager.findById(eventManagerId);
+      if (!manager) {
+        return res.status(404).json({ message: "Event Manager not found" });
+      }
+      amount = manager.pricePerEvent;
+      ownerId = manager.user;
+    }
+
     // ✅ Final safety check
     if (!amount || amount <= 0) {
       return res.status(400).json({ message: "Invalid booking amount" });
@@ -53,6 +65,7 @@ const createBooking = async (req, res) => {
       user: req.user._id,
       artist: artistId || undefined,
       venue: venueId || undefined,
+      eventManager: eventManagerId || undefined,
       eventDate,
       eventLocation: finalLocation,
       amount,
@@ -75,6 +88,7 @@ const getUserBookings = async (req, res) => {
     const bookings = await Booking.find({ user: req.user._id })
       .populate("artist", "name category phone")
       .populate("venue", "name venueType phone")
+      .populate("eventManager", "name companyName phone")
       .sort({ createdAt: -1 });
 
     res.json(bookings);
@@ -92,10 +106,11 @@ const acceptBooking = async (req, res) => {
       return res.status(404).json({ message: "Booking not found" });
     }
 
-    // Check if user is the owner (artist or venue owner)
-    const isOwner =
-      (booking.artist && (await Artist.findById(booking.artist))?.user?.toString() === req.user._id.toString()) ||
-      (booking.venue && (await Venue.findById(booking.venue))?.owner?.toString() === req.user._id.toString());
+    // Check if user is the owner (artist, venue owner, or event manager)
+    let isOwner = false;
+    if (booking.artist && (await Artist.findById(booking.artist))?.user?.toString() === req.user._id.toString()) isOwner = true;
+    if (booking.venue && (await Venue.findById(booking.venue))?.owner?.toString() === req.user._id.toString()) isOwner = true;
+    if (booking.eventManager && (await EventManager.findById(booking.eventManager))?.user?.toString() === req.user._id.toString()) isOwner = true;
 
     if (!isOwner) {
       return res.status(403).json({ message: "Not authorized" });
@@ -133,9 +148,10 @@ const rejectBooking = async (req, res) => {
     }
 
     // Check if user is the owner
-    const isOwner =
-      (booking.artist && (await Artist.findById(booking.artist))?.user?.toString() === req.user._id.toString()) ||
-      (booking.venue && (await Venue.findById(booking.venue))?.owner?.toString() === req.user._id.toString());
+    let isOwner = false;
+    if (booking.artist && (await Artist.findById(booking.artist))?.user?.toString() === req.user._id.toString()) isOwner = true;
+    if (booking.venue && (await Venue.findById(booking.venue))?.owner?.toString() === req.user._id.toString()) isOwner = true;
+    if (booking.eventManager && (await EventManager.findById(booking.eventManager))?.user?.toString() === req.user._id.toString()) isOwner = true;
 
     if (!isOwner) {
       return res.status(403).json({ message: "Not authorized" });
@@ -169,9 +185,10 @@ const completeBooking = async (req, res) => {
     const userId = req.user._id.toString();
     const isArtist = booking.artist && (await Artist.findById(booking.artist))?.user?.toString() === userId;
     const isVenue = booking.venue && (await Venue.findById(booking.venue))?.owner?.toString() === userId;
+    const isManager = booking.eventManager && (await EventManager.findById(booking.eventManager))?.user?.toString() === userId;
     const isUser = booking.user.toString() === userId;
 
-    if (!isArtist && !isVenue && !isUser) {
+    if (!isArtist && !isVenue && !isManager && !isUser) {
       return res.status(403).json({ message: "Not authorized" });
     }
 
@@ -180,7 +197,7 @@ const completeBooking = async (req, res) => {
     }
 
     // Update flags
-    if (isArtist || isVenue) {
+    if (isArtist || isVenue || isManager) {
       booking.artistCompleted = true;
     }
     if (isUser) {
@@ -194,14 +211,12 @@ const completeBooking = async (req, res) => {
       // Ready for payout
       booking.payoutStatus = "PENDING";
 
-      // Notify both parties
       // Notify user
       await notify(
         booking.user,
         "Booking Completed",
         "Your event is marked as fully completed. You can now leave a review."
       );
-      // Notify Artist/Venue? (Optional, maybe not needed as they probably just marked it)
     }
 
     await booking.save();
@@ -255,6 +270,27 @@ const getVenueBookings = async (req, res) => {
   }
 };
 
+// GET EVENT MANAGER BOOKINGS
+const getEventManagerBookings = async (req, res) => {
+  try {
+    const manager = await EventManager.findOne({ user: req.user._id });
+    if (!manager) {
+      return res.status(403).json({ message: "Event Manager profile not found" });
+    }
+
+    const bookings = await Booking.find({
+      eventManager: manager._id,
+      status: { $ne: "AWAITING_PAYMENT" }
+    })
+      .populate("user", "name email phone")
+      .sort({ createdAt: -1 });
+
+    res.json(bookings);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createBooking,
   getUserBookings,
@@ -263,4 +299,5 @@ module.exports = {
   completeBooking,
   getArtistBookings,
   getVenueBookings,
+  getEventManagerBookings,
 };

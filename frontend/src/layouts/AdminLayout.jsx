@@ -32,6 +32,30 @@ export default function AdminLayout() {
             </li>
             <li>
               <Link
+                to="/admin/artists"
+                className="block py-2 px-4 rounded hover:bg-gray-800 transition"
+              >
+                Artists
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/admin/venues"
+                className="block py-2 px-4 rounded hover:bg-gray-800 transition"
+              >
+                Venues
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/admin/event-managers"
+                className="block py-2 px-4 rounded hover:bg-gray-800 transition"
+              >
+                Event Managers
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/admin/gallery"
                 className="block py-2 px-4 rounded hover:bg-gray-800 transition text-amber-400"
               >

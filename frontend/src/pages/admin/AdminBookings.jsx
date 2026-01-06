@@ -65,21 +65,23 @@ export default function AdminBookings() {
                 <tr key={b._id} className="hover:bg-gray-800/50 transition-colors">
                   <td className="p-4 text-gray-300">{b.user?.name || b.user?.email || "N/A"}</td>
                   <td className="p-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-bold border ${b.artist ? "bg-purple-900/30 text-purple-400 border-purple-800" : "bg-blue-900/30 text-blue-400 border-blue-800"
+                    <span className={`px-2 py-1 rounded-full text-xs font-bold border ${b.artist ? "bg-purple-900/30 text-purple-400 border-purple-800" :
+                      b.venue ? "bg-blue-900/30 text-blue-400 border-blue-800" :
+                        "bg-amber-900/30 text-amber-500 border-amber-800"
                       }`}>
-                      {b.artist ? "Artist" : "Venue"}
+                      {b.artist ? "Artist" : b.venue ? "Venue" : "Event Manager"}
                     </span>
                   </td>
                   <td className="p-4 text-white font-medium">
-                    {b.artist?.name || b.venue?.name || "N/A"}
+                    {b.artist?.name || b.venue?.name || b.eventManager?.companyName || b.eventManager?.name || "N/A"}
                   </td>
                   <td className="p-4 text-xs text-gray-400">
-                    {b.artist?.bankDetails?.accountNumber || b.venue?.bankDetails?.accountNumber ? (
+                    {b.artist?.bankDetails?.accountNumber || b.venue?.bankDetails?.accountNumber || b.eventManager?.bankDetails?.accountNumber ? (
                       <div>
-                        <p className="font-bold text-gray-300">{b.artist?.bankDetails?.bankName || b.venue?.bankDetails?.bankName}</p>
-                        <p>Acc: {b.artist?.bankDetails?.accountNumber || b.venue?.bankDetails?.accountNumber}</p>
-                        <p>IFSC: {b.artist?.bankDetails?.ifscCode || b.venue?.bankDetails?.ifscCode}</p>
-                        <p>Holder: {b.artist?.bankDetails?.accountHolderName || b.venue?.bankDetails?.accountHolderName}</p>
+                        <p className="font-bold text-gray-300">{b.artist?.bankDetails?.bankName || b.venue?.bankDetails?.bankName || b.eventManager?.bankDetails?.bankName}</p>
+                        <p>Acc: {b.artist?.bankDetails?.accountNumber || b.venue?.bankDetails?.accountNumber || b.eventManager?.bankDetails?.accountNumber}</p>
+                        <p>IFSC: {b.artist?.bankDetails?.ifscCode || b.venue?.bankDetails?.ifscCode || b.eventManager?.bankDetails?.ifscCode}</p>
+                        <p>Holder: {b.artist?.bankDetails?.accountHolderName || b.venue?.bankDetails?.accountHolderName || b.eventManager?.bankDetails?.accountHolderName}</p>
                       </div>
                     ) : (
                       <span className="text-red-400 italic">No Bank Info</span>
@@ -105,7 +107,7 @@ export default function AdminBookings() {
                   <td className="p-4 text-center">
                     <div className="flex flex-col gap-1 text-xs">
                       <span className={b.artistCompleted || b.status === "COMPLETED" ? "text-green-400 font-bold" : "text-gray-500"}>
-                        {b.artist ? "Artist" : "Venue"}: {b.artistCompleted || b.status === "COMPLETED" ? "✓" : "⏳"}
+                        {b.artist ? "Artist" : b.venue ? "Venue" : "Manager"}: {b.artistCompleted || b.status === "COMPLETED" ? "✓" : "⏳"}
                       </span>
                       <span className={b.userCompleted || b.status === "COMPLETED" ? "text-green-400 font-bold" : "text-gray-500"}>
                         User: {b.userCompleted || b.status === "COMPLETED" ? "✓" : "⏳"}

@@ -34,8 +34,8 @@ export default function EventManagerDashboard() {
             const profileRes = await API.get("/event-managers/profile/me");
             setProfile(profileRes.data);
             if (profileRes.data) {
-                // Future: const bookingsRes = await API.get("/bookings/event-manager");
-                // setBookings(bookingsRes.data);
+                const bookingsRes = await API.get("/bookings/event-manager");
+                setBookings(bookingsRes.data);
 
                 const p = profileRes.data;
                 setForm({
@@ -63,6 +63,38 @@ export default function EventManagerDashboard() {
     useEffect(() => {
         loadData();
     }, []);
+
+    const handleAcceptBooking = async (id) => {
+        try {
+            await API.put(`/bookings/${id}/accept`);
+            loadData();
+            alert("Booking accepted!");
+        } catch (err) {
+            alert("Failed to accept booking");
+        }
+    };
+
+    const handleRejectBooking = async (id) => {
+        if (!window.confirm("Are you sure you want to reject this booking?")) return;
+        try {
+            await API.put(`/bookings/${id}/reject`);
+            loadData();
+            alert("Booking rejected");
+        } catch (err) {
+            alert("Failed to reject booking");
+        }
+    };
+
+    const handleCompleteBooking = async (id) => {
+        if (!window.confirm("Verify that the event is completed?")) return;
+        try {
+            await API.put(`/bookings/${id}/complete`);
+            loadData();
+            alert("Booking marked as completed!");
+        } catch (err) {
+            alert("Failed to update status");
+        }
+    };
 
     const handleCreateProfile = async (e) => {
         e.preventDefault();
@@ -387,6 +419,72 @@ export default function EventManagerDashboard() {
                     </div>
                 )}
             </Card>
+
+            {/* Bookings Section */}
+            <h2 className="text-xl font-bold text-white mt-8 mb-4">Booking Requests</h2>
+            <div className="grid gap-6">
+                {bookings.length > 0 ? (
+                    bookings.map(booking => (
+                        <Card key={booking._id} variant="dark" className="border-l-4 border-l-amber-500">
+                            <div className="flex flex-col md:flex-row justify-between gap-4">
+                                <div className="space-y-2">
+                                    <div className="flex items-center gap-3">
+                                        <span className={`px-2 py-1 rounded text-xs font-bold uppercase tracking-wider ${booking.status === 'ACCEPTED' ? 'bg-green-900/40 text-green-400' :
+                                                booking.status === 'PENDING' ? 'bg-yellow-900/40 text-yellow-500' :
+                                                    booking.status === 'COMPLETED' ? 'bg-blue-900/40 text-blue-400' :
+                                                        'bg-gray-800 text-gray-400'
+                                            }`}>
+                                            {booking.status}
+                                        </span>
+                                        <span className="text-gray-400 text-sm">
+                                            {new Date(booking.eventDate).toLocaleDateString()}
+                                        </span>
+                                    </div>
+                                    <h3 className="text-lg font-bold text-white">
+                                        {booking.user.name}
+                                    </h3>
+                                    <div className="text-sm text-gray-400 space-y-1">
+                                        <p>📍 {booking.eventLocation}</p>
+                                        <p>📞 {booking.user.phone}</p>
+                                        <p>📧 {booking.user.email}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col items-end gap-3">
+                                    <div className="text-2xl font-bold text-amber-500">
+                                        ₹{booking.amount.toLocaleString()}
+                                    </div>
+
+                                    <div className="flex gap-2 mt-2">
+                                        {booking.status === 'AWAITING_PAYMENT' && (
+                                            <span className="text-sm text-yellow-500 font-medium">User Payment Pending</span>
+                                        )}
+
+                                        {booking.status === 'PENDING' && (
+                                            <>
+                                                <Button size="sm" onClick={() => handleAcceptBooking(booking._id)} className="bg-green-600 hover:bg-green-700">Accept</Button>
+                                                <Button size="sm" variant="outline" onClick={() => handleRejectBooking(booking._id)} className="border-red-500 text-red-500 hover:bg-red-900/20">Reject</Button>
+                                            </>
+                                        )}
+
+                                        {booking.status === 'ACCEPTED' && !booking.artistCompleted && (
+                                            <Button size="sm" onClick={() => handleCompleteBooking(booking._id)} className="bg-blue-600 hover:bg-blue-700">Mark Completed</Button>
+                                        )}
+
+                                        {booking.status === 'COMPLETED' && (
+                                            <span className="text-green-500 font-bold flex items-center gap-1">✓ Completed</span>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+                    ))
+                ) : (
+                    <div className="text-center py-10 bg-gray-900/50 rounded-xl border border-gray-800">
+                        <p className="text-gray-500">No booking requests yet.</p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

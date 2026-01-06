@@ -15,6 +15,10 @@ const reviewSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Venue",
     },
+    eventManager: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "EventManager",
+    },
     booking: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Booking",
