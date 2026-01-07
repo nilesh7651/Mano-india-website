@@ -1,6 +1,6 @@
 # 🎭 Mano India – Premium Event Management Platform
 
-![Mano India Banner](https://via.placeholder.com/1200x400?text=Mano+India+Event+Platform)
+![Mano India Banner](https://www.manoindia.in/assets/logo-BcZvAzVD.png)
 
 > **The ultimate platform to book top-tier artists, venues, and culinary experts for your grand events.**  
 > *Seamlessly connecting users with verified service providers for weddings, corporate events, and parties.*
