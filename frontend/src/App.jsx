@@ -28,6 +28,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import RefundPolicy from "./pages/RefundPolicy";
 import UserProfile from "./pages/UserProfile";
+import DeveloperTeam from "./pages/DeveloperTeam";
 import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {
@@ -122,6 +123,8 @@ export default function App() {
             <Route path="bookings" element={<AdminBookings />} />
             <Route path="gallery" element={<AdminGallery />} />
           </Route>
+
+          <Route path="/developer-team" element={<DeveloperTeam />} />
 
         </Routes>
       </MainLayout>

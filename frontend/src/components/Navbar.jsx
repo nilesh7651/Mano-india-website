@@ -71,9 +71,9 @@ export default function Navbar() {
           <button
             onClick={() => {
               if (window.location.pathname !== "/") {
-                navigate("/#about");
+                navigate("/#footer");
               } else {
-                const element = document.getElementById("about");
+                const element = document.getElementById("footer");
                 if (element) element.scrollIntoView({ behavior: "smooth" });
               }
             }}
@@ -248,9 +248,9 @@ export default function Navbar() {
               onClick={() => {
                 setMobileMenuOpen(false);
                 if (window.location.pathname !== "/") {
-                  navigate("/#about");
+                  navigate("/#footer");
                 } else {
-                  const element = document.getElementById("about");
+                  const element = document.getElementById("footer");
                   if (element) element.scrollIntoView({ behavior: "smooth" });
                 }
               }}
