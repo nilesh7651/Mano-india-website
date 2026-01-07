@@ -31,7 +31,7 @@ export default function Footer() {
             📞 +91 87097 36094
           </p>
           <p className="text-sm text-gray-400 mt-2 hover:text-amber-500 transition-colors cursor-pointer">
-            ✉️ info@mayramurti.com
+            ✉️ manoindia01@gmail.com
           </p>
           <p className="text-sm text-gray-400 mt-2 hover:text-amber-500 transition-colors cursor-pointer">
             🌐 www.manoindia.in
