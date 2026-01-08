@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import { useToast } from "../components/ui/ToastProvider";
 
 export default function UserProfile() {
+    const { notify } = useToast();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
@@ -40,10 +42,10 @@ export default function UserProfile() {
             });
             setUser(res.data);
             setIsEditing(false);
-            alert("Profile updated successfully!");
+            notify({ type: "success", title: "Saved", message: "Profile updated successfully." });
         } catch (err) {
             console.error(err);
-            alert(err.response?.data?.message || "Failed to update profile");
+            notify({ type: "error", title: "Update failed", message: err.response?.data?.message || "Failed to update profile" });
         }
     };
 

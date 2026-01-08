@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import API from "../../services/api";
+import { useToast } from "../../components/ui/ToastProvider";
 
 export default function AdminVenues() {
+  const { notify } = useToast();
   const [venues, setVenues] = useState([]);
   const [allVenues, setAllVenues] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,9 +42,13 @@ export default function AdminVenues() {
     try {
       await API.put(`/admin/venues/${id}/approve`);
       refreshData();
-      alert("Venue approved successfully!");
+      notify({ type: "success", title: "Approved", message: "Venue approved successfully." });
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to approve venue");
+      notify({
+        type: "error",
+        title: "Approve failed",
+        message: err.response?.data?.message || "Failed to approve venue.",
+      });
     }
   };
 
@@ -52,9 +58,13 @@ export default function AdminVenues() {
     try {
       await API.delete(`/admin/venues/${id}/reject`);
       refreshData();
-      alert("Venue rejected and removed");
+      notify({ type: "success", title: "Removed", message: "Venue rejected and removed." });
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to reject venue");
+      notify({
+        type: "error",
+        title: "Reject failed",
+        message: err.response?.data?.message || "Failed to reject venue.",
+      });
     }
   };
 

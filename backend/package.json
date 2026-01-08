@@ -11,10 +11,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
+    "@google/generative-ai": "^0.24.0",
     "axios": "^1.6.8",
     "bcryptjs": "^3.0.3",
-    "cloudinary": "^1.41.3",
+    "cloudinary": "^2.8.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^17.2.3",
@@ -24,9 +25,11 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.1",
     "multer": "^2.0.2",
-    "multer-storage-cloudinary": "^4.0.0",
     "nodemailer": "^7.0.12",
     "razorpay": "^2.9.6"
+  },
+  "overrides": {
+    "qs": "6.14.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import API from "../services/api";
 import { createOrder, verifyPayment } from "../services/payment";
+import { getUser } from "../utils/auth";
+import { loadRazorpay } from "../utils/razorpay";
+import { useToast } from "./ui/ToastProvider";
 
 export default function BookingModal({
   artistId,
@@ -9,6 +12,7 @@ export default function BookingModal({
   onClose,
   onSuccess,
 }) {
+  const { notify } = useToast();
   const [eventDate, setEventDate] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,20 +20,10 @@ export default function BookingModal({
 
   const bookingType = venueId ? "Venue" : artistId ? "Artist" : "Event Manager";
 
-  const loadRazorpay = () => {
-    return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    });
-  };
-
   const handlePayment = async (booking) => {
     const res = await loadRazorpay();
     if (!res) {
-      alert("Razorpay SDK failed to load. Are you online?");
+      setError("Payment SDK failed to load. Please check your internet and try again.");
       return;
     }
 
@@ -50,9 +44,10 @@ export default function BookingModal({
               bookingId: booking._id,
             });
             onSuccess?.();
+            notify({ type: "success", title: "Payment successful", message: "Your booking is confirmed." });
             onClose();
           } catch (err) {
-            alert("Payment verification failed");
+            notify({ type: "error", title: "Payment failed", message: "Payment verification failed." });
           }
         },
         prefill: {
@@ -68,7 +63,7 @@ export default function BookingModal({
             // If user closes payment, we still close the modal but maybe notify them
             // Or we can keep it open. For now, let's close and let them pay from "My Bookings"
             onClose();
-            alert("Booking created but payment pending. Please go to 'My Bookings' to complete payment.");
+            notify({ type: "warning", title: "Payment pending", message: "Booking created. Please complete payment from 'My Bookings'." });
           }
         }
       };
@@ -90,7 +85,7 @@ export default function BookingModal({
     }
 
     // Role Check
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = getUser();
     if (!user || user.role !== "user") {
       setError("Only registered users can make bookings.");
       return;

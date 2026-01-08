@@ -1,7 +1,8 @@
 import { Navigate, Outlet, Link } from "react-router-dom";
+import { getUser } from "../utils/auth";
 
 export default function AdminLayout() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = getUser();
 
   if (!user || user.role !== "admin") {
     return <Navigate to="/" />;

@@ -1,17 +1,38 @@
 import { useRef } from "react";
-import Button from "./ui/Button";
 
 export default function ReceiptModal({ booking, onClose }) {
     const printRef = useRef();
 
     const handlePrint = () => {
-        const printContent = printRef.current.innerHTML;
-        const originalContent = document.body.innerHTML;
+                const printContent = printRef.current?.innerHTML;
+                if (!printContent) return;
 
-        document.body.innerHTML = printContent;
-        window.print();
-        document.body.innerHTML = originalContent;
-        window.location.reload(); // Reload to restore event listeners
+                const popup = window.open("", "_blank", "noopener,noreferrer,width=900,height=700");
+                if (!popup) {
+                        window.print();
+                        return;
+                }
+
+                popup.document.open();
+                popup.document.write(`<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Receipt</title>
+        <style>
+            body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; color: #111; }
+            * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        </style>
+    </head>
+    <body>
+        ${printContent}
+        <script>
+            window.onload = () => { window.print(); window.close(); };
+        <\/script>
+    </body>
+</html>`);
+                popup.document.close();
     };
 
     if (!booking) return null;

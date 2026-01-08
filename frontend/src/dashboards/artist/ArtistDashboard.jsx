@@ -4,8 +4,10 @@ import ImageUpload from "../../components/ImageUpload";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import Card from "../../components/ui/Card";
+import { useToast } from "../../components/ui/ToastProvider";
 
 export default function ArtistDashboard() {
+  const { notify } = useToast();
   const [profile, setProfile] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,12 +39,16 @@ export default function ArtistDashboard() {
         ...form,
         images: imageArray
       });
-      alert("Profile updated successfully!");
+      notify({ type: "success", title: "Saved", message: "Profile updated successfully." });
       setEditingProfile(false);
       loadData();
     } catch (err) {
       console.error(err);
-      alert("Failed to update profile");
+      notify({
+        type: "error",
+        title: "Update failed",
+        message: err.response?.data?.message || "Failed to update profile.",
+      });
     }
   };
 
@@ -93,11 +99,15 @@ export default function ArtistDashboard() {
   const handleUpdateBankDetails = async () => {
     try {
       await API.put("/artists/profile", { bankDetails: form.bankDetails });
-      alert("Bank details updated!");
+      notify({ type: "success", title: "Saved", message: "Bank details updated." });
       setEditingBank(false);
       loadData();
     } catch (err) {
-      alert("Failed to update bank details");
+      notify({
+        type: "error",
+        title: "Update failed",
+        message: err.response?.data?.message || "Failed to update bank details.",
+      });
     }
   };
 
@@ -111,7 +121,11 @@ export default function ArtistDashboard() {
       await API.post("/artists", { ...form, images: imageArray });
       loadData();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to create profile");
+      notify({
+        type: "error",
+        title: "Create failed",
+        message: err.response?.data?.message || "Failed to create profile.",
+      });
     }
   };
 
@@ -148,7 +162,7 @@ export default function ArtistDashboard() {
 
             <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
               <h3 className="font-bold text-gray-300 mb-4">Bank Details (For Payouts)</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Input
                   label="Account Holder Name"
                   placeholder="Name as per bank"
@@ -180,7 +194,7 @@ export default function ArtistDashboard() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
                 label="City"
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
@@ -440,7 +454,7 @@ export default function ArtistDashboard() {
 
         {editingBank ? (
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
                 label="Account Holder Name"
                 variant="dark"
@@ -469,7 +483,7 @@ export default function ArtistDashboard() {
             <Button onClick={handleUpdateBankDetails}>Save Bank Details</Button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-sm">
             <div>
               <span className="block text-gray-500 text-xs uppercase tracking-wider">Account Holder</span>
               <span className="font-medium text-white">{profile.bankDetails?.accountHolderName || "Not set"}</span>

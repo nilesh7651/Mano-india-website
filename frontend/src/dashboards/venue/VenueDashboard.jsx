@@ -4,8 +4,10 @@ import ImageUpload from "../../components/ImageUpload";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import Card from "../../components/ui/Card";
+import { useToast } from "../../components/ui/ToastProvider";
 
 export default function VenueDashboard() {
+  const { notify } = useToast();
   const [bookings, setBookings] = useState([]);
   const [venue, setVenue] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -64,11 +66,15 @@ export default function VenueDashboard() {
         ...form,
         images: imageArray
       });
-      alert("Venue details updated!");
+      notify({ type: "success", title: "Saved", message: "Venue details updated." });
       setEditingProfile(false);
       loadVenue();
     } catch (err) {
-      alert("Failed to update venue details");
+      notify({
+        type: "error",
+        title: "Update failed",
+        message: err.response?.data?.message || "Failed to update venue details.",
+      });
     }
   };
 
@@ -84,7 +90,11 @@ export default function VenueDashboard() {
       await API.put(`/bookings/${id}/${action}`);
       loadBookings();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to update booking");
+      notify({
+        type: "error",
+        title: "Update failed",
+        message: err.response?.data?.message || "Failed to update booking.",
+      });
     }
   };
 
@@ -98,7 +108,11 @@ export default function VenueDashboard() {
       await API.post("/venues", { ...form, images: imageArray });
       loadVenue();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to create venue");
+      notify({
+        type: "error",
+        title: "Create failed",
+        message: err.response?.data?.message || "Failed to create venue.",
+      });
     }
   };
 

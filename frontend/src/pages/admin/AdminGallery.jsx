@@ -4,8 +4,10 @@ import ImageUpload from "../../components/ImageUpload";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import Card from "../../components/ui/Card";
+import { useToast } from "../../components/ui/ToastProvider";
 
 export default function AdminGallery() {
+    const { notify } = useToast();
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [form, setForm] = useState({
@@ -32,15 +34,22 @@ export default function AdminGallery() {
 
     const handleAdd = async (e) => {
         e.preventDefault();
-        if (!form.imageUrl) return alert("Image is required");
+        if (!form.imageUrl) {
+            notify({ type: "warning", title: "Missing image", message: "Please upload an image first." });
+            return;
+        }
 
         try {
             await API.post("/gallery", form);
             setForm({ title: "", type: "Wedding", imageUrl: "", description: "" });
             loadGallery();
-            alert("Image added to gallery!");
+            notify({ type: "success", title: "Added", message: "Image added to gallery." });
         } catch (err) {
-            alert("Failed to add image");
+            notify({
+                type: "error",
+                title: "Add failed",
+                message: err.response?.data?.message || "Failed to add image.",
+            });
         }
     };
 

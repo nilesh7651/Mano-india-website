@@ -1,22 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import logo from "../assets/logo.png";
+import { getUser, logout } from "../utils/auth";
+import API from "../services/api";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const user = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user"))
-    : null;
+  const user = getUser();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  const handleLogout = async () => {
+    try {
+      await API.post("/auth/logout");
+    } catch {
+      // Ignore network errors; still clear local state.
+    }
+    logout();
     setOpen(false);
     navigate("/");
-    window.location.reload();
   };
 
   return (

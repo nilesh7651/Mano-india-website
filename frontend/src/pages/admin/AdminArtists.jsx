@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import API from "../../services/api";
+import { useToast } from "../../components/ui/ToastProvider";
 
 export default function AdminArtists() {
+  const { notify } = useToast();
   const [artists, setArtists] = useState([]);
   const [allArtists, setAllArtists] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,9 +42,13 @@ export default function AdminArtists() {
     try {
       await API.put(`/admin/artists/${id}/approve`);
       refreshData();
-      alert("Artist approved successfully!");
+      notify({ type: "success", title: "Approved", message: "Artist approved successfully." });
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to approve artist");
+      notify({
+        type: "error",
+        title: "Approve failed",
+        message: err.response?.data?.message || "Failed to approve artist.",
+      });
     }
   };
 
@@ -52,9 +58,13 @@ export default function AdminArtists() {
     try {
       await API.delete(`/admin/artists/${id}/reject`);
       refreshData();
-      alert("Artist rejected and removed");
+      notify({ type: "success", title: "Removed", message: "Artist rejected and removed." });
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to reject artist");
+      notify({
+        type: "error",
+        title: "Reject failed",
+        message: err.response?.data?.message || "Failed to reject artist.",
+      });
     }
   };
 

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import API from "../services/api";
+import { useToast } from "./ui/ToastProvider";
 
 export default function BookingForm({ itemId, type, onClose }) {
+  const { notify } = useToast();
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
   const [notes, setNotes] = useState("");
@@ -19,7 +21,11 @@ export default function BookingForm({ itemId, type, onClose }) {
       });
       setSuccess(true);
     } catch (err) {
-      alert("Booking failed. Please try again.");
+      notify({
+        type: "error",
+        title: "Booking failed",
+        message: err.response?.data?.message || "Please try again.",
+      });
     }
   };
 

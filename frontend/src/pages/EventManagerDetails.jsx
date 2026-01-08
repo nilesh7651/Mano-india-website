@@ -5,9 +5,12 @@ import Button from "../components/ui/Button";
 import SEO from "../components/SEO";
 import BookingModal from "../components/BookingModal";
 import Reviews from "../components/Reviews";
+import { getUser } from "../utils/auth";
+import { useToast } from "../components/ui/ToastProvider";
 
 export default function EventManagerDetails() {
     const { id } = useParams();
+    const { notify } = useToast();
     const [manager, setManager] = useState(null);
     const [loading, setLoading] = useState(true);
     const [reviews, setReviews] = useState([]);
@@ -134,13 +137,13 @@ export default function EventManagerDetails() {
 
                             <Button
                                 onClick={() => {
-                                    const user = JSON.parse(localStorage.getItem("user"));
+                                    const user = getUser();
                                     if (!user) {
-                                        alert("Please login to book an event manager.");
+                                        notify({ type: "warning", title: "Login required", message: "Please login to book an event manager." });
                                         return;
                                     }
                                     if (user.role !== "user") {
-                                        alert("Only registered users can make bookings.");
+                                        notify({ type: "warning", title: "User account required", message: "Only registered users can make bookings." });
                                         return;
                                     }
                                     setOpenBooking(true);
@@ -174,9 +177,9 @@ export default function EventManagerDetails() {
                                 </p>
                                 <Button
                                     onClick={() => {
-                                        const user = JSON.parse(localStorage.getItem("user"));
+                                        const user = getUser();
                                         if (!user || user.role !== "user") {
-                                            alert("Please login as a user to book.");
+                                            notify({ type: "warning", title: "User account required", message: "Please login as a user to book." });
                                             return;
                                         }
                                         setOpenBooking(true);
@@ -223,7 +226,7 @@ export default function EventManagerDetails() {
                     eventManagerId={manager._id}
                     onClose={() => setOpenBooking(false)}
                     onSuccess={() => {
-                        alert("Booking request sent successfully to the Event Manager!");
+                        notify({ type: "success", title: "Request sent", message: "Booking request sent successfully." });
                         setOpenBooking(false);
                     }}
                 />

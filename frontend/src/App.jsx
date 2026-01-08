@@ -34,14 +34,16 @@ import ChatInterface from "./components/chat/ChatInterface";
 
 export default function App() {
   useEffect(() => {
-    console.log(
-      "%c Developed by Nilesh Kumar ",
-      "background: #000; color: #f59e0b; font-size: 14px; font-weight: bold; padding: 4px; border-radius: 4px;"
-    );
-    console.log(
-      "%c Contact: nileshsingh7651@gmail.com ",
-      "background: #111; color: #aaa; font-size: 10px; padding: 4px;"
-    );
+    if (import.meta.env.DEV) {
+      console.log(
+        "%c Developed by Nilesh Kumar ",
+        "background: #000; color: #f59e0b; font-size: 14px; font-weight: bold; padding: 4px; border-radius: 4px;"
+      );
+      console.log(
+        "%c Contact: nileshsingh7651@gmail.com ",
+        "background: #111; color: #aaa; font-size: 10px; padding: 4px;"
+      );
+    }
   }, []);
 
   return (
@@ -59,7 +61,14 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/events" element={<Events />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/my-bookings" element={<UserBookings />} />
+          <Route
+            path="/my-bookings"
+            element={
+              <ProtectedRoute role="user">
+                <UserBookings />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-and-conditions" element={<Terms />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
@@ -76,7 +85,7 @@ export default function App() {
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute role="user">
                 <UserDashboard />
               </ProtectedRoute>
             }
@@ -94,7 +103,7 @@ export default function App() {
           <Route
             path="/dashboard/venue"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute role="venue">
                 <VenueDashboard />
               </ProtectedRoute>
             }

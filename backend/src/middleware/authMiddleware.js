@@ -12,6 +12,10 @@ const protect = async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
     }
 
+    if (!token && req.cookies?.token) {
+      token = req.cookies.token;
+    }
+
     if (!token) {
       return res.status(401).json({ message: "Not authorized, no token" });
     }

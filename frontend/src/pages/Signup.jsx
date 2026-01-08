@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../services/api";
 import SEO from "../components/SEO";
+import { useToast } from "../components/ui/ToastProvider";
 
 export default function Signup() {
   const navigate = useNavigate();
+  const { notify } = useToast();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -47,7 +49,11 @@ export default function Signup() {
     try {
       // Include OTP in the registration payload for backend verification
       await API.post("/auth/register", { ...form, otp });
-      alert("Account created successfully! Please login.");
+      notify({
+        type: "success",
+        title: "Account created",
+        message: "Please login to continue.",
+      });
       navigate("/login");
     } catch (err) {
       setError(
@@ -69,7 +75,11 @@ export default function Signup() {
     try {
       await API.post("/auth/send-otp", { email: form.email });
       setOtpSent(true);
-      alert("OTP sent to your email!");
+      notify({
+        type: "success",
+        title: "OTP sent",
+        message: "Check your email inbox (and spam).",
+      });
     } catch (err) {
       setError(err.response?.data?.message || "Failed to send OTP");
     } finally {
@@ -87,7 +97,11 @@ export default function Signup() {
       await API.post("/auth/verify-otp", { email: form.email, otp });
       setIsVerified(true);
       setOtpSent(false); // Hide OTP field
-      alert("Email verified successfully!");
+      notify({
+        type: "success",
+        title: "Email verified",
+        message: "You can now complete signup.",
+      });
     } catch (err) {
       setError(err.response?.data?.message || "Invalid OTP");
     }

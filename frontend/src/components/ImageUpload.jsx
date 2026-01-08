@@ -1,7 +1,9 @@
 import { useState } from "react";
 import API from "../services/api";
+import { useToast } from "./ui/ToastProvider";
 
 export default function ImageUpload({ onUpload, existingImage }) {
+    const { notify } = useToast();
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState(existingImage || "");
 
@@ -30,7 +32,11 @@ export default function ImageUpload({ onUpload, existingImage }) {
             onUpload(fullUrl);
         } catch (error) {
             console.error("Upload failed", error);
-            alert("Image upload failed");
+            notify({
+                type: "error",
+                title: "Upload failed",
+                message: error.response?.data?.message || "Image upload failed.",
+            });
         } finally {
             setUploading(false);
         }

@@ -4,8 +4,10 @@ import ImageUpload from "../../components/ImageUpload";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import Card from "../../components/ui/Card";
+import { useToast } from "../../components/ui/ToastProvider";
 
 export default function EventManagerDashboard() {
+    const { notify } = useToast();
     const [profile, setProfile] = useState(null);
     const [bookings, setBookings] = useState([]); // Placeholder for future implementation
     const [loading, setLoading] = useState(true);
@@ -73,9 +75,13 @@ export default function EventManagerDashboard() {
         try {
             await API.put(`/bookings/${id}/accept`);
             loadData();
-            alert("Booking accepted!");
+            notify({ type: "success", title: "Updated", message: "Booking accepted." });
         } catch (err) {
-            alert("Failed to accept booking");
+            notify({
+                type: "error",
+                title: "Update failed",
+                message: err.response?.data?.message || "Failed to accept booking.",
+            });
         }
     };
 
@@ -84,9 +90,13 @@ export default function EventManagerDashboard() {
         try {
             await API.put(`/bookings/${id}/reject`);
             loadData();
-            alert("Booking rejected");
+            notify({ type: "success", title: "Updated", message: "Booking rejected." });
         } catch (err) {
-            alert("Failed to reject booking");
+            notify({
+                type: "error",
+                title: "Update failed",
+                message: err.response?.data?.message || "Failed to reject booking.",
+            });
         }
     };
 
@@ -95,9 +105,13 @@ export default function EventManagerDashboard() {
         try {
             await API.put(`/bookings/${id}/complete`);
             loadData();
-            alert("Booking marked as completed!");
+            notify({ type: "success", title: "Updated", message: "Booking marked as completed." });
         } catch (err) {
-            alert("Failed to update status");
+            notify({
+                type: "error",
+                title: "Update failed",
+                message: err.response?.data?.message || "Failed to update status.",
+            });
         }
     };
 
@@ -117,7 +131,11 @@ export default function EventManagerDashboard() {
             });
             loadData();
         } catch (err) {
-            alert(err.response?.data?.message || "Failed to create profile");
+            notify({
+                type: "error",
+                title: "Create failed",
+                message: err.response?.data?.message || "Failed to create profile.",
+            });
         }
     };
 
@@ -134,23 +152,31 @@ export default function EventManagerDashboard() {
                 portfolio: portfolioArray,
                 packages: form.packages
             });
-            alert("Profile updated successfully!");
+            notify({ type: "success", title: "Saved", message: "Profile updated successfully." });
             setEditingProfile(false);
             loadData();
         } catch (err) {
             console.error(err);
-            alert("Failed to update profile");
+            notify({
+                type: "error",
+                title: "Update failed",
+                message: err.response?.data?.message || "Failed to update profile.",
+            });
         }
     };
 
     const handleUpdateBankDetails = async () => {
         try {
             await API.put("/event-managers/profile/me", { bankDetails: form.bankDetails });
-            alert("Bank details updated!");
+            notify({ type: "success", title: "Saved", message: "Bank details updated." });
             setEditingBank(false);
             loadData();
         } catch (err) {
-            alert("Failed to update bank details");
+            notify({
+                type: "error",
+                title: "Update failed",
+                message: err.response?.data?.message || "Failed to update bank details.",
+            });
         }
     };
 
@@ -237,7 +263,7 @@ export default function EventManagerDashboard() {
 
                         <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
                             <h3 className="font-bold text-gray-300 mb-4">Bank Details (For Payouts)</h3>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <Input
                                     label="Account Holder Name"
                                     value={form.bankDetails.accountHolderName}
@@ -380,7 +406,7 @@ export default function EventManagerDashboard() {
                                             }}
                                             className="absolute top-2 right-2 text-red-500 hover:text-red-400"
                                         >✕</button>
-                                        <div className="grid grid-cols-2 gap-2">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                             <Input
                                                 label="Package Name"
                                                 value={pkg.name}
@@ -508,7 +534,7 @@ export default function EventManagerDashboard() {
 
                 {editingBank ? (
                     <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <Input label="Account Holder Name" variant="dark" value={form.bankDetails.accountHolderName} onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, accountHolderName: e.target.value } })} />
                             <Input label="Account Number" variant="dark" value={form.bankDetails.accountNumber} onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, accountNumber: e.target.value } })} />
                             <Input label="Bank Name" variant="dark" value={form.bankDetails.bankName} onChange={e => setForm({ ...form, bankDetails: { ...form.bankDetails, bankName: e.target.value } })} />
@@ -517,7 +543,7 @@ export default function EventManagerDashboard() {
                         <Button onClick={handleUpdateBankDetails}>Save Bank Details</Button>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-sm">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-sm">
                         <div><span className="block text-gray-500 text-xs uppercase">Holder</span><span className="text-white">{profile.bankDetails?.accountHolderName || "N/A"}</span></div>
                         <div><span className="block text-gray-500 text-xs uppercase">Account No</span><span className="text-white">{profile.bankDetails?.accountNumber || "N/A"}</span></div>
                         <div><span className="block text-gray-500 text-xs uppercase">Bank</span><span className="text-white">{profile.bankDetails?.bankName || "N/A"}</span></div>

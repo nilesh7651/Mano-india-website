@@ -1,21 +1,19 @@
-const cloudinary = require("cloudinary").v2;
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
 
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+const storage = multer.memoryStorage();
 
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: "mano-india", // Folder name in Cloudinary
-        allowed_formats: ["jpg", "jpeg", "png", "webp"],
+const upload = multer({
+    storage,
+    limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB
+    },
+    fileFilter: (req, file, cb) => {
+        const allowed = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+        if (allowed.includes(file.mimetype)) {
+            return cb(null, true);
+        }
+        return cb(new Error("Only image uploads are allowed (jpg, png, webp)."));
     },
 });
-
-const upload = multer({ storage: storage });
 
 module.exports = upload;

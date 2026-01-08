@@ -311,7 +311,7 @@ export default function Home() {
         </div>
 
         {/* BENTO GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 h-[1200px] md:h-[600px]">
+        <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-4 md:grid-rows-2 gap-4 h-[1200px] md:h-[600px]">
           {galleryItems.slice(0, 4).map((event, i) => {
             // Define spans based on index for Bento Layout
             let spanClass = "";

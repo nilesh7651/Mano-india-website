@@ -17,12 +17,14 @@ export default function Login() {
     try {
       const res = await API.post("/auth/login", { email, password });
 
-      localStorage.setItem("token", res.data.token);
+      // Token is now stored in an HttpOnly cookie by the backend.
+      localStorage.removeItem("token");
       localStorage.setItem(
         "user",
         JSON.stringify({
           id: res.data._id,
           name: res.data.name,
+          email: res.data.email,
           role: res.data.role,
         })
       );

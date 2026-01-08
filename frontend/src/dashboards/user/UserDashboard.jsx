@@ -3,8 +3,11 @@ import API from "../../services/api";
 import { createOrder, verifyPayment } from "../../services/payment";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
+import { loadRazorpay } from "../../utils/razorpay";
+import { useToast } from "../../components/ui/ToastProvider";
 
 export default function UserDashboard() {
+  const { notify } = useToast();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [reviewModal, setReviewModal] = useState({ isOpen: false, bookingId: null });
@@ -15,7 +18,11 @@ export default function UserDashboard() {
       await API.put(`/bookings/${id}/${action}`);
       loadBookings();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to update booking");
+      notify({
+        type: "error",
+        title: "Failed",
+        message: err.response?.data?.message || "Failed to update booking",
+      });
     }
   };
 
@@ -31,10 +38,14 @@ export default function UserDashboard() {
         rating: reviewForm.rating,
         comment: reviewForm.comment
       });
-      alert("Review submitted successfully!");
+      notify({ type: "success", title: "Thanks!", message: "Review submitted successfully." });
       setReviewModal({ isOpen: false, bookingId: null });
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to submit review");
+      notify({
+        type: "error",
+        title: "Review failed",
+        message: err.response?.data?.message || "Failed to submit review",
+      });
     }
   };
 
@@ -50,6 +61,12 @@ export default function UserDashboard() {
 
   const handlePayment = async (booking) => {
     try {
+      const loaded = await loadRazorpay();
+      if (!loaded) {
+        notify({ type: "error", title: "Payment unavailable", message: "Payment SDK failed to load." });
+        return;
+      }
+
       const orderData = await createOrder(booking._id);
 
       const options = {
@@ -67,10 +84,10 @@ export default function UserDashboard() {
               razorpay_signature: response.razorpay_signature,
               bookingId: booking._id,
             });
-            alert("Payment Successful!");
+            notify({ type: "success", title: "Payment successful", message: "Your booking is confirmed." });
             loadBookings(); // Refresh status
           } catch (error) {
-            alert("Payment verification failed");
+            notify({ type: "error", title: "Payment failed", message: "Payment verification failed." });
             console.error(error);
           }
         },
@@ -87,7 +104,7 @@ export default function UserDashboard() {
       razorpay.open();
     } catch (error) {
       console.error("Payment initiation failed", error);
-      alert("Failed to start payment");
+      notify({ type: "error", title: "Payment failed", message: "Failed to start payment." });
     }
   };
 

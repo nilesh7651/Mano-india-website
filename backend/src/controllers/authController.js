@@ -5,6 +5,17 @@ const Otp = require("../models/Otp");
 const { sendOtpEmail } = require("../utils/emailService");
 const crypto = require("crypto");
 
+const getCookieOptions = () => {
+  const isProd = process.env.NODE_ENV === "production";
+  return {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
+    path: "/",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  };
+};
+
 // REGISTER USER
 const registerUser = async (req, res) => {
   try {
@@ -56,12 +67,15 @@ const registerUser = async (req, res) => {
       role: userRole,
     });
 
+    const token = generateToken(user._id);
+    res.cookie("token", token, getCookieOptions());
+
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
-      token: generateToken(user._id),
+      token,
       message: "Account created successfully",
     });
   } catch (error) {
@@ -154,21 +168,35 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
+    const token = generateToken(user._id);
+    res.cookie("token", token, getCookieOptions());
+
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
-      token: generateToken(user._id),
+      token,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+// LOGOUT USER
+const logoutUser = async (req, res) => {
+  res.clearCookie("token", {
+    path: "/",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production",
+  });
+  res.json({ message: "Logged out" });
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser,
   sendEmailOtp,
   verifyEmailOtp,
 };

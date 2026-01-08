@@ -1,15 +1,34 @@
+const base64UrlDecode = (input) => {
+  try {
+    const base64 = input.replace(/-/g, "+").replace(/_/g, "/");
+    const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
+    return atob(padded);
+  } catch {
+    return null;
+  }
+};
+
 // Safe decoding of JWT payload
 const parseJwt = (token) => {
   try {
-    return JSON.parse(atob(token.split('.')[1]));
-  } catch (e) {
+    const payload = token?.split(".")?.[1];
+    if (!payload) return null;
+    const decoded = base64UrlDecode(payload);
+    if (!decoded) return null;
+    return JSON.parse(decoded);
+  } catch {
     return null;
   }
 };
 
 export const getUser = () => {
   const user = localStorage.getItem("user");
-  return user ? JSON.parse(user) : null;
+  if (!user) return null;
+  try {
+    return JSON.parse(user);
+  } catch {
+    return null;
+  }
 };
 
 export const isTokenValid = () => {

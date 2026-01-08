@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import API from "../services/api";
 import { createOrder, verifyPayment } from "../services/payment";
 import ReceiptModal from "../components/ReceiptModal";
+import { loadRazorpay } from "../utils/razorpay";
+import { useToast } from "../components/ui/ToastProvider";
 
 export default function UserBookings() {
+  const { notify } = useToast();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBookingForReceipt, setSelectedBookingForReceipt] = useState(null);
@@ -17,7 +20,7 @@ export default function UserBookings() {
       const res = await API.get("/bookings/user");
       setBookings(res.data);
     } catch (err) {
-      alert("Failed to update booking");
+      notify({ type: "error", title: "Failed", message: "Failed to update booking." });
     }
   };
 
@@ -33,11 +36,11 @@ export default function UserBookings() {
         rating: reviewForm.rating,
         comment: reviewForm.comment
       });
-      alert("Review submitted successfully!");
+      notify({ type: "success", title: "Thanks!", message: "Review submitted successfully." });
       setReviewModal({ isOpen: false, bookingId: null });
       // Optionally refresh to remove review button or show "Reviewed"
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to submit review");
+      notify({ type: "error", title: "Review failed", message: err.response?.data?.message || "Failed to submit review" });
     }
   };
 
@@ -75,19 +78,9 @@ export default function UserBookings() {
   }
 
   const handlePayment = async (booking) => {
-    const loadRazorpay = () => {
-      return new Promise((resolve) => {
-        const script = document.createElement("script");
-        script.src = "https://checkout.razorpay.com/v1/checkout.js";
-        script.onload = () => resolve(true);
-        script.onerror = () => resolve(false);
-        document.body.appendChild(script);
-      });
-    };
-
     const res = await loadRazorpay();
     if (!res) {
-      alert("Razorpay SDK failed to load.");
+      notify({ type: "error", title: "Payment unavailable", message: "Razorpay SDK failed to load." });
       return;
     }
 
@@ -109,9 +102,9 @@ export default function UserBookings() {
             // Refresh bookings
             const updatedRes = await API.get("/bookings/user");
             setBookings(updatedRes.data);
-            alert("Payment Successful!");
+            notify({ type: "success", title: "Payment successful", message: "Your booking is confirmed." });
           } catch (err) {
-            alert("Payment verification failed");
+            notify({ type: "error", title: "Payment failed", message: "Payment verification failed." });
           }
         },
         theme: { color: "#F59E0B" }
@@ -120,7 +113,7 @@ export default function UserBookings() {
       paymentObject.open();
     } catch (err) {
       console.error("Payment error", err);
-      alert("Failed to start payment");
+      notify({ type: "error", title: "Payment failed", message: "Failed to start payment." });
     }
   };
 

@@ -5,10 +5,13 @@ import Reviews from "../components/Reviews";
 import SEO from "../components/SEO";
 
 import API from "../services/api";
+import { getUser } from "../utils/auth";
 import Button from "../components/ui/Button";
+import { useToast } from "../components/ui/ToastProvider";
 
 export default function VenueDetails() {
   const { id } = useParams();
+  const { notify } = useToast();
   const [venue, setVenue] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [openBooking, setOpenBooking] = useState(false);
@@ -136,13 +139,13 @@ export default function VenueDetails() {
 
               <Button
                 onClick={() => {
-                  const user = JSON.parse(localStorage.getItem("user"));
+                  const user = getUser();
                   if (!user) {
-                    alert("Please login to book a venue.");
+                    notify({ type: "warning", title: "Login required", message: "Please login to book a venue." });
                     return;
                   }
                   if (user.role !== "user") {
-                    alert("Only registered users can make bookings. Please login as a User.");
+                    notify({ type: "warning", title: "User account required", message: "Only registered users can make bookings." });
                     return;
                   }
                   setOpenBooking(true);
@@ -166,7 +169,7 @@ export default function VenueDetails() {
           venueId={venue._id}
           onClose={() => setOpenBooking(false)}
           onSuccess={() => {
-            alert("Booking request sent successfully!");
+            notify({ type: "success", title: "Request sent", message: "Booking request sent successfully." });
             setOpenBooking(false);
           }}
         />

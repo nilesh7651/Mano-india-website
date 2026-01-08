@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import API from "../../services/api";
+import { useToast } from "../../components/ui/ToastProvider";
 
 export default function AdminEventManagers() {
+    const { notify } = useToast();
     const [managers, setManagers] = useState([]);
     const [allManagers, setAllManagers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -40,9 +42,13 @@ export default function AdminEventManagers() {
         try {
             await API.put(`/admin/event-managers/${id}/approve`);
             refreshData();
-            alert("Event Manager approved successfully!");
+            notify({ type: "success", title: "Approved", message: "Event Manager approved successfully." });
         } catch (err) {
-            alert(err.response?.data?.message || "Failed to approve manager");
+            notify({
+                type: "error",
+                title: "Approve failed",
+                message: err.response?.data?.message || "Failed to approve manager.",
+            });
         }
     };
 
@@ -52,9 +58,13 @@ export default function AdminEventManagers() {
         try {
             await API.delete(`/admin/event-managers/${id}/reject`);
             refreshData();
-            alert("Event Manager rejected and removed");
+            notify({ type: "success", title: "Removed", message: "Event Manager rejected and removed." });
         } catch (err) {
-            alert(err.response?.data?.message || "Failed to reject manager");
+            notify({
+                type: "error",
+                title: "Reject failed",
+                message: err.response?.data?.message || "Failed to reject manager.",
+            });
         }
     };
 

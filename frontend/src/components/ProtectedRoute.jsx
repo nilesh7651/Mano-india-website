@@ -4,7 +4,7 @@ import { getUser, isTokenValid } from "../utils/auth";
 export default function ProtectedRoute({ children, role }) {
   const location = useLocation();
   const user = getUser();
-  const isValid = isTokenValid();
+  const isValid = Boolean(user) || isTokenValid();
 
   // Not logged in OR token expired → redirect to login
   if (!isValid) {
@@ -13,13 +13,14 @@ export default function ProtectedRoute({ children, role }) {
   }
 
   // Role check (if role is specified)
-  if (role && user?.role !== role) {
-    return <Navigate to="/" replace />;
-  }
-
-  // Allow venue role access to venue dashboard
-  if (window.location.pathname.includes("/venue") && user?.role === "venue") {
-    // Allow access
+  if (role) {
+    // Cookie-auth mode depends on the stored user object.
+    if (!user) {
+      return <Navigate to="/login" state={{ from: location }} replace />;
+    }
+    if (user.role !== role) {
+      return <Navigate to="/" replace />;
+    }
   }
 
   return children;
