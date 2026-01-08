@@ -30,7 +30,7 @@ const handleChat = async (req, res) => {
         const genAI = new GoogleGenerativeAI(apiKey);
         // Use a specific version to avoid 404s on 'latest' alias in some environments
         const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash-001",
+            model: "gemini-1.5-flash",
             systemInstruction: SYSTEM_INSTRUCTION
         });
 
