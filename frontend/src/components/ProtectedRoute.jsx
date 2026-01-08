@@ -1,13 +1,15 @@
-import { Navigate } from "react-router-dom";
-import { getUser } from "../utils/auth";
+import { Navigate, useLocation } from "react-router-dom";
+import { getUser, isTokenValid } from "../utils/auth";
 
 export default function ProtectedRoute({ children, role }) {
-  const token = localStorage.getItem("token");
+  const location = useLocation();
   const user = getUser();
+  const isValid = isTokenValid();
 
-  // Not logged in → redirect to login
-  if (!token) {
-    return <Navigate to="/login" replace />;
+  // Not logged in OR token expired → redirect to login
+  if (!isValid) {
+    // Redirect to login but save the attempted location
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // Role check (if role is specified)

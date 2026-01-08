@@ -30,6 +30,7 @@ import RefundPolicy from "./pages/RefundPolicy";
 import UserProfile from "./pages/UserProfile";
 import DeveloperTeam from "./pages/DeveloperTeam";
 import ScrollToTop from "./components/ScrollToTop";
+import ChatInterface from "./components/chat/ChatInterface";
 
 export default function App() {
   useEffect(() => {
@@ -125,8 +126,8 @@ export default function App() {
           </Route>
 
           <Route path="/developer-team" element={<DeveloperTeam />} />
-
         </Routes>
+        <ChatInterface />
       </MainLayout>
     </BrowserRouter>
   );

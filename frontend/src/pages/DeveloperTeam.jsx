@@ -45,7 +45,7 @@ export default function DeveloperTeam() {
                             Meet the <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600">Developer</span>
                         </h1>
                         <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                            The creative mind and technical expertise behind ManoIndia, dedicated to building seamless digital experiences.
+                            The creative mind and technical expertise behind ManoIndia.
                         </p>
                     </div>
 

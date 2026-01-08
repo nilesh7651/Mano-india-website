@@ -68,10 +68,10 @@ export default function Footer() {
 
 
           <h3 className="text-3xl md:text-4xl font-serif text-white mb-12 tracking-wide">
-            Supported by <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600">Startup Bihar</span>
+            Supported By
           </h3>
 
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-0 bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-md shadow-2xl relative overflow-hidden group">
 
               {/* Shimmer Effect */}
@@ -83,6 +83,17 @@ export default function Footer() {
                   <img
                     src="/startup_bihar_logo1.png"
                     alt="Startup Bihar"
+                    className="h-20 md:h-24 w-auto object-contain relative z-10 brightness-110 contrast-125 transform transition-transform duration-500 group-hover/logo:scale-110"
+                  />
+                </div>
+              </div>
+
+              <div className="flex-1 flex justify-center items-center w-full border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 md:px-6">
+                <div className="relative group/logo">
+                  <div className="absolute inset-0 bg-amber-500/20 blur-xl opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
+                  <img
+                    src="/startupIndia.png"
+                    alt="Startup India"
                     className="h-20 md:h-24 w-auto object-contain relative z-10 brightness-110 contrast-125 transform transition-transform duration-500 group-hover/logo:scale-110"
                   />
                 </div>

@@ -95,7 +95,7 @@ export default function Terms() {
             </div>
 
             <div className="mt-20 border-t border-gray-900 pt-6 flex justify-center">
-                <Link to="/developer-team" className="text-gray-900 text-[10px] hover:text-gray-700 transition-colors select-none">
+                <Link to="/developer-team" className="text-gray-700 text-[10px] hover:text-gray-500 transition-colors select-none">
                     System Architecture & Design
                 </Link>
             </div>
