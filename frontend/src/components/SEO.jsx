@@ -46,6 +46,9 @@ const SEO = ({ title, description, keywords, name, type, image, canonicalUrl }) 
             <meta name="twitter:image" content={finalImage} />
             { /* End Twitter tags */}
 
+            <meta name="author" content="Nilesh Kumar" />
+            <meta name="copyright" content="ManoIndia, Nilesh Kumar" />
+
             <script type="application/ld+json">
                 {JSON.stringify(orgSchema)}
             </script>
