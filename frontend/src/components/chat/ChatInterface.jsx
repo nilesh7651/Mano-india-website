@@ -179,23 +179,34 @@ export default function ChatInterface() {
 
     return (
         <div className={cn(
-            "fixed z-50 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) bg-black/85 backdrop-blur-xl border border-amber-500/20 shadow-2xl overflow-hidden flex flex-col",
-            // Responsive Logic: 
-            // Mobile: Full screen (minus some margin) or bottom sheet style when minimized
-            // Desktop: Fixed width widget
+            "fixed z-50 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) bg-black/95 backdrop-blur-xl border border-amber-500/20 shadow-2xl overflow-hidden flex flex-col",
             isMinimized
-                ? "bottom-4 right-4 w-72 h-14 rounded-full"
+                ? "bottom-4 right-4 w-80 h-16 rounded-full cursor-pointer hover:bg-black/100" // Increased width/height, added cursor
                 : "bottom-0 right-0 w-full h-[100dvh] md:bottom-4 md:right-4 md:w-[400px] md:h-[600px] md:rounded-2xl"
-        )}>
+        )}
+            onClick={() => isMinimized && setIsMinimized(false)} // Click anywhere to expand if minimized
+        >
             {/* Header */}
             <div
-                className="flex items-center justify-between p-3 md:p-4 bg-gradient-to-r from-amber-900/40 via-black to-black border-b border-amber-500/10 cursor-pointer select-none"
-                onClick={() => !isMinimized && setIsMinimized(true)}
+                className={cn(
+                    "flex items-center justify-between bg-gradient-to-r from-amber-900/40 via-black to-black select-none transition-all duration-300",
+                    isMinimized ? "p-2 pl-3 border-none h-full" : "p-3 md:p-4 border-b border-amber-500/10 cursor-pointer"
+                )}
+                onClick={(e) => {
+                    if (!isMinimized) {
+                        // If open, clicking header minimizes it
+                        setIsMinimized(true);
+                    }
+                    // If minimized, the parent onClick handles expansion, but we don't stop propagation here so it flows up.
+                }}
             >
                 <div className="flex items-center gap-3">
                     <div className="relative">
                         <div className="h-2.5 w-2.5 bg-green-500 rounded-full absolute bottom-0 right-0 border-2 border-black z-10"></div>
-                        <div className="h-9 w-9 md:h-10 md:w-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-700 flex items-center justify-center text-black font-bold shadow-lg shadow-amber-500/20 ring-1 ring-amber-500/50">
+                        <div className={cn(
+                            "rounded-full bg-gradient-to-br from-amber-400 to-amber-700 flex items-center justify-center text-black font-bold shadow-lg shadow-amber-500/20 ring-1 ring-amber-500/50 transition-all",
+                            isMinimized ? "h-10 w-10" : "h-9 w-9 md:h-10 md:w-10"
+                        )}>
                             M
                         </div>
                     </div>
@@ -205,18 +216,26 @@ export default function ChatInterface() {
                     </div>
                 </div>
                 <div className="flex items-center gap-1">
+                    {!isMinimized && (
+                        <button
+                            onClick={(e) => { e.stopPropagation(); setIsMinimized(true); }}
+                            className="p-2 hover:bg-white/10 rounded-full text-amber-500/70 hover:text-amber-500 transition-colors"
+                        >
+                            <Minimize2 size={18} />
+                        </button>
+                    )}
+
                     <button
-                        onClick={(e) => { e.stopPropagation(); setIsMinimized(!isMinimized); }}
-                        className="p-2 hover:bg-white/10 rounded-full text-amber-500/70 hover:text-amber-500 transition-colors"
-                    >
-                        {isMinimized ? <MessageSquare size={18} /> : <Minimize2 size={18} />}
-                    </button>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); setIsOpen(false); setIsMinimized(false); }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            // If minimized, 'X' should probably just close it completely (setIsOpen false)
+                            // If open, 'X' closes it completely
+                            setIsOpen(false);
+                            setIsMinimized(false);
+                        }}
                         className="p-2 hover:bg-red-500/20 rounded-full text-amber-500/70 hover:text-red-500 transition-colors"
                     >
-                        {isMinimized ? <X size={18} /> : <ChevronDown size={18} className="md:hidden" />}
-                        <X size={18} className="hidden md:block" />
+                        <X size={18} />
                     </button>
                 </div>
             </div>
