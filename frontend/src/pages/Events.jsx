@@ -2,10 +2,21 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../services/api";
 import SEO from "../components/SEO";
+import { IMAGES } from "../lib/images";
 
 export default function Events() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const getFallbackImage = (type) => {
+    const t = (type || "").toLowerCase();
+    if (t.includes("wedding") || t.includes("shaadi") || t.includes("reception")) return IMAGES.hero.wedding;
+    if (t.includes("sangeet") || t.includes("mehendi") || t.includes("haldi")) return IMAGES.gallery.sangeet;
+    if (t.includes("corporate") || t.includes("conference") || t.includes("launch")) return IMAGES.gallery.conference;
+    if (t.includes("birthday") || t.includes("party") || t.includes("anniversary")) return IMAGES.gallery.birthday;
+    if (t.includes("garba") || t.includes("fest") || t.includes("festival")) return IMAGES.gallery.garba;
+    return IMAGES.gallery.collegeFest;
+  };
 
   useEffect(() => {
     API.get("/gallery")
@@ -33,7 +44,8 @@ export default function Events() {
       <SEO
         title="Event Gallery - Weddings, Concerts & Parties | Mano India"
         description="Explore our gallery of past events including royal weddings, corporate gatherings, and energetic concerts managed by Mano India."
-        keywords="event gallery, wedding photos, concert images, event management portfolio, past events"
+        keywords="event gallery india, wedding event gallery, sangeet events, corporate events gallery, event management portfolio, past events"
+        image={IMAGES.gallery.collegeFest}
         canonicalUrl="https://manoindia.in/events"
       />
       <div className="max-w-7xl mx-auto">
@@ -63,9 +75,15 @@ export default function Events() {
                 {/* Image Container */}
                 <div className="relative h-80 overflow-hidden">
                   <img
-                    src={event.imageUrl}
+                    src={event.imageUrl || getFallbackImage(event.type)}
                     alt={event.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = getFallbackImage(event.type);
+                    }}
                   />
 
                   {/* Overlay Gradient */}

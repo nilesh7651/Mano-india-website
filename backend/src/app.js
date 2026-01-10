@@ -11,6 +11,11 @@ const eventManagerRoutes = require("./routes/eventManagerRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const galleryRoutes = require("./routes/galleryRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const receiptRoutes = require("./routes/receiptRoutes");
+const blogRoutes = require("./routes/blogRoutes");
+const priceRequestRoutes = require("./routes/priceRequestRoutes");
+const themeRoutes = require("./routes/themeRoutes");
+const themeRequestRoutes = require("./routes/themeRequestRoutes");
 
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
@@ -71,10 +76,21 @@ app.use("/api/admin", require("./routes/adminDashboardRoutes"));
 app.use("/api/earnings", require("./routes/earningsRoutes"));
 app.use("/api/notifications", require("./routes/notificationRoutes"));
 app.use("/api/payments", paymentRoutes);
+app.use("/api/receipts", receiptRoutes);
+app.use("/api/blog", blogRoutes);
+app.use("/api/price-requests", priceRequestRoutes);
+app.use("/api/themes", themeRoutes);
+app.use("/api/theme-requests", themeRequestRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/chat", require("./routes/chatRoutes"));
+
+app.use("/api/admin", require("./routes/adminReceiptRoutes"));
+app.use("/api/admin", require("./routes/adminBlogRoutes"));
+app.use("/api/admin", require("./routes/adminPriceRequestRoutes"));
+app.use("/api/admin", require("./routes/adminThemeRoutes"));
+app.use("/api/admin", require("./routes/adminThemeRequestRoutes"));
 
 // Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));

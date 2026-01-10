@@ -5,6 +5,8 @@ import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import { loadRazorpay } from "../../utils/razorpay";
 import { useToast } from "../../components/ui/ToastProvider";
+import ReceiptModal from "../../components/ReceiptModal";
+import PriceRequestModal from "../../components/PriceRequestModal";
 
 export default function UserDashboard() {
   const { notify } = useToast();
@@ -12,6 +14,16 @@ export default function UserDashboard() {
   const [loading, setLoading] = useState(true);
   const [reviewModal, setReviewModal] = useState({ isOpen: false, bookingId: null });
   const [reviewForm, setReviewForm] = useState({ rating: 5, comment: "" });
+  const [selectedReceiptData, setSelectedReceiptData] = useState(null);
+  const [priceRequestBooking, setPriceRequestBooking] = useState(null);
+
+  const canAskSuggestion = (booking) => {
+    if (!booking) return false;
+    if (booking.paymentStatus === "PAID") return false;
+    const blocked = ["COMPLETED", "REJECTED", "CANCELLED"];
+    if (blocked.includes(booking.status)) return false;
+    return true;
+  };
 
   const handleAction = async (id, action) => {
     try {
@@ -108,6 +120,23 @@ export default function UserDashboard() {
     }
   };
 
+  const handleViewReceipt = async (booking) => {
+    try {
+      const res = await API.get(`/receipts/booking/${booking._id}`);
+      setSelectedReceiptData({ receipt: res.data, booking });
+    } catch (err) {
+      setSelectedReceiptData({ booking });
+      notify({
+        type: "info",
+        title: "Receipt",
+        message:
+          err.response?.status === 404
+            ? "Receipt record not found yet. Showing booking details."
+            : "Failed to load receipt. Showing booking details.",
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -190,10 +219,29 @@ export default function UserDashboard() {
                     </Button>
                   )}
 
+                  {canAskSuggestion(b) && (
+                    <Button
+                      onClick={() => setPriceRequestBooking(b)}
+                      size="sm"
+                      className="bg-gray-800 hover:bg-gray-700 text-white border border-gray-700"
+                    >
+                      Ask Suggestion
+                    </Button>
+                  )}
+
                   {b.paymentStatus === "PAID" && (
-                    <span className="flex items-center gap-1 text-sm font-bold text-green-500">
-                      <span>✓</span> Paid
-                    </span>
+                    <>
+                      <span className="flex items-center gap-1 text-sm font-bold text-green-500">
+                        <span>✓</span> Paid
+                      </span>
+                      <Button
+                        onClick={() => handleViewReceipt(b)}
+                        size="sm"
+                        className="bg-gray-800 hover:bg-gray-700 text-white border border-gray-700"
+                      >
+                        View Receipt
+                      </Button>
+                    </>
                   )}
 
                   {b.status === "ACCEPTED" && !b.userCompleted && (
@@ -266,6 +314,21 @@ export default function UserDashboard() {
             </div>
           </div>
         </div>
+      )}
+
+      {selectedReceiptData && (
+        <ReceiptModal
+          booking={selectedReceiptData.booking}
+          receipt={selectedReceiptData.receipt}
+          onClose={() => setSelectedReceiptData(null)}
+        />
+      )}
+
+      {priceRequestBooking && (
+        <PriceRequestModal
+          booking={priceRequestBooking}
+          onClose={() => setPriceRequestBooking(null)}
+        />
       )}
     </div>
   );

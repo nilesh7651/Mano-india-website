@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Event planner">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#050505"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect x="260" y="210" width="680" height="480" rx="28" fill="#0f172a" opacity="0.92"/>
+  <rect x="320" y="270" width="320" height="26" rx="13" fill="url(#accent)" opacity="0.60"/>
+  <rect x="320" y="320" width="520" height="16" rx="8" fill="#e5e7eb" opacity="0.14"/>
+  <rect x="320" y="352" width="460" height="16" rx="8" fill="#e5e7eb" opacity="0.10"/>
+
+  <!-- checklist -->
+  <g stroke="#e5e7eb" stroke-width="4" opacity="0.22" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M340 420 h520"/>
+    <path d="M340 470 h520"/>
+    <path d="M340 520 h520"/>
+  </g>
+  <g stroke="url(#accent)" stroke-width="8" opacity="0.75" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M330 412 l18 18 32-40"/>
+    <path d="M330 462 l18 18 32-40"/>
+    <path d="M330 512 l18 18 32-40"/>
+  </g>
+
+  <text x="80" y="110" fill="#fbbf24" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" font-size="44" font-weight="700">Event Manager</text>
+  <text x="80" y="165" fill="#e5e7eb" opacity="0.78" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" font-size="24">Planning • Decor • Logistics</text>
+</svg>

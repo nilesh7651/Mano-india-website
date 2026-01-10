@@ -54,6 +54,7 @@ export default function ImageUpload({ onUpload, existingImage }) {
                         src={preview}
                         alt="Preview"
                         className="w-20 h-20 object-cover rounded-lg border border-gray-700"
+                        decoding="async"
                     />
                 )}
 

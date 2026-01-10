@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import API from "../services/api";
 import SEO from "../components/SEO";
 import VenueCard from "../components/VenueCard";
+import { IMAGES } from "../lib/images";
 
 export default function Venues() {
   const [venues, setVenues] = useState([]);
@@ -30,7 +31,8 @@ export default function Venues() {
       <SEO
         title="Book Best Event Venues | Wedding Halls, Party Lawns | Mano India"
         description="Find the perfect wedding hall, party lawn, or corporate venue for your event in India with Mano India. Verified and premium venues."
-        keywords="venue booking, wedding halls, party lawns, corporate event venues, banquet halls, event spaces"
+        keywords="venue booking india, banquet hall booking, marriage hall booking, wedding lawn, party lawn, corporate venue, event spaces delhi mumbai bengaluru"
+        image={IMAGES.venue.banquet}
         canonicalUrl="https://manoindia.in/venues"
       />
 

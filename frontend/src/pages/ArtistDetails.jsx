@@ -5,9 +5,11 @@ import Reviews from "../components/Reviews";
 import { getUser } from "../utils/auth";
 import SEO from "../components/SEO";
 import { useToast } from "../components/ui/ToastProvider";
+import { IMAGES } from "../lib/images";
 
 import API from "../services/api";
 import Button from "../components/ui/Button";
+import PriceRequestModal from "../components/PriceRequestModal";
 
 export default function ArtistDetails() {
   const { id } = useParams();
@@ -15,6 +17,7 @@ export default function ArtistDetails() {
   const [artist, setArtist] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [openBooking, setOpenBooking] = useState(false);
+  const [openSuggestion, setOpenSuggestion] = useState(false);
 
   useEffect(() => {
     API.get(`/artists/${id}`)
@@ -23,11 +26,12 @@ export default function ArtistDetails() {
         // Demo fallback (important for investor demo)
         setArtist({
           _id: id,
-          name: "DJ Alpha",
+          name: "DJ Taal",
           category: "DJ",
-          city: "Delhi",
+          city: "Delhi NCR",
           pricePerEvent: 15000,
-          bio: "Professional DJ with 5+ years of experience in weddings, parties and corporate events."
+          bio: "Bollywood, Punjabi & EDM DJ for weddings, sangeet and corporate events.",
+          images: [IMAGES.artists.dj]
         });
       });
 
@@ -62,11 +66,12 @@ export default function ArtistDetails() {
           {artist.images && artist.images.length > 0 ? (
             <img
               src={artist.images[0]}
-              alt={artist.name}
+              alt={`${artist.name} - ${artist.category} in ${artist.city}`}
               className="w-full h-full object-cover"
+              decoding="async"
               onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = "https://via.placeholder.com/800x600?text=Artist+Image";
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = IMAGES.artists.dj;
               }}
             />
           ) : (
@@ -92,7 +97,7 @@ export default function ArtistDetails() {
 
           {artist.bio && (
             <div>
-              <h2 className="text-lg font-semibold text-gray-300 mb-2 uppercase tracking-wide text-sm">About the Artist</h2>
+              <h2 className="font-semibold text-gray-300 mb-2 uppercase tracking-wide">About the Artist</h2>
               <p className="text-gray-400 leading-relaxed text-lg">
                 {artist.bio}
               </p>
@@ -109,25 +114,46 @@ export default function ArtistDetails() {
                 </div>
               </div>
 
-              <Button
-                onClick={() => {
-                  const user = getUser();
-                  if (!user) {
-                    notify({ type: "warning", title: "Login required", message: "Please login to book an artist." });
-                    // window.location.href = "/login"; // Optional: Redirect to login
-                    return;
-                  }
-                  if (user.role !== "user") {
-                    notify({ type: "warning", title: "User account required", message: "Only registered users can make bookings." });
-                    return;
-                  }
-                  setOpenBooking(true);
-                }}
-                size="lg"
-                className="shadow-amber-900/40 transform hover:-translate-y-1"
-              >
-                🎤 Book Now
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  onClick={() => {
+                    const user = getUser();
+                    if (!user) {
+                      notify({ type: "warning", title: "Login required", message: "Please login to book an artist." });
+                      return;
+                    }
+                    if (user.role !== "user") {
+                      notify({ type: "warning", title: "User account required", message: "Only registered users can make bookings." });
+                      return;
+                    }
+                    setOpenBooking(true);
+                  }}
+                  size="lg"
+                  className="shadow-amber-900/40 transform hover:-translate-y-1"
+                >
+                  🎤 Book Now
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-gray-700 text-gray-300 hover:border-amber-500 hover:text-white hover:bg-transparent"
+                  onClick={() => {
+                    const user = getUser();
+                    if (!user) {
+                      notify({ type: "warning", title: "Login required", message: "Please login to ask for a suggestion." });
+                      return;
+                    }
+                    if (user.role !== "user") {
+                      notify({ type: "warning", title: "User account required", message: "Only registered users can send requests." });
+                      return;
+                    }
+                    setOpenSuggestion(true);
+                  }}
+                >
+                  Ask Suggestion
+                </Button>
+              </div>
             </div>
             <p className="text-xs text-gray-600 mt-3 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-green-500"></span>
@@ -149,6 +175,19 @@ export default function ArtistDetails() {
             notify({ type: "success", title: "Request sent", message: "Booking request sent successfully." });
             setOpenBooking(false);
           }}
+        />
+      )}
+
+      {openSuggestion && (
+        <PriceRequestModal
+          provider={{
+            role: "artist",
+            id: artist._id,
+            name: artist.name,
+            currentAmount: artist.pricePerEvent,
+          }}
+          onClose={() => setOpenSuggestion(false)}
+          onSubmitted={() => setOpenSuggestion(false)}
         />
       )}
     </div>

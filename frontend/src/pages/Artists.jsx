@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import API from "../services/api";
 import ArtistCard from "../components/ArtistCard";
 import SEO from "../components/SEO";
+import { IMAGES } from "../lib/images";
 
 export default function Artists() {
   const [artists, setArtists] = useState([]);
@@ -20,31 +21,40 @@ export default function Artists() {
         // demo fallback
         setArtists([
           {
-            _id: "1",
-            name: "DJ Alpha",
+            _id: "65f000000000000000000001",
+            name: "DJ Taal",
             category: "DJ",
-            city: "Delhi",
+            city: "Delhi NCR",
             pricePerEvent: 15000,
-            bio: "Professional DJ with 5+ years of experience mixing Bollywood and EDM.",
-            images: ["https://images.unsplash.com/photo-1516280440614-6697288d5d38?auto=format&fit=crop&q=80"]
+            bio: "Bollywood, Punjabi & EDM sets for weddings, sangeet and high-energy parties.",
+            images: [IMAGES.artists.dj]
           },
           {
-            _id: "2",
-            name: "Singer Neha",
+            _id: "65f000000000000000000002",
+            name: "Singer Ananya",
             category: "Singer",
             city: "Mumbai",
             pricePerEvent: 20000,
-            bio: "Bollywood & live performance specialist ensuring a soulful evening.",
-            images: ["https://images.unsplash.com/photo-1520786968037-77299a915995?auto=format&fit=crop&q=80"]
+            bio: "Live Bollywood, indie and sufi performances for weddings, receptions and corporate events.",
+            images: [IMAGES.artists.singer]
           },
           {
-            _id: "3",
-            name: "The Rockers",
+            _id: "65f000000000000000000003",
+            name: "The Fusion Band",
             category: "Band",
-            city: "Bangalore",
+            city: "Bengaluru",
             pricePerEvent: 45000,
-            bio: "High energy rock band perfect for corporate events and fests.",
-            images: ["https://images.unsplash.com/photo-1459749411177-d2899476b689?auto=format&fit=crop&q=80"]
+            bio: "Bollywood + folk fusion band for college fests, corporate nights and concerts.",
+            images: [IMAGES.artists.band]
+          },
+          {
+            _id: "65f000000000000000000004",
+            name: "Dhol & Beats",
+            category: "Percussion",
+            city: "Pune",
+            pricePerEvent: 12000,
+            bio: "Dhol, nagada & live percussion to elevate baraat entries and stage moments.",
+            images: [IMAGES.artists.dhol]
           },
         ]);
         setLoading(false);
@@ -62,8 +72,9 @@ export default function Artists() {
     <div className="min-h-screen bg-black text-white">
       <SEO
         title="Book Top Artists | Singers, Dancers, DJs | Mano India"
-        description="Explore and book verified artists for your event. Find singers, bands, DJs, and performers in your city with Mano India."
-        keywords="hire artists, book singers, dj booking, live bands, event performers, artist booking india"
+        description="Explore and book verified artists across India. Find singers, DJs, bands, and performers for weddings, sangeet, receptions, corporate events, and parties."
+        keywords="artist booking india, book singer for wedding, dj for sangeet, live band for reception, dhol for baraat, hire performers, delhi ncr, mumbai, bengaluru, pune"
+        image={IMAGES.artists.dj}
         canonicalUrl="https://manoindia.in/artists"
       />
 
@@ -72,10 +83,10 @@ export default function Artists() {
         <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-black to-black opacity-80 z-0"></div>
         <div className="relative z-10 max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">
-            Discover World-Class Talent
+            Discover Top Talent Across India
           </h1>
           <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
-            From soul-stirring singers to high-energy DJs, find the perfect performer for your special occasion.
+            From soulful singers to high-energy DJs, find the right performer for your shaadi, sangeet, corporate event, or party.
           </p>
 
           <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">

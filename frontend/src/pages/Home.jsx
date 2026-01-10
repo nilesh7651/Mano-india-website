@@ -2,6 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HeroSlider from "../components/HeroSlider";
 import API from "../services/api";
+import { IMAGES } from "../lib/images";
+import { getBlogPosts } from "../lib/blog";
+import { fetchBlogPosts } from "../services/blog";
 
 import SEO from "../components/SEO";
 
@@ -9,6 +12,7 @@ export default function Home() {
   // State for Gallery Scroll functionality
   const scrollContainerRef = useRef(null);
   const [galleryItems, setGalleryItems] = useState([]);
+  const [latestPosts, setLatestPosts] = useState(() => getBlogPosts().slice(0, 3));
 
   useEffect(() => {
     API.get("/gallery")
@@ -28,6 +32,24 @@ export default function Home() {
       });
   }, []);
 
+  useEffect(() => {
+    let alive = true;
+    fetchBlogPosts()
+      .then((posts) => {
+        if (!alive) return;
+        if (Array.isArray(posts) && posts.length > 0) {
+          setLatestPosts(posts.slice(0, 3));
+        }
+      })
+      .catch(() => {
+        // keep fallback
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   // Scroll to hash if present
   useEffect(() => {
     if (window.location.hash) {
@@ -41,43 +63,44 @@ export default function Home() {
 
   const demoGallery = [
     {
-      title: "Wedding Celebration",
-      type: "Wedding Event",
-      imageUrl: "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac",
+      title: "Shaadi Celebration",
+      type: "Wedding",
+      imageUrl: IMAGES.hero.wedding,
     },
     {
-      title: "Live Concert Night",
-      type: "Music Concert",
-      imageUrl: "https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2",
+      title: "Sangeet Night",
+      type: "Sangeet",
+      imageUrl: IMAGES.gallery.sangeet,
     },
     {
-      title: "Corporate Meetup",
-      type: "Corporate Event",
-      imageUrl: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
+      title: "Corporate Conference",
+      type: "Corporate",
+      imageUrl: IMAGES.gallery.conference,
     },
     {
-      title: "Birthday Bash",
-      type: "Private Party",
-      imageUrl: "https://images.unsplash.com/photo-1515169067865-5387ec356754",
+      title: "Birthday Celebration",
+      type: "Party",
+      imageUrl: IMAGES.gallery.birthday,
     },
     {
-      title: "DJ Night",
-      type: "Club Event",
-      imageUrl: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30",
+      title: "Garba / Fest Night",
+      type: "Festival",
+      imageUrl: IMAGES.gallery.garba,
     },
     {
       title: "College Fest",
-      type: "Fest Event",
-      imageUrl: "https://images.unsplash.com/photo-1518972559570-7cc1309f3229",
+      type: "College",
+      imageUrl: IMAGES.gallery.collegeFest,
     },
   ];
 
   return (
     <div className="space-y-24 bg-black text-gray-100">
       <SEO
-        title="Mano India | Book Top Artists & Venues for Events"
-        description="Mano India is the best platform to book top artists, singers, dancers, and event venues for weddings, corporate events, and parties."
-        keywords="artist booking, venue booking, event management, hire singers, book dancers, wedding venues, mano india"
+        title="ManoIndia | Book Artists, Venues, Event Managers & Themes"
+        description="Book verified artists, DJs, bands, premium venues, and event managers across India. Also book decor themes for weddings, sangeet, corporate events, birthdays and more."
+        keywords="manoindia, book artists india, book singer for wedding, book dj for wedding, wedding band, sangeet artist, venue booking india, banquet hall booking, marriage hall, party lawn, event manager booking india, event planner india, event decor themes, wedding decor themes, corporate event decor"
+        image={IMAGES.hero.wedding}
         canonicalUrl="https://manoindia.in/"
       />
       {/* NOTE: Added bg-black to body/container to match the dark theme of the logo 
@@ -95,20 +118,20 @@ export default function Home() {
           </h1>
 
           <p className="text-lg text-gray-400 leading-relaxed mb-8 max-w-lg">
-            Whether it's a dream wedding, a corporate gala, or a private party — find and book verified professionals securely with ManoIndia. Transparent pricing, no hidden fees.
+            Whether it’s a shaadi, sangeet, corporate launch, or a birthday party — find and book verified professionals securely with ManoIndia. Transparent pricing, no hidden fees.
           </p>
 
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4">
             <Link
               to="/artists"
-              className="bg-amber-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-amber-500 transition-all shadow-lg shadow-amber-900/30 hover:scale-105"
+              className="w-full sm:w-auto text-center bg-amber-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-amber-500 transition-all shadow-lg shadow-amber-900/30 hover:scale-105"
             >
               Browse Artists
             </Link>
 
             <Link
               to="/venues"
-              className="px-8 py-4 rounded-full font-bold text-lg border border-gray-600 text-gray-300 hover:border-amber-500 hover:text-amber-500 transition-all hover:bg-gray-900"
+              className="w-full sm:w-auto text-center px-8 py-4 rounded-full font-bold text-lg border border-gray-600 text-gray-300 hover:border-amber-500 hover:text-amber-500 transition-all hover:bg-gray-900"
             >
               Explore Venues
             </Link>
@@ -120,6 +143,35 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-green-500">✓</span> Secure Payments
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-gray-800 bg-gray-950/60 p-4">
+            <div className="flex flex-wrap items-center gap-2 text-sm text-gray-300">
+              <span className="text-gray-400">Are you an Artist / Venue / Event Manager?</span>
+              <Link to="/join" className="font-semibold text-amber-400 hover:text-amber-300">
+                Join as Provider →
+              </Link>
+            </div>
+            <div className="mt-3 flex flex-col sm:flex-row sm:flex-wrap gap-2">
+              <Link
+                to="/signup?role=artist"
+                className="w-full sm:w-auto text-center px-4 py-2 rounded-full text-sm border border-gray-700 text-gray-200 hover:border-amber-500 hover:text-amber-400 transition-all"
+              >
+                Join as Artist
+              </Link>
+              <Link
+                to="/signup?role=venue"
+                className="w-full sm:w-auto text-center px-4 py-2 rounded-full text-sm border border-gray-700 text-gray-200 hover:border-amber-500 hover:text-amber-400 transition-all"
+              >
+                Join as Venue
+              </Link>
+              <Link
+                to="/signup?role=event_manager"
+                className="w-full sm:w-auto text-center px-4 py-2 rounded-full text-sm border border-gray-700 text-gray-200 hover:border-amber-500 hover:text-amber-400 transition-all"
+              >
+                Join as Manager
+              </Link>
             </div>
           </div>
         </div>
@@ -282,21 +334,48 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      < section className="text-center px-6" >
-        <h2 className="text-3xl font-semibold text-white mb-4">
-          Start Planning Your Event Today
-        </h2>
-        <p className="text-gray-400 mb-6">
-          Join thousands of satisfied customers
-        </p>
+      <section className="mx-4 md:mx-8">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="relative overflow-hidden rounded-3xl border border-gray-800 bg-gray-900 p-10 md:p-14 text-center">
+            <div className="absolute -top-24 left-1/4 w-80 h-80 bg-amber-600/15 rounded-full blur-[96px]" />
+            <div className="absolute -bottom-24 right-1/4 w-80 h-80 bg-yellow-600/10 rounded-full blur-[96px]" />
 
-        <Link
-          to="/artists"
-          className="inline-block bg-amber-600 text-white px-8 py-4 rounded-lg text-lg hover:bg-amber-500 transition font-medium shadow-lg shadow-amber-900/50"
-        >
-          Get Started
-        </Link>
-      </section >
+            <div className="relative">
+              <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
+                Start Planning Your Event Today
+              </h2>
+              <p className="text-gray-400 mb-8 text-lg max-w-2xl mx-auto">
+                Book verified artists, premium venues, and trusted event managers with transparent pricing and secure payments.
+              </p>
+
+              <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center gap-4">
+                <Link
+                  to="/artists"
+                  className="inline-flex items-center justify-center bg-amber-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-amber-500 transition-all shadow-lg shadow-amber-900/30"
+                >
+                  Browse Artists
+                </Link>
+                <Link
+                  to="/venues"
+                  className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold text-lg border border-gray-700 text-gray-200 hover:border-amber-500 hover:text-amber-500 transition-all hover:bg-gray-950"
+                >
+                  Explore Venues
+                </Link>
+                <Link
+                  to="/event-managers"
+                  className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold text-lg border border-gray-700 text-gray-200 hover:border-amber-500 hover:text-amber-500 transition-all hover:bg-gray-950"
+                >
+                  Find Event Managers
+                </Link>
+              </div>
+
+              <p className="mt-6 text-sm text-gray-500">
+                Verified profiles • Secure payments • No hidden fees
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* PAST EVENTS GALLERY - PREMIUM BENTO GRID */}
       <section className="max-w-7xl mx-auto px-6 py-24">
@@ -329,6 +408,8 @@ export default function Home() {
                   src={event.imageUrl}
                   alt={event.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
                 />
 
                 {/* Gradient Overlay */}
@@ -357,6 +438,82 @@ export default function Home() {
         </div>
       </section>
 
+      {/* LATEST NEWS */}
+      <section className="max-w-7xl mx-auto px-6 py-24">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+          <div>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-3 font-serif tracking-tight">
+              Latest <span className="text-amber-500 italic">News</span>
+            </h2>
+            <p className="text-gray-400 max-w-2xl">
+              Updates, planning checklists, and quick guides from Mano India.
+            </p>
+          </div>
+          <Link
+            to="/blog"
+            className="inline-flex items-center gap-2 text-amber-500 hover:text-amber-400 transition-colors font-medium text-lg group"
+          >
+            View All
+            <span className="group-hover:translate-x-1 transition-transform">→</span>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {latestPosts.map((post) => (
+            <Link
+              key={post.slug}
+              to={`/blog/${post.slug}`}
+              className="group relative bg-gray-900/40 border border-gray-800 rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-900/20"
+            >
+              <div className="relative h-56 overflow-hidden">
+                <img
+                  src={post.coverImage}
+                  alt={post.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-80" />
+                <div className="absolute top-4 left-4">
+                  <span className="bg-black/60 backdrop-blur-md border border-gray-700 text-amber-500 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded">
+                    {new Date(post.date).toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "short",
+                      day: "2-digit",
+                    })}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">
+                  {post.title}
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">
+                  {post.excerpt}
+                </p>
+                <div className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-white group-hover:text-amber-500 transition-colors">
+                  Read
+                  <svg
+                    className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* TESTIMONIALS SECTION */}
       <section className="relative py-24 mx-4 md:mx-8 bg-black">
         <div className="max-w-7xl mx-auto px-6 text-center">
@@ -373,19 +530,19 @@ export default function Home() {
                 text: "Finding the perfect Ghazal singer for my father's retirement was a nightmare until I found ManoIndia. The booking was smooth, and the performance was magical!",
                 name: "Anjali Sharma",
                 role: "Private Event",
-                img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150"
+                img: IMAGES.avatars.woman,
               },
               {
                 text: "We booked a premium venue for our startup launch through ManoIndia. Transparent pricing and zero hidden costs. Highly recommended for corporate bookings.",
                 name: "Rahul Verma",
                 role: "CEO, TechStart",
-                img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150&h=150"
+                img: IMAGES.avatars.man,
               },
               {
                 text: "ManoIndia made our wedding reception perfect. The DJ we booked was verified and absolutely professional. It took all the stress out of the planning!",
                 name: "Priya & Amit",
                 role: "Wedding Couple",
-                img: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&q=80&w=150&h=150"
+                img: IMAGES.avatars.couple,
               }
             ].map((testi, i) => (
               <div key={i} className="bg-gray-900/50 p-8 rounded-2xl border border-gray-800 hover:border-amber-500/30 transition-all hover:-translate-y-2 relative group">
@@ -397,6 +554,8 @@ export default function Home() {
                     src={testi.img}
                     alt={testi.name}
                     className="w-20 h-20 rounded-full border-2 border-amber-500 p-1 object-cover mb-6 shadow-lg shadow-amber-900/20"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="flex gap-1 mb-4 text-amber-500">
                     {[1, 2, 3, 4, 5].map(s => <span key={s}>★</span>)}

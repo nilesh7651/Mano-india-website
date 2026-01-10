@@ -22,6 +22,9 @@ import AdminVenues from "./pages/admin/AdminVenues";
 import AdminEventManagers from "./pages/admin/AdminEventManagers";
 import AdminBookings from "./pages/admin/AdminBookings";
 import AdminGallery from "./pages/admin/AdminGallery";
+import AdminReceipts from "./pages/admin/AdminReceipts";
+import AdminBlogCreate from "./pages/admin/AdminBlogCreate";
+import AdminPriceRequests from "./pages/admin/AdminPriceRequests";
 import UserBookings from "./pages/userBooking";
 import Events from "./pages/Events";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -29,8 +32,13 @@ import Terms from "./pages/Terms";
 import RefundPolicy from "./pages/RefundPolicy";
 import UserProfile from "./pages/UserProfile";
 import DeveloperTeam from "./pages/DeveloperTeam";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import Themes from "./pages/Themes";
+import JoinProviders from "./pages/JoinProviders";
 import ScrollToTop from "./components/ScrollToTop";
 import ChatInterface from "./components/chat/ChatInterface";
+import AdminThemes from "./pages/admin/AdminThemes";
 
 export default function App() {
   useEffect(() => {
@@ -60,6 +68,10 @@ export default function App() {
           <Route path="/event-managers/:id" element={<EventManagerDetails />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/themes" element={<Themes />} />
+          <Route path="/join" element={<JoinProviders />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/my-bookings"
@@ -132,6 +144,10 @@ export default function App() {
             <Route path="event-managers" element={<AdminEventManagers />} />
             <Route path="bookings" element={<AdminBookings />} />
             <Route path="gallery" element={<AdminGallery />} />
+            <Route path="receipts" element={<AdminReceipts />} />
+            <Route path="blog" element={<AdminBlogCreate />} />
+            <Route path="price-requests" element={<AdminPriceRequests />} />
+            <Route path="themes" element={<AdminThemes />} />
           </Route>
 
           <Route path="/developer-team" element={<DeveloperTeam />} />

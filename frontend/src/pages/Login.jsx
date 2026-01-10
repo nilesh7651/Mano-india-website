@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import API from "../services/api";
 import SEO from "../components/SEO";
+import { IMAGES } from "../lib/images";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ export default function Login() {
       <SEO
         title="Login | Mano India - Artist & Venue Booking"
         description="Login to your Mano India account to manage bookings, profiles, and events."
+        keywords="mano india login, artist booking india, venue booking india, event manager booking, manage bookings"
         canonicalUrl="https://manoindia.in/login"
       />
 
@@ -117,7 +119,10 @@ export default function Login() {
 
         {/* RIGHT: IMAGE / BRAND SECTION */}
         <div className="hidden md:block relative overflow-hidden bg-black/20">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-60 mix-blend-overlay"></div>
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay"
+            style={{ backgroundImage: `url('${IMAGES.auth.side}')` }}
+          ></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
 
           <div className="absolute bottom-0 left-0 right-0 p-12 text-white">

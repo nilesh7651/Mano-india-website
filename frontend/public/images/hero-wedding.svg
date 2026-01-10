@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Indian wedding">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#050505"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="220" cy="200" r="190" fill="#f59e0b" opacity="0.08"/>
+  <circle cx="1020" cy="160" r="240" fill="#fbbf24" opacity="0.06"/>
+  <circle cx="980" cy="700" r="320" fill="#f59e0b" opacity="0.05"/>
+
+  <!-- Mandap-ish arch -->
+  <path d="M260 610 C260 420, 440 280, 600 280 C760 280, 940 420, 940 610" fill="none" stroke="url(#accent)" stroke-width="16" opacity="0.75"/>
+  <path d="M320 610 C320 455, 470 340, 600 340 C730 340, 880 455, 880 610" fill="none" stroke="#fbbf24" stroke-width="6" opacity="0.35"/>
+
+  <!-- Floor line -->
+  <line x1="180" y1="610" x2="1020" y2="610" stroke="#e5e7eb" opacity="0.12" stroke-width="3"/>
+
+  <!-- Text -->
+  <text x="80" y="110" fill="#fbbf24" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" font-size="44" font-weight="700">Shaadi • Sangeet • Reception</text>
+  <text x="80" y="165" fill="#e5e7eb" opacity="0.78" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" font-size="24">Book artists and venues across India</text>
+</svg>

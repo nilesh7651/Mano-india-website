@@ -8,6 +8,8 @@ export default function Terms() {
             <SEO
                 title="Terms and Conditions | ManoIndia"
                 description="Read the Terms and Conditions for using ManoIndia's platform for booking artists and venues."
+                keywords="manoindia terms, terms and conditions, booking terms, user agreement, india"
+                canonicalUrl="https://manoindia.in/terms-and-conditions"
             />
 
             <h1 className="text-4xl font-bold text-amber-500 mb-4">Terms and Conditions</h1>

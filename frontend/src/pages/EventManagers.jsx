@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import API from "../services/api";
 import SEO from "../components/SEO";
+import { IMAGES } from "../lib/images";
+import Button from "../components/ui/Button";
+import { getUser } from "../utils/auth";
+import { useToast } from "../components/ui/ToastProvider";
+import PriceRequestModal from "../components/PriceRequestModal";
 
 export default function EventManagers() {
     const [managers, setManagers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [cityFilter, setCityFilter] = useState("");
+    const [openSuggestion, setOpenSuggestion] = useState(false);
+    const [selectedProvider, setSelectedProvider] = useState(null);
+    const navigate = useNavigate();
+    const { notify } = useToast();
 
     useEffect(() => {
         API.get("/event-managers")
@@ -28,39 +37,51 @@ export default function EventManagers() {
 
     const getDemoManagers = () => [
         {
-            _id: "demo1",
+            _id: "65f000000000000000000101",
             name: "Rahul Sharma",
-            companyName: "Royal Weddings",
-            city: "Delhi",
+            companyName: "Shaadi Sutra Events",
+            city: "Delhi NCR",
             pricePerEvent: 50000,
-            servicesOffered: ["Wedding Planning", "Decor", "Catering"],
+            servicesOffered: ["Wedding Planning", "Decor", "Hospitality"],
             experienceYears: 8,
-            bio: "Specializing in grand Indian weddings with a touch of royalty.",
-            portfolio: ["https://images.unsplash.com/photo-1519167758481-83f550bb49b3"],
+            bio: "Specializing in Indian weddings, sangeet nights, and end-to-end vendor coordination.",
+            portfolio: [IMAGES.hero.wedding],
             isVerified: true
         },
         {
-            _id: "demo2",
+            _id: "65f000000000000000000102",
             name: "Anita Desai",
-            companyName: "Corporate Edge",
+            companyName: "Corporate Edge India",
             city: "Mumbai",
             pricePerEvent: 75000,
-            servicesOffered: ["Corporate Events", "Conferences"],
+            servicesOffered: ["Corporate Events", "Conferences", "Product Launch"],
             experienceYears: 12,
-            bio: "Professional corporate event management.",
-            portfolio: ["https://images.unsplash.com/photo-1515187029135-18ee286d815b"],
+            bio: "Corporate event planning for conferences, launches, offsites and award nights.",
+            portfolio: [IMAGES.hero.corporate],
             isVerified: true
         },
         {
-            _id: "demo3",
+            _id: "65f000000000000000000103",
             name: "Vikram Singh",
             companyName: "Party Poppers",
-            city: "Bangalore",
+            city: "Bengaluru",
             pricePerEvent: 25000,
-            servicesOffered: ["Birthday Parties", "Anniversaries"],
+            servicesOffered: ["Birthday Parties", "Anniversaries", "House Parties"],
             experienceYears: 5,
-            bio: "Making your special occasions memorable.",
-            portfolio: ["https://images.unsplash.com/photo-1530103862676-de3c9da59af7"],
+            bio: "Theme parties, birthdays and private events with seamless planning and execution.",
+            portfolio: [IMAGES.hero.party],
+            isVerified: true
+        },
+        {
+            _id: "65f000000000000000000104",
+            name: "Meera Joshi",
+            companyName: "Utsav Creators",
+            city: "Jaipur",
+            pricePerEvent: 60000,
+            servicesOffered: ["Destination Weddings", "Mehendi & Haldi", "Decor"],
+            experienceYears: 9,
+            bio: "Destination wedding planning and decor with a strong focus on Indian rituals and details.",
+            portfolio: [IMAGES.planner],
             isVerified: true
         }
     ];
@@ -83,6 +104,8 @@ export default function EventManagers() {
             <SEO
                 title="Hire Top Event Managers | Mano India"
                 description="Find and book expert event managers for weddings, corporate events, and parties in your area."
+                keywords="event manager india, event planner, wedding planner, destination wedding planner, corporate event management, decor, catering, logistics, delhi ncr, mumbai, bengaluru, pune, hyderabad, jaipur"
+                image={IMAGES.planner}
                 canonicalUrl="https://manoindia.in/event-managers"
             />
 
@@ -139,10 +162,12 @@ export default function EventManagers() {
                                         src={
                                             em.portfolio && em.portfolio.length > 0
                                                 ? em.portfolio[0]
-                                                : "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80"
+                                                : IMAGES.planner
                                         }
-                                        alt={em.name}
+                                        alt={`${em.companyName || em.name} - Event Manager in ${em.city}`}
                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                     <div className="absolute top-4 right-4 z-20 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-xs font-semibold text-amber-400">
                                         Starting ₹{em.pricePerEvent.toLocaleString()}
@@ -167,13 +192,52 @@ export default function EventManagers() {
                                             {em.city}
                                         </div>
 
-                                        <div className="flex justify-between items-center pt-3 border-t border-white/10">
-                                            <span className="text-xs text-gray-500 font-medium">
-                                                {em.experienceYears > 0 ? `${em.experienceYears} Years Exp.` : 'Fresh Talent'}
-                                            </span>
-                                            <span className="text-sm font-semibold text-white group-hover:text-amber-400 transition-colors">
-                                                View Profile →
-                                            </span>
+                                        <div className="pt-3 border-t border-white/10">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-xs text-gray-500 font-medium">
+                                                    {em.experienceYears > 0 ? `${em.experienceYears} Years Exp.` : 'Fresh Talent'}
+                                                </span>
+                                            </div>
+
+                                            <div className="mt-3 grid grid-cols-2 gap-3">
+                                                <Button
+                                                    size="sm"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        navigate(`/event-managers/${em._id}`);
+                                                    }}
+                                                    className="w-full"
+                                                >
+                                                    Book Now
+                                                </Button>
+
+                                                <Button
+                                                    size="sm"
+                                                    variant="secondary"
+                                                    className="w-full"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        const user = getUser();
+                                                        if (!user) {
+                                                            notify({ type: "warning", title: "Login required", message: "Please login to ask for a suggestion." });
+                                                            return;
+                                                        }
+                                                        if (user.role !== "user") {
+                                                            notify({ type: "warning", title: "User account required", message: "Only registered users can send requests." });
+                                                            return;
+                                                        }
+                                                        setSelectedProvider({
+                                                            role: "event_manager",
+                                                            id: em._id,
+                                                            name: em.companyName || em.name,
+                                                            currentAmount: em.pricePerEvent,
+                                                        });
+                                                        setOpenSuggestion(true);
+                                                    }}
+                                                >
+                                                    Ask Suggestion
+                                                </Button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -192,6 +256,20 @@ export default function EventManagers() {
                     </div>
                 )}
             </div>
+
+            {openSuggestion && selectedProvider && (
+                <PriceRequestModal
+                    provider={selectedProvider}
+                    onClose={() => {
+                        setOpenSuggestion(false);
+                        setSelectedProvider(null);
+                    }}
+                    onSubmitted={() => {
+                        setOpenSuggestion(false);
+                        setSelectedProvider(null);
+                    }}
+                />
+            )}
         </div>
     );
 }

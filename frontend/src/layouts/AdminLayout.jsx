@@ -63,6 +63,38 @@ export default function AdminLayout() {
                 Gallery Manager
               </Link>
             </li>
+            <li>
+              <Link
+                to="/admin/receipts"
+                className="block py-2 px-4 rounded hover:bg-gray-800 transition"
+              >
+                Receipts
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/admin/blog"
+                className="block py-2 px-4 rounded hover:bg-gray-800 transition"
+              >
+                Post Blog
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/admin/price-requests"
+                className="block py-2 px-4 rounded hover:bg-gray-800 transition"
+              >
+                Price Requests
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/admin/themes"
+                className="block py-2 px-4 rounded hover:bg-gray-800 transition"
+              >
+                Themes
+              </Link>
+            </li>
           </ul>
         </nav>
         {/* You can add a logout link or other footer items here */}

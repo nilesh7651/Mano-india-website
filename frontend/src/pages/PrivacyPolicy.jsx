@@ -7,6 +7,8 @@ export default function PrivacyPolicy() {
             <SEO
                 title="Privacy Policy | ManoIndia"
                 description="Read our Privacy Policy to understand how we collect, use, and protect your personal information at ManoIndia."
+                keywords="manoindia privacy policy, data privacy, personal information, cookie policy, india"
+                canonicalUrl="https://manoindia.in/privacy-policy"
             />
 
             <h1 className="text-4xl font-bold text-amber-500 mb-4">Privacy Policy</h1>

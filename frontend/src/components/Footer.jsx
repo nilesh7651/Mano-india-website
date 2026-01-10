@@ -84,6 +84,8 @@ export default function Footer() {
                     src="/startup_bihar_logo1.png"
                     alt="Startup Bihar"
                     className="h-20 md:h-24 w-auto object-contain relative z-10 brightness-110 contrast-125 transform transition-transform duration-500 group-hover/logo:scale-110"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </div>
@@ -95,6 +97,8 @@ export default function Footer() {
                     src="/startupIndia.png"
                     alt="Startup India"
                     className="h-20 md:h-24 w-auto object-contain relative z-10 brightness-110 contrast-125 transform transition-transform duration-500 group-hover/logo:scale-110"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </div>
@@ -106,6 +110,8 @@ export default function Footer() {
                     src="/4.png"
                     alt="Partner Logo"
                     className="h-20 md:h-24 w-auto object-contain relative z-10 brightness-110 contrast-125 transform transition-transform duration-500 group-hover/logo:scale-110"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </div>
@@ -117,6 +123,8 @@ export default function Footer() {
                     src="/5.png"
                     alt="Partner Logo"
                     className="h-20 md:h-24 w-auto object-contain relative z-10 brightness-110 contrast-125 transform transition-transform duration-500 group-hover/logo:scale-110"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </div>

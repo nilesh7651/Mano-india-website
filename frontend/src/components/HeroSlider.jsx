@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
+import { IMAGES } from "../lib/images";
 
 const slides = [
   {
-    title: "Wedding Celebrations",
-    subtitle: "Book DJs, Bands & Venues for weddings",
-    image: "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac",
+    title: "Shaadi • Sangeet • Reception",
+    subtitle: "Book DJs, singers, bands & venues across India",
+    image: IMAGES.hero.wedding,
   },
   {
     title: "Corporate Events",
-    subtitle: "Professional artists & premium venues",
-    image: "https://images.unsplash.com/photo-1515168833906-d2a3b82b302a",
+    subtitle: "Conferences, launches & offsites — planned professionally",
+    image: IMAGES.hero.corporate,
   },
   {
-    title: "Private Parties",
-    subtitle: "Make birthdays & parties unforgettable",
-    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819",
+    title: "Parties & Celebrations",
+    subtitle: "Birthdays, anniversaries, house parties & more",
+    image: IMAGES.hero.party,
   },
 ];
 

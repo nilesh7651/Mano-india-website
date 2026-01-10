@@ -4,14 +4,25 @@ import { createOrder, verifyPayment } from "../services/payment";
 import ReceiptModal from "../components/ReceiptModal";
 import { loadRazorpay } from "../utils/razorpay";
 import { useToast } from "../components/ui/ToastProvider";
+import PriceRequestModal from "../components/PriceRequestModal";
 
 export default function UserBookings() {
   const { notify } = useToast();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedBookingForReceipt, setSelectedBookingForReceipt] = useState(null);
+  const [selectedReceiptData, setSelectedReceiptData] = useState(null);
+  const [priceRequestBooking, setPriceRequestBooking] = useState(null);
   const [reviewModal, setReviewModal] = useState({ isOpen: false, bookingId: null });
   const [reviewForm, setReviewForm] = useState({ rating: 5, comment: "" });
+
+  const canAskSuggestion = (booking) => {
+    if (!booking) return false;
+    if (booking.paymentStatus === "PAID") return false;
+    // Before paying only (avoid completed/rejected/cancelled)
+    const blocked = ["COMPLETED", "REJECTED", "CANCELLED"];
+    if (blocked.includes(booking.status)) return false;
+    return true;
+  };
 
   const handleAction = async (id, action) => {
     try {
@@ -117,6 +128,24 @@ export default function UserBookings() {
     }
   };
 
+  const handleViewReceipt = async (booking) => {
+    try {
+      const res = await API.get(`/receipts/booking/${booking._id}`);
+      setSelectedReceiptData({ receipt: res.data, booking });
+    } catch (err) {
+      // Backward compatibility: show booking-based receipt even if receipt record doesn't exist yet
+      setSelectedReceiptData({ booking });
+      notify({
+        type: "info",
+        title: "Receipt",
+        message:
+          err.response?.status === 404
+            ? "Receipt record not found yet. Showing booking details."
+            : "Failed to load receipt. Showing booking details.",
+      });
+    }
+  };
+
   return (
     <div className="max-w-5xl mx-auto space-y-8">
       <div className="border-b border-gray-800 pb-4">
@@ -183,22 +212,50 @@ export default function UserBookings() {
             {/* Action Section */}
             <div className="flex flex-col items-end gap-3 w-full md:w-auto">
               {booking.status === "AWAITING_PAYMENT" ? (
-                <button
-                  onClick={() => handlePayment(booking)}
-                  className="w-full md:w-auto bg-amber-600 text-white px-6 py-2.5 rounded-lg hover:bg-amber-500 font-medium transition-all shadow-lg shadow-amber-900/20"
-                >
-                  Pay Now
-                </button>
+                <div className="flex flex-col gap-2 w-full md:w-auto">
+                  <button
+                    onClick={() => handlePayment(booking)}
+                    className="w-full md:w-auto bg-amber-600 text-white px-6 py-2.5 rounded-lg hover:bg-amber-500 font-medium transition-all shadow-lg shadow-amber-900/20"
+                  >
+                    Pay Now
+                  </button>
+                  {canAskSuggestion(booking) && (
+                    <button
+                      onClick={() => setPriceRequestBooking(booking)}
+                      className="w-full md:w-auto border border-gray-700 text-gray-300 px-6 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-sm"
+                    >
+                      Ask Suggestion
+                    </button>
+                  )}
+                </div>
               ) : booking.status === "PENDING" ? (
-                <span className="text-yellow-500 text-sm italic">Waiting for approval</span>
+                <div className="flex flex-col gap-2 w-full md:w-auto">
+                  <span className="text-yellow-500 text-sm italic">Waiting for approval</span>
+                  {canAskSuggestion(booking) && (
+                    <button
+                      onClick={() => setPriceRequestBooking(booking)}
+                      className="w-full md:w-auto border border-gray-700 text-gray-300 px-6 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-sm"
+                    >
+                      Ask Suggestion
+                    </button>
+                  )}
+                </div>
               ) : booking.status === "ACCEPTED" ? (
                 <div className="flex flex-col gap-2 w-full md:w-auto">
                   <button
-                    onClick={() => setSelectedBookingForReceipt(booking)}
+                    onClick={() => handleViewReceipt(booking)}
                     className="w-full md:w-auto border border-gray-700 text-gray-300 px-6 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-sm"
                   >
                     View Receipt
                   </button>
+                  {canAskSuggestion(booking) && (
+                    <button
+                      onClick={() => setPriceRequestBooking(booking)}
+                      className="w-full md:w-auto border border-gray-700 text-gray-300 px-6 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-sm"
+                    >
+                      Ask Suggestion
+                    </button>
+                  )}
                   {!booking.userCompleted && (
                     <button
                       onClick={() => handleAction(booking._id, "complete")}
@@ -214,7 +271,7 @@ export default function UserBookings() {
               ) : booking.status === "COMPLETED" ? (
                 <div className="flex flex-col gap-2 w-full md:w-auto">
                   <button
-                    onClick={() => setSelectedBookingForReceipt(booking)}
+                    onClick={() => handleViewReceipt(booking)}
                     className="w-full md:w-auto border border-gray-700 text-gray-300 px-6 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-sm"
                   >
                     View Receipt
@@ -241,10 +298,18 @@ export default function UserBookings() {
         ))}
       </div>
 
-      {selectedBookingForReceipt && (
+      {selectedReceiptData && (
         <ReceiptModal
-          booking={selectedBookingForReceipt}
-          onClose={() => setSelectedBookingForReceipt(null)}
+          booking={selectedReceiptData.booking}
+          receipt={selectedReceiptData.receipt}
+          onClose={() => setSelectedReceiptData(null)}
+        />
+      )}
+
+      {priceRequestBooking && (
+        <PriceRequestModal
+          booking={priceRequestBooking}
+          onClose={() => setPriceRequestBooking(null)}
         />
       )}
 

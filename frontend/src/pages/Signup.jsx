@@ -1,11 +1,13 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import API from "../services/api";
 import SEO from "../components/SEO";
+import { IMAGES } from "../lib/images";
 import { useToast } from "../components/ui/ToastProvider";
 
 export default function Signup() {
   const navigate = useNavigate();
+  const [params] = useSearchParams();
   const { notify } = useToast();
   const [form, setForm] = useState({
     name: "",
@@ -22,6 +24,14 @@ export default function Signup() {
   const [otp, setOtp] = useState("");
   const [isVerified, setIsVerified] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+
+  useEffect(() => {
+    const qRole = params.get("role");
+    const valid = ["user", "artist", "venue", "event_manager"].includes(qRole);
+    if (valid) {
+      setForm((prev) => ({ ...prev, role: qRole }));
+    }
+  }, [params]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -112,6 +122,7 @@ export default function Signup() {
       <SEO
         title="Sign Up | Join Mano India"
         description="Create a new Mano India account to start booking artists and venues, or list your services."
+        keywords="mano india signup, create account, book artists india, book venues india, become event manager, list your services"
         canonicalUrl="https://manoindia.in/signup"
       />
 
@@ -290,7 +301,10 @@ export default function Signup() {
 
         {/* RIGHT: IMAGE / BRAND SECTION */}
         <div className="hidden md:block relative overflow-hidden bg-black/20 order-1 md:order-2">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-60 mix-blend-overlay"></div>
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay"
+            style={{ backgroundImage: `url('${IMAGES.auth.side}')` }}
+          ></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
 
           <div className="absolute bottom-0 left-0 right-0 p-12 text-white text-right">

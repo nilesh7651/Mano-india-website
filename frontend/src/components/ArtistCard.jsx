@@ -1,6 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Button from "./ui/Button";
+import { getUser } from "../utils/auth";
+import { useToast } from "./ui/ToastProvider";
+import PriceRequestModal from "./PriceRequestModal";
 
 export default function ArtistCard({ artist }) {
+  const navigate = useNavigate();
+  const { notify } = useToast();
+  const [openSuggestion, setOpenSuggestion] = useState(false);
+
   return (
     <Link
       to={`/artists/${artist._id}`}
@@ -12,8 +21,10 @@ export default function ArtistCard({ artist }) {
         {artist.images && artist.images.length > 0 ? (
           <img
             src={artist.images[0]}
-            alt={artist.name}
+            alt={`${artist.name} - ${artist.category} in ${artist.city}`}
             className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+            loading="lazy"
+            decoding="async"
             onError={(e) => {
               e.target.onerror = null;
               e.target.src = "https://via.placeholder.com/400x300?text=Artist+Image";
@@ -62,11 +73,47 @@ export default function ArtistCard({ artist }) {
               ₹ {artist.pricePerEvent?.toLocaleString() || "N/A"}
             </p>
           </div>
-          <span className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-gray-400 group-hover:bg-amber-500 group-hover:text-black group-hover:border-amber-500 transition-all">
-            →
-          </span>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <Button size="sm" onClick={() => navigate(`/artists/${artist._id}`)} className="w-full">
+            Book Now
+          </Button>
+
+          <Button
+            size="sm"
+            variant="secondary"
+            className="w-full"
+            onClick={(e) => {
+              e.preventDefault();
+              const user = getUser();
+              if (!user) {
+                notify({ type: "warning", title: "Login required", message: "Please login to ask for a suggestion." });
+                return;
+              }
+              if (user.role !== "user") {
+                notify({ type: "warning", title: "User account required", message: "Only registered users can send requests." });
+                return;
+              }
+              setOpenSuggestion(true);
+            }}
+          >
+            Ask Suggestion
+          </Button>
         </div>
       </div>
+      {openSuggestion && (
+        <PriceRequestModal
+          provider={{
+            role: "artist",
+            id: artist._id,
+            name: artist.name,
+            currentAmount: artist.pricePerEvent,
+          }}
+          onClose={() => setOpenSuggestion(false)}
+          onSubmitted={() => setOpenSuggestion(false)}
+        />
+      )}
     </Link>
   );
 }

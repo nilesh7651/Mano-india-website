@@ -32,6 +32,7 @@ export default function Navbar() {
             src={logo}
             alt="Mano India Logo"
             className="h-8 w-auto object-contain"
+            decoding="async"
           />
           <span className="font-semibold text-lg text-white tracking-wide">
             Mano<span className="text-amber-500">India</span>
@@ -57,6 +58,18 @@ export default function Navbar() {
             className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
           >
             Find Event Managers
+          </Link>
+          <Link
+            to="/themes"
+            className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
+          >
+            Book Theme
+          </Link>
+          <Link
+            to="/join"
+            className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
+          >
+            Join as Provider
           </Link>
           <button
             onClick={() => {
@@ -232,6 +245,20 @@ export default function Navbar() {
               className="text-gray-300 hover:text-amber-500 font-medium py-2 border-b border-gray-800/50"
             >
               Find Event Managers
+            </Link>
+            <Link
+              to="/themes"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-gray-300 hover:text-amber-500 font-medium py-2 border-b border-gray-800/50"
+            >
+              Book Theme
+            </Link>
+            <Link
+              to="/join"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-gray-300 hover:text-amber-500 font-medium py-2 border-b border-gray-800/50"
+            >
+              Join as Provider
             </Link>
             <button
               onClick={() => {

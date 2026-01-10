@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Conference event">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#050505"/>
+      <stop offset="1" stop-color="#0b1220"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect x="140" y="210" width="920" height="420" rx="26" fill="#111827" opacity="0.72"/>
+  <rect x="220" y="300" width="760" height="60" rx="18" fill="url(#accent)" opacity="0.25"/>
+  <rect x="220" y="390" width="520" height="18" rx="9" fill="#e5e7eb" opacity="0.14"/>
+  <rect x="220" y="424" width="460" height="18" rx="9" fill="#e5e7eb" opacity="0.10"/>
+  <rect x="220" y="458" width="560" height="18" rx="9" fill="#e5e7eb" opacity="0.08"/>
+
+  <text x="80" y="110" fill="#fbbf24" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" font-size="44" font-weight="700">Corporate Conference</text>
+  <text x="80" y="165" fill="#e5e7eb" opacity="0.78" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" font-size="24">Professional planning & execution</text>
+</svg>

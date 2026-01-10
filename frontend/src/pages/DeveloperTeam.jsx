@@ -6,13 +6,15 @@ import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 import developerImg from "../assets/nilesh_profile.jpeg";
 
 export default function DeveloperTeam() {
+    const developerImageUrl = new URL(developerImg, "https://manoindia.in").toString();
+
     const developerSchema = {
         "@context": "https://schema.org/",
         "@type": "Person",
         "name": "Nilesh Kumar",
         "jobTitle": "Lead Full Stack Developer & Architect",
         "url": "https://manoindia.in/developer-team",
-        "image": "https://manoindia.in/assets/nilesh_profile.jpeg",
+        "image": developerImageUrl,
         "sameAs": [
             "https://github.com/nilesh7651",
             "https://www.linkedin.com/in/nilesh-kumar-b0a931246"
@@ -31,6 +33,9 @@ export default function DeveloperTeam() {
             <SEO
                 title="Developer Team | ManoIndia"
                 description="Meet Nilesh Kumar, the Lead Full Stack Developer and Architect behind ManoIndia."
+                keywords="manoindia developer, full stack developer, mern stack, react node mongodb, system architect"
+                image={developerImageUrl}
+                canonicalUrl="https://manoindia.in/developer-team"
             />
             <Helmet>
                 <script type="application/ld+json">
@@ -60,7 +65,13 @@ export default function DeveloperTeam() {
                             {/* Image Placeholder or Avatar */}
                             <div className="w-40 h-40 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-amber-400 to-amber-700 p-1 shadow-2xl shrink-0">
                                 <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center overflow-hidden">
-                                    <img src={developerImg} alt="Nilesh Kumar" className="w-full h-full object-cover" />
+                                    <img
+                                        src={developerImg}
+                                        alt="Nilesh Kumar"
+                                        className="w-full h-full object-cover"
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
                                 </div>
                             </div>
 

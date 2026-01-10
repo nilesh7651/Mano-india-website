@@ -8,6 +8,8 @@ import API from "../services/api";
 import { getUser } from "../utils/auth";
 import Button from "../components/ui/Button";
 import { useToast } from "../components/ui/ToastProvider";
+import { IMAGES } from "../lib/images";
+import PriceRequestModal from "../components/PriceRequestModal";
 
 export default function VenueDetails() {
   const { id } = useParams();
@@ -15,6 +17,7 @@ export default function VenueDetails() {
   const [venue, setVenue] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [openBooking, setOpenBooking] = useState(false);
+  const [openSuggestion, setOpenSuggestion] = useState(false);
 
   useEffect(() => {
     API.get(`/venues/${id}`)
@@ -23,14 +26,15 @@ export default function VenueDetails() {
         // Demo fallback (important for investor demo)
         setVenue({
           _id: id,
-          name: "Royal Wedding Hall",
-          venueType: "Wedding Hall",
-          city: "Delhi",
+          name: "Grand Banquet & Lawn",
+          venueType: "Banquet Hall",
+          city: "Delhi NCR",
           capacity: 500,
           pricePerDay: 200000,
           description:
-            "A premium wedding and event venue suitable for large celebrations, receptions, and corporate events. Features state-of-the-art lighting and luxurious interiors.",
+            "A premium banquet + lawn venue for weddings, receptions, sangeet, and corporate events with great lighting and spacious parking.",
           amenities: ["Parking", "AC", "Power Backup", "Decoration Area", "Catering"],
+          images: [IMAGES.venue.banquet]
         });
       });
 
@@ -63,11 +67,12 @@ export default function VenueDetails() {
           {venue.images && venue.images.length > 0 ? (
             <img
               src={venue.images[0]}
-              alt={venue.name}
+              alt={`${venue.name} - ${venue.venueType} in ${venue.city}`}
               className="w-full h-full object-cover"
+              decoding="async"
               onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = "https://via.placeholder.com/800x600?text=Venue+Image";
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = IMAGES.venue.banquet;
               }}
             />
           ) : (
@@ -137,24 +142,46 @@ export default function VenueDetails() {
                 </div>
               </div>
 
-              <Button
-                onClick={() => {
-                  const user = getUser();
-                  if (!user) {
-                    notify({ type: "warning", title: "Login required", message: "Please login to book a venue." });
-                    return;
-                  }
-                  if (user.role !== "user") {
-                    notify({ type: "warning", title: "User account required", message: "Only registered users can make bookings." });
-                    return;
-                  }
-                  setOpenBooking(true);
-                }}
-                size="lg"
-                className="shadow-amber-900/40 transform hover:-translate-y-1"
-              >
-                📅 Book Venue
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  onClick={() => {
+                    const user = getUser();
+                    if (!user) {
+                      notify({ type: "warning", title: "Login required", message: "Please login to book a venue." });
+                      return;
+                    }
+                    if (user.role !== "user") {
+                      notify({ type: "warning", title: "User account required", message: "Only registered users can make bookings." });
+                      return;
+                    }
+                    setOpenBooking(true);
+                  }}
+                  size="lg"
+                  className="shadow-amber-900/40 transform hover:-translate-y-1"
+                >
+                  📅 Book Venue
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-gray-700 text-gray-300 hover:border-amber-500 hover:text-white hover:bg-transparent"
+                  onClick={() => {
+                    const user = getUser();
+                    if (!user) {
+                      notify({ type: "warning", title: "Login required", message: "Please login to ask for a suggestion." });
+                      return;
+                    }
+                    if (user.role !== "user") {
+                      notify({ type: "warning", title: "User account required", message: "Only registered users can send requests." });
+                      return;
+                    }
+                    setOpenSuggestion(true);
+                  }}
+                >
+                  Ask Suggestion
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -172,6 +199,19 @@ export default function VenueDetails() {
             notify({ type: "success", title: "Request sent", message: "Booking request sent successfully." });
             setOpenBooking(false);
           }}
+        />
+      )}
+
+      {openSuggestion && (
+        <PriceRequestModal
+          provider={{
+            role: "venue",
+            id: venue._id,
+            name: venue.name,
+            currentAmount: venue.pricePerDay,
+          }}
+          onClose={() => setOpenSuggestion(false)}
+          onSubmitted={() => setOpenSuggestion(false)}
         />
       )}
     </div>

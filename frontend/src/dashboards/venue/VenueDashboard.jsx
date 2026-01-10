@@ -5,12 +5,14 @@ import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import Card from "../../components/ui/Card";
 import { useToast } from "../../components/ui/ToastProvider";
+import ReceiptModal from "../../components/ReceiptModal";
 
 export default function VenueDashboard() {
   const { notify } = useToast();
   const [bookings, setBookings] = useState([]);
   const [venue, setVenue] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedReceiptData, setSelectedReceiptData] = useState(null);
   const [form, setForm] = useState({
     name: "",
     venueType: "Wedding Hall",
@@ -94,6 +96,23 @@ export default function VenueDashboard() {
         type: "error",
         title: "Update failed",
         message: err.response?.data?.message || "Failed to update booking.",
+      });
+    }
+  };
+
+  const handleViewReceipt = async (booking) => {
+    try {
+      const res = await API.get(`/receipts/booking/${booking._id}`);
+      setSelectedReceiptData({ receipt: res.data, booking });
+    } catch (err) {
+      setSelectedReceiptData({ booking });
+      notify({
+        type: "info",
+        title: "Receipt",
+        message:
+          err.response?.status === 404
+            ? "Receipt record not found yet. Showing booking details."
+            : "Failed to load receipt. Showing booking details.",
       });
     }
   };
@@ -527,6 +546,15 @@ export default function VenueDashboard() {
                     <span className="px-3 py-1 bg-green-900/30 text-green-400 rounded-full text-xs font-bold uppercase tracking-wider border border-green-800">
                       {b.status}
                     </span>
+                    {b.paymentStatus === "PAID" && (
+                      <Button
+                        size="sm"
+                        onClick={() => handleViewReceipt(b)}
+                        className="bg-gray-800 border border-gray-700 text-gray-300 hover:text-white"
+                      >
+                        View Receipt
+                      </Button>
+                    )}
                     <Button
                       size="sm"
                       onClick={() => handleAction(b._id, "complete")}
@@ -547,6 +575,15 @@ export default function VenueDashboard() {
                     >
                       {b.status}
                     </span>
+                    {b.paymentStatus === "PAID" && (
+                      <Button
+                        size="sm"
+                        onClick={() => handleViewReceipt(b)}
+                        className="bg-gray-800 border border-gray-700 text-gray-300 hover:text-white"
+                      >
+                        View Receipt
+                      </Button>
+                    )}
                     {b.status === "ACCEPTED" && !b.artistCompleted && (
                       // Note: For venue, it uses same completeBooking but logic checks user ID.
                       // For venue booking, backend checks venue owner.
@@ -575,6 +612,14 @@ export default function VenueDashboard() {
           </div>
         )}
       </div>
+
+      {selectedReceiptData && (
+        <ReceiptModal
+          booking={selectedReceiptData.booking}
+          receipt={selectedReceiptData.receipt}
+          onClose={() => setSelectedReceiptData(null)}
+        />
+      )}
     </div >
   );
 }

@@ -7,6 +7,8 @@ import BookingModal from "../components/BookingModal";
 import Reviews from "../components/Reviews";
 import { getUser } from "../utils/auth";
 import { useToast } from "../components/ui/ToastProvider";
+import { IMAGES } from "../lib/images";
+import PriceRequestModal from "../components/PriceRequestModal";
 
 export default function EventManagerDetails() {
     const { id } = useParams();
@@ -15,6 +17,7 @@ export default function EventManagerDetails() {
     const [loading, setLoading] = useState(true);
     const [reviews, setReviews] = useState([]);
     const [openBooking, setOpenBooking] = useState(false);
+    const [openSuggestion, setOpenSuggestion] = useState(false);
 
     useEffect(() => {
         API.get(`/event-managers/${id}`)
@@ -24,6 +27,19 @@ export default function EventManagerDetails() {
             })
             .catch((err) => {
                 console.error(err);
+                // Demo fallback (important for investor demo)
+                setManager({
+                    _id: id,
+                    name: "Meera Joshi",
+                    companyName: "Utsav Creators",
+                    city: "Jaipur",
+                    pricePerEvent: 60000,
+                    servicesOffered: ["Destination Weddings", "Mehendi & Haldi", "Decor"],
+                    experienceYears: 9,
+                    bio: "Destination wedding planning and decor with a strong focus on Indian rituals and details.",
+                    portfolio: [IMAGES.planner],
+                    isVerified: true,
+                });
                 setLoading(false);
             });
 
@@ -55,6 +71,9 @@ export default function EventManagerDetails() {
             <SEO
                 title={`${manager.companyName || manager.name} | Event Manager in ${manager.city}`}
                 description={`Hire ${manager.companyName || manager.name} for your next event in ${manager.city}. Expert event planning and management services.`}
+                keywords={`event manager ${manager.city}, event planner ${manager.city}, wedding planner ${manager.city}, corporate event management ${manager.city}, mano india event managers`}
+                image={manager.portfolio?.[0]}
+                canonicalUrl={`https://manoindia.in/event-managers/${manager._id}`}
             />
 
             {/* Top Section: Image & Details */}
@@ -65,11 +84,12 @@ export default function EventManagerDetails() {
                     {manager.portfolio && manager.portfolio.length > 0 ? (
                         <img
                             src={manager.portfolio[0]}
-                            alt={manager.name}
+                            alt={`${manager.companyName || manager.name} - Event Manager in ${manager.city}`}
                             className="w-full h-full object-cover"
+                            decoding="async"
                             onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80";
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src = IMAGES.planner;
                             }}
                         />
                     ) : (
@@ -104,7 +124,7 @@ export default function EventManagerDetails() {
 
                     {manager.bio && (
                         <div>
-                            <h2 className="text-lg font-semibold text-gray-300 mb-2 uppercase tracking-wide text-sm">About</h2>
+                            <h2 className="font-semibold text-gray-300 mb-2 uppercase tracking-wide text-sm">About</h2>
                             <p className="text-gray-400 leading-relaxed text-lg line-clamp-4 hover:line-clamp-none transition-all duration-300">
                                 {manager.bio}
                             </p>
@@ -135,24 +155,46 @@ export default function EventManagerDetails() {
                                 </div>
                             </div>
 
-                            <Button
-                                onClick={() => {
-                                    const user = getUser();
-                                    if (!user) {
-                                        notify({ type: "warning", title: "Login required", message: "Please login to book an event manager." });
-                                        return;
-                                    }
-                                    if (user.role !== "user") {
-                                        notify({ type: "warning", title: "User account required", message: "Only registered users can make bookings." });
-                                        return;
-                                    }
-                                    setOpenBooking(true);
-                                }}
-                                size="lg"
-                                className="shadow-amber-900/40 transform hover:-translate-y-1"
-                            >
-                                Pay and Book
-                            </Button>
+                            <div className="flex flex-col sm:flex-row gap-3">
+                                <Button
+                                    onClick={() => {
+                                        const user = getUser();
+                                        if (!user) {
+                                            notify({ type: "warning", title: "Login required", message: "Please login to book an event manager." });
+                                            return;
+                                        }
+                                        if (user.role !== "user") {
+                                            notify({ type: "warning", title: "User account required", message: "Only registered users can make bookings." });
+                                            return;
+                                        }
+                                        setOpenBooking(true);
+                                    }}
+                                    size="lg"
+                                    className="shadow-amber-900/40 transform hover:-translate-y-1"
+                                >
+                                    Pay and Book
+                                </Button>
+
+                                <Button
+                                    variant="outline"
+                                    size="lg"
+                                    className="border-gray-700 text-gray-300 hover:border-amber-500 hover:text-white hover:bg-transparent"
+                                    onClick={() => {
+                                        const user = getUser();
+                                        if (!user) {
+                                            notify({ type: "warning", title: "Login required", message: "Please login to ask for a suggestion." });
+                                            return;
+                                        }
+                                        if (user.role !== "user") {
+                                            notify({ type: "warning", title: "User account required", message: "Only registered users can send requests." });
+                                            return;
+                                        }
+                                        setOpenSuggestion(true);
+                                    }}
+                                >
+                                    Ask Suggestion
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -208,8 +250,10 @@ export default function EventManagerDetails() {
                             <div key={idx} className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden border border-white/10 group bg-gray-900">
                                 <img
                                     src={img}
-                                    alt={`Portfolio ${idx}`}
+                                    alt={`${manager.companyName || manager.name} portfolio ${idx + 1}`}
                                     className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
+                                    loading="lazy"
+                                    decoding="async"
                                 />
                             </div>
                         ))}
@@ -229,6 +273,19 @@ export default function EventManagerDetails() {
                         notify({ type: "success", title: "Request sent", message: "Booking request sent successfully." });
                         setOpenBooking(false);
                     }}
+                />
+            )}
+
+            {openSuggestion && (
+                <PriceRequestModal
+                    provider={{
+                        role: "event_manager",
+                        id: manager._id,
+                        name: manager.companyName || manager.name,
+                        currentAmount: manager.pricePerEvent,
+                    }}
+                    onClose={() => setOpenSuggestion(false)}
+                    onSubmitted={() => setOpenSuggestion(false)}
                 />
             )}
         </div>

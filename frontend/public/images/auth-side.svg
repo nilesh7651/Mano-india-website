@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" role="img" aria-label="ManoIndia background">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#050505"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="30%" cy="20%" r="70%">
+      <stop offset="0" stop-color="#fbbf24" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#bg)"/>
+  <rect width="1200" height="1600" fill="url(#glow)"/>
+  <circle cx="980" cy="420" r="320" fill="#f59e0b" opacity="0.06"/>
+  <circle cx="260" cy="1160" r="420" fill="#fbbf24" opacity="0.04"/>
+  <path d="M120 980 C420 820, 700 1060, 1080 900" fill="none" stroke="#fbbf24" stroke-width="10" opacity="0.18"/>
+  <path d="M160 1040 C460 880, 720 1120, 1120 960" fill="none" stroke="#e5e7eb" stroke-width="6" opacity="0.10"/>
+</svg>

@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-export default function ReceiptModal({ booking, onClose }) {
+export default function ReceiptModal({ booking, receipt, onClose }) {
     const printRef = useRef();
 
     const handlePrint = () => {
@@ -35,7 +35,29 @@ export default function ReceiptModal({ booking, onClose }) {
                 popup.document.close();
     };
 
-    if (!booking) return null;
+    const data = receipt || booking;
+    const bookingRef = receipt?.booking || booking;
+
+    if (!data) return null;
+
+    const paidAt = receipt?.paidAt || bookingRef?.paidAt || new Date();
+    const orderId = receipt?.razorpayOrderId || bookingRef?.razorpayOrderId;
+    const paymentId = receipt?.razorpayPaymentId || bookingRef?.razorpayPaymentId;
+    const amount = receipt?.amount ?? bookingRef?.amount;
+    const eventDate = receipt?.eventDate || bookingRef?.eventDate;
+    const eventLocation = receipt?.eventLocation || bookingRef?.eventLocation;
+
+    const serviceName =
+        receipt?.serviceName ||
+        bookingRef?.artist?.name ||
+        bookingRef?.venue?.name ||
+        bookingRef?.eventManager?.companyName ||
+        bookingRef?.eventManager?.name ||
+        "Service";
+
+    const serviceType =
+        receipt?.providerRole ||
+        (bookingRef?.artist ? "artist" : bookingRef?.venue ? "venue" : bookingRef?.eventManager ? "event_manager" : "service");
 
     return (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -74,19 +96,25 @@ export default function ReceiptModal({ booking, onClose }) {
                     <div className="space-y-4 text-sm">
                         <div className="flex justify-between">
                             <span className="text-gray-500">Date</span>
-                            <span className="font-medium">{new Date().toLocaleDateString()}</span>
+                            <span className="font-medium">{new Date(paidAt).toLocaleDateString()}</span>
                         </div>
+                        {receipt?.invoiceNumber && (
+                            <div className="flex justify-between">
+                                <span className="text-gray-500">Invoice</span>
+                                <span className="font-mono text-gray-700">{receipt.invoiceNumber}</span>
+                            </div>
+                        )}
                         <div className="flex justify-between">
                             <span className="text-gray-500">Order ID</span>
-                            <span className="font-mono text-gray-700">{booking.razorpayOrderId || "N/A"}</span>
+                            <span className="font-mono text-gray-700">{orderId || "N/A"}</span>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-gray-500">Payment ID</span>
-                            <span className="font-mono text-gray-700">{booking.razorpayPaymentId || "N/A"}</span>
+                            <span className="font-mono text-gray-700">{paymentId || "N/A"}</span>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-gray-500">Booking Ref</span>
-                            <span className="font-mono text-gray-700">{booking._id?.slice(-8).toUpperCase()}</span>
+                            <span className="font-mono text-gray-700">{bookingRef?._id?.slice(-8).toUpperCase()}</span>
                         </div>
                     </div>
 
@@ -97,10 +125,16 @@ export default function ReceiptModal({ booking, onClose }) {
                         <div className="flex flex-col">
                             <span className="text-xs text-gray-500 uppercase tracking-wider">Service</span>
                             <span className="font-bold text-lg text-gray-900">
-                                {booking.artist?.name || booking.venue?.name}
+                                {serviceName}
                             </span>
                             <span className="text-sm text-gray-600">
-                                {booking.artist ? "Artist Performance" : "Venue Booking"}
+                                {serviceType === "artist"
+                                    ? "Artist Performance"
+                                    : serviceType === "venue"
+                                        ? "Venue Booking"
+                                        : serviceType === "event_manager"
+                                            ? "Event Management"
+                                            : "Service"}
                             </span>
                         </div>
 
@@ -108,11 +142,11 @@ export default function ReceiptModal({ booking, onClose }) {
                             <span className="text-xs text-gray-500 uppercase tracking-wider">Event Details</span>
                             <p className="text-sm text-gray-700 flex justify-between">
                                 <span>Date:</span>
-                                <span className="font-medium">{new Date(booking.eventDate).toLocaleDateString()}</span>
+                                <span className="font-medium">{eventDate ? new Date(eventDate).toLocaleDateString() : "N/A"}</span>
                             </p>
                             <p className="text-sm text-gray-700 flex justify-between">
                                 <span>Location:</span>
-                                <span className="font-medium">{booking.eventLocation}</span>
+                                <span className="font-medium">{eventLocation || "N/A"}</span>
                             </p>
                         </div>
                     </div>
@@ -123,7 +157,7 @@ export default function ReceiptModal({ booking, onClose }) {
                     <div className="flex justify-between items-end">
                         <span className="text-xl font-bold text-gray-900">Total Paid</span>
                         <span className="text-2xl font-extrabold text-gray-900">
-                            ₹ {booking.amount?.toLocaleString()}
+                            ₹ {Number(amount || 0).toLocaleString()}
                         </span>
                     </div>
 

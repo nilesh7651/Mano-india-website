@@ -5,12 +5,14 @@ import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import Card from "../../components/ui/Card";
 import { useToast } from "../../components/ui/ToastProvider";
+import ReceiptModal from "../../components/ReceiptModal";
 
 export default function EventManagerDashboard() {
     const { notify } = useToast();
     const [profile, setProfile] = useState(null);
     const [bookings, setBookings] = useState([]); // Placeholder for future implementation
     const [loading, setLoading] = useState(true);
+    const [selectedReceiptData, setSelectedReceiptData] = useState(null);
     const [form, setForm] = useState({
         name: "",
         companyName: "",
@@ -176,6 +178,23 @@ export default function EventManagerDashboard() {
                 type: "error",
                 title: "Update failed",
                 message: err.response?.data?.message || "Failed to update bank details.",
+            });
+        }
+    };
+
+    const handleViewReceipt = async (booking) => {
+        try {
+            const res = await API.get(`/receipts/booking/${booking._id}`);
+            setSelectedReceiptData({ receipt: res.data, booking });
+        } catch (err) {
+            setSelectedReceiptData({ booking });
+            notify({
+                type: "info",
+                title: "Receipt",
+                message:
+                    err.response?.status === 404
+                        ? "Receipt record not found yet. Showing booking details."
+                        : "Failed to load receipt. Showing booking details.",
             });
         }
     };
@@ -587,6 +606,16 @@ export default function EventManagerDashboard() {
                                         ₹{booking.amount.toLocaleString()}
                                     </div>
 
+                                    {booking.paymentStatus === "PAID" && (
+                                        <Button
+                                            size="sm"
+                                            onClick={() => handleViewReceipt(booking)}
+                                            className="bg-gray-800 border border-gray-700 text-gray-300 hover:text-white"
+                                        >
+                                            View Receipt
+                                        </Button>
+                                    )}
+
                                     <div className="flex gap-2 mt-2">
                                         {booking.status === 'AWAITING_PAYMENT' && (
                                             <span className="text-sm text-yellow-500 font-medium">User Payment Pending</span>
@@ -617,6 +646,14 @@ export default function EventManagerDashboard() {
                     </div>
                 )}
             </div>
+
+            {selectedReceiptData && (
+                <ReceiptModal
+                    booking={selectedReceiptData.booking}
+                    receipt={selectedReceiptData.receipt}
+                    onClose={() => setSelectedReceiptData(null)}
+                />
+            )}
         </div>
     );
 }

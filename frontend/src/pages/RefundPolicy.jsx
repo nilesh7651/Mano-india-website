@@ -7,6 +7,8 @@ export default function RefundPolicy() {
             <SEO
                 title="Cancellation & Refund Policy | ManoIndia"
                 description="Understand our cancellation and refund policies for bookings made through ManoIndia."
+                keywords="manoindia refund policy, cancellation policy, booking refund, india"
+                canonicalUrl="https://manoindia.in/refund-policy"
             />
 
             <h1 className="text-4xl font-bold text-amber-500 mb-4">Cancellation & Refund Policy</h1>

@@ -5,12 +5,14 @@ import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import Card from "../../components/ui/Card";
 import { useToast } from "../../components/ui/ToastProvider";
+import ReceiptModal from "../../components/ReceiptModal";
 
 export default function ArtistDashboard() {
   const { notify } = useToast();
   const [profile, setProfile] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedReceiptData, setSelectedReceiptData] = useState(null);
   const [form, setForm] = useState({
     name: "",
     category: "",
@@ -48,6 +50,23 @@ export default function ArtistDashboard() {
         type: "error",
         title: "Update failed",
         message: err.response?.data?.message || "Failed to update profile.",
+      });
+    }
+  };
+
+  const handleViewReceipt = async (booking) => {
+    try {
+      const res = await API.get(`/receipts/booking/${booking._id}`);
+      setSelectedReceiptData({ receipt: res.data, booking });
+    } catch (err) {
+      setSelectedReceiptData({ booking });
+      notify({
+        type: "info",
+        title: "Receipt",
+        message:
+          err.response?.status === 404
+            ? "Receipt record not found yet. Showing booking details."
+            : "Failed to load receipt. Showing booking details.",
       });
     }
   };
@@ -418,6 +437,15 @@ export default function ArtistDashboard() {
                     >
                       {b.status}
                     </span>
+                    {b.paymentStatus === "PAID" && (
+                      <Button
+                        size="sm"
+                        onClick={() => handleViewReceipt(b)}
+                        className="bg-gray-800 border border-gray-700 text-gray-300 hover:text-white text-xs"
+                      >
+                        View Receipt
+                      </Button>
+                    )}
                     {b.status === "ACCEPTED" && !b.artistCompleted && (
                       <Button
                         size="sm"
@@ -437,6 +465,14 @@ export default function ArtistDashboard() {
           </div>
         )}
       </div>
+
+      {selectedReceiptData && (
+        <ReceiptModal
+          booking={selectedReceiptData.booking}
+          receipt={selectedReceiptData.receipt}
+          onClose={() => setSelectedReceiptData(null)}
+        />
+      )}
 
       {/* Bank Details Section for Existing Users */}
       <Card variant="dark">
