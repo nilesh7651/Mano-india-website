@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer id="footer" className="bg-black border-t border-gray-800 mt-20 text-gray-300">
+    <footer id="footer" className="bg-black border-t border-gray-800 mt-20 text-gray-300" itemScope itemType="https://schema.org/WPFooter">
       <div className="max-w-7xl mx-auto px-6 py-12 grid gap-8 md:grid-cols-4">
 
         {/* Brand */}
@@ -10,51 +10,50 @@ export default function Footer() {
           <h2 className="text-2xl font-bold text-amber-500 tracking-wide">ManoIndia</h2>
           <p className="mt-4 text-sm text-gray-400">
             Managed & Organized by <br />
-            <span className="font-semibold text-white">Mayramurti Pvt. Ltd.</span>
+            <span className="font-semibold text-white" itemProp="name">Mayramurti Pvt. Ltd.</span>
           </p>
         </div>
 
         {/* Address */}
-        <div>
+        <address className="not-italic" itemScope itemType="https://schema.org/PostalAddress">
           <h3 className="font-semibold text-white mb-4 uppercase tracking-wider text-sm">Office Address</h3>
           <p className="text-sm text-gray-400 leading-relaxed">
-            Bhub, BSFC Building,<br />
-            Frazer Road,<br />
-            Patna – 800001
+            <span itemProp="streetAddress">Bhub, BSFC Building,<br />Frazer Road,</span><br />
+            <span itemProp="addressLocality">Patna</span> – <span itemProp="postalCode">800001</span>
           </p>
-        </div>
+        </address>
 
         {/* Contact */}
-        <div>
+        <div itemScope itemType="https://schema.org/Organization">
           <h3 className="font-semibold text-white mb-4 uppercase tracking-wider text-sm">Contact</h3>
-          <p className="text-sm text-gray-400 hover:text-amber-500 transition-colors cursor-pointer">
+          <a href="tel:+918709736094" className="block text-sm text-gray-400 hover:text-amber-500 transition-colors" itemProp="telephone">
             📞 +91 87097 36094
-          </p>
-          <p className="text-sm text-gray-400 mt-2 hover:text-amber-500 transition-colors cursor-pointer">
+          </a>
+          <a href="mailto:manoindia01@gmail.com" className="block text-sm text-gray-400 mt-2 hover:text-amber-500 transition-colors" itemProp="email">
             ✉️ manoindia01@gmail.com
-          </p>
-          <p className="text-sm text-gray-400 mt-2 hover:text-amber-500 transition-colors cursor-pointer">
+          </a>
+          <a href="https://www.manoindia.in" className="block text-sm text-gray-400 mt-2 hover:text-amber-500 transition-colors" itemProp="url" rel="noopener">
             🌐 www.manoindia.in
-          </p>
+          </a>
         </div>
 
 
 
         {/* Legal */}
-        <div>
+        <nav aria-label="Legal links">
           <h3 className="font-semibold text-white mb-4 uppercase tracking-wider text-sm">Legal</h3>
           <ul className="text-sm text-gray-400 space-y-2">
             <li>
-              <Link to="/privacy-policy" className="hover:text-amber-500 transition-colors cursor-pointer">Privacy Policy</Link>
+              <Link to="/privacy-policy" className="hover:text-amber-500 transition-colors">Privacy Policy</Link>
             </li>
             <li>
-              <Link to="/terms-and-conditions" className="hover:text-amber-500 transition-colors cursor-pointer">Terms & Conditions</Link>
+              <Link to="/terms-and-conditions" className="hover:text-amber-500 transition-colors">Terms & Conditions</Link>
             </li>
             <li>
-              <Link to="/refund-policy" className="hover:text-amber-500 transition-colors cursor-pointer">Refund Policy</Link>
+              <Link to="/refund-policy" className="hover:text-amber-500 transition-colors">Refund Policy</Link>
             </li>
           </ul>
-        </div>
+        </nav>
       </div>
 
       {/* Supported By Section - Ultra Premium Design */}

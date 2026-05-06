@@ -40,7 +40,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+        <div className="hidden lg:flex items-center gap-6 xl:gap-8 text-sm font-medium">
           <Link
             to="/artists"
             className="text-gray-300 hover:text-amber-500 transition-colors duration-200"
@@ -104,7 +104,7 @@ export default function Navbar() {
 
           {/* Auth Buttons / User Profile */}
           {!user ? (
-            <div className="flex items-center gap-4 text-sm font-medium">
+            <div className="flex items-center gap-2 sm:gap-4 text-sm font-medium">
               <Link
                 to="/login"
                 className="text-gray-300 hover:text-white transition-colors"
@@ -113,11 +113,10 @@ export default function Navbar() {
               </Link>
               <Link
                 to="/signup"
-                className="bg-amber-600 text-white px-5 py-2 rounded-lg hover:bg-amber-500 transition-all font-medium shadow-lg shadow-amber-900/30 hidden sm:block"
+                className="bg-amber-600 text-white px-3 sm:px-5 py-2 rounded-lg hover:bg-amber-500 transition-all font-medium shadow-lg shadow-amber-900/30 hidden lg:block"
               >
                 Sign Up
               </Link>
-              {/* Mobile Sign Up Icon/Link if needed, or just keep Login and Menu */}
             </div>
           ) : (
             <div className="relative">
@@ -205,7 +204,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
+            className="lg:hidden p-2 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
           >
             {mobileMenuOpen ? (
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -223,7 +222,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-gray-950 border-t border-gray-800 absolute top-16 left-0 w-full shadow-2xl z-40">
+        <div className="lg:hidden bg-gray-950 border-t border-gray-800 absolute top-16 left-0 right-0 w-full shadow-2xl z-40 max-h-[calc(100vh-4rem)] overflow-y-auto">
           <div className="flex flex-col p-4 space-y-4">
             <Link
               to="/artists"

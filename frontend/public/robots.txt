@@ -1,8 +1,16 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /admin/*
 Disallow: /dashboard
+Disallow: /dashboard/*
 Disallow: /profile
 Disallow: /my-bookings
+Disallow: /api/
+Disallow: /*.json$
 
+# Crawl-delay for politeness
+Crawl-delay: 1
+
+# Sitemap location
 Sitemap: https://manoindia.in/sitemap.xml

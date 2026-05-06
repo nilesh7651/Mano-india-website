@@ -18,8 +18,8 @@ export default function Login() {
     try {
       const res = await API.post("/auth/login", { email, password });
 
-      // Token is now stored in an HttpOnly cookie by the backend.
-      localStorage.removeItem("token");
+      // Store token in localStorage as fallback for mobile/CORS issues
+      localStorage.setItem("token", res.data.token);
       localStorage.setItem(
         "user",
         JSON.stringify({
