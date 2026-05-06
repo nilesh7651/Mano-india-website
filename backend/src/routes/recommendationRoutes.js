@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const recommendationController = require("../controllers/recommendationController");
-const authMiddleware = require("../middlewares/authMiddleware");
+const authMiddleware = require("../middleware/authMiddleware");
 
 // Public Routes
 router.get("/trending", recommendationController.getTrending);
