@@ -23,6 +23,7 @@
 ### 👤 User Features
 - **Seamless Booking**: Browse and book Artists, Venues, and Caterers with ease.
 - **Secure Payments**: Integrated **Razorpay** gateway for safe and secure transactions.
+- **Smart Recommendations**: Amazon-like recommendation engine providing "Trending", "Similar Items", and "Personalized For You" feeds based on user booking history.
 - **User Dashboard**: Manage bookings, view payment history, and track event status.
 - **Profile Management**: Easy-to-use profile settings and preference management.
 
@@ -128,7 +129,15 @@ npm run dev
 # Server runs on http://localhost:5000
 ```
 
-### 3️⃣ Frontend Setup
+### 3️⃣ Populate Database (Optional)
+To test the platform with a massive set of realistic demo data (Artists, Venues, Bookings, and Reviews) for the recommendation engine:
+```bash
+cd backend
+node seedData.js
+```
+*Note: This will clear your existing database collections before seeding.*
+
+### 4️⃣ Frontend Setup
 Open a new terminal, navigate to the frontend folder:
 ```bash
 cd frontend
