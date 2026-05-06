@@ -5,6 +5,8 @@ import API from "../services/api";
 import { IMAGES } from "../lib/images";
 import { getBlogPosts } from "../lib/blog";
 import { fetchBlogPosts } from "../services/blog";
+import { getUser } from "../utils/auth";
+import RecommendationCarousel from "../components/RecommendationCarousel";
 
 import SEO from "../components/SEO";
 
@@ -13,6 +15,8 @@ export default function Home() {
   const scrollContainerRef = useRef(null);
   const [galleryItems, setGalleryItems] = useState([]);
   const [latestPosts, setLatestPosts] = useState(() => getBlogPosts().slice(0, 3));
+  const [trending, setTrending] = useState({ artists: [], venues: [] });
+  const [personalized, setPersonalized] = useState({ artists: [], venues: [], basedOn: null });
 
   useEffect(() => {
     API.get("/gallery")
@@ -30,6 +34,19 @@ export default function Home() {
         console.error("Failed to fetch gallery", err);
         setGalleryItems(demoGallery);
       });
+  }, []);
+
+  useEffect(() => {
+    API.get("/recommendations/trending")
+      .then(res => setTrending(res.data))
+      .catch(console.error);
+      
+    const user = getUser();
+    if (user) {
+      API.get("/recommendations/for-you")
+        .then(res => setPersonalized(res.data))
+        .catch(console.error);
+    }
   }, []);
 
   useEffect(() => {
@@ -178,6 +195,36 @@ export default function Home() {
 
         {/* Visual placeholder */}
         <HeroSlider />
+      </section>
+
+      {/* RECOMMENDATIONS SECTION */}
+      <section className="max-w-7xl mx-auto px-6 py-12">
+        {personalized.artists?.length > 0 && (
+          <RecommendationCarousel 
+            title="Recommended For You" 
+            subtitle={personalized.basedOn?.city ? `Based on your interest in ${personalized.basedOn.city}` : "Picked just for you"}
+            items={personalized.artists} 
+            type="artist" 
+          />
+        )}
+        
+        {trending.artists?.length > 0 && (
+          <RecommendationCarousel 
+            title="Trending Artists" 
+            subtitle="Most booked and highly rated artists across ManoIndia"
+            items={trending.artists} 
+            type="artist" 
+          />
+        )}
+
+        {trending.venues?.length > 0 && (
+          <RecommendationCarousel 
+            title="Popular Venues" 
+            subtitle="Top-rated venues available for booking"
+            items={trending.venues} 
+            type="venue" 
+          />
+        )}
       </section>
 
       {/* HOW IT WORKS (Premium Timeline) */}

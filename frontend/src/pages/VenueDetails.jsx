@@ -10,6 +10,7 @@ import Button from "../components/ui/Button";
 import { useToast } from "../components/ui/ToastProvider";
 import { IMAGES } from "../lib/images";
 import PriceRequestModal from "../components/PriceRequestModal";
+import RecommendationCarousel from "../components/RecommendationCarousel";
 
 export default function VenueDetails() {
   const { id } = useParams();
@@ -18,6 +19,10 @@ export default function VenueDetails() {
   const [reviews, setReviews] = useState([]);
   const [openBooking, setOpenBooking] = useState(false);
   const [openSuggestion, setOpenSuggestion] = useState(false);
+  
+  const [similarVenues, setSimilarVenues] = useState([]);
+  const [alsoBookedArtists, setAlsoBookedArtists] = useState([]);
+  const [alsoBookedVenues, setAlsoBookedVenues] = useState([]);
 
   useEffect(() => {
     API.get(`/venues/${id}`)
@@ -40,6 +45,21 @@ export default function VenueDetails() {
 
     // Venues don't have reviews in the current backend, so we'll leave it empty
     setReviews([]);
+    
+    // Fetch Recommendations
+    API.get(`/recommendations/similar/venue/${id}`)
+      .then(res => setSimilarVenues(res.data))
+      .catch(() => setSimilarVenues([]));
+
+    API.get(`/recommendations/also-booked/venue/${id}`)
+      .then(res => {
+        setAlsoBookedArtists(res.data.artists || []);
+        setAlsoBookedVenues(res.data.venues || []);
+      })
+      .catch(() => {
+        setAlsoBookedArtists([]);
+        setAlsoBookedVenues([]);
+      });
   }, [id]);
 
   if (!venue) {
@@ -190,6 +210,35 @@ export default function VenueDetails() {
       <div className="border-t border-gray-800 pt-10">
         <Reviews reviews={reviews} />
       </div>
+
+      {similarVenues.length > 0 && (
+        <div className="border-t border-gray-800 pt-10">
+          <RecommendationCarousel 
+            title="Similar Venues" 
+            items={similarVenues} 
+            type="venue" 
+          />
+        </div>
+      )}
+
+      {(alsoBookedArtists.length > 0 || alsoBookedVenues.length > 0) && (
+        <div className="border-t border-gray-800 pt-10">
+          {alsoBookedVenues.length > 0 && (
+            <RecommendationCarousel 
+              title="Users who booked this Venue also booked" 
+              items={alsoBookedVenues} 
+              type="venue" 
+            />
+          )}
+          {alsoBookedArtists.length > 0 && (
+            <RecommendationCarousel 
+              title="Recommended Artists for this Venue" 
+              items={alsoBookedArtists} 
+              type="artist" 
+            />
+          )}
+        </div>
+      )}
 
       {openBooking && (
         <BookingModal
