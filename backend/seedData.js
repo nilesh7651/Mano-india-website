@@ -55,8 +55,8 @@ const seedData = async () => {
         { name: "Grand Hyatt", email: "hyatt@example.com", password: hashedPassword, phone: "8000000002", role: "venue" },
     ];
 
-    // Generate 100 Random Users
-    for (let i = 0; i < 100; i++) {
+    // Generate 500 Random Users
+    for (let i = 0; i < 500; i++) {
         users.push({
             name: `${getRandomItem(firstNames)} ${getRandomItem(lastNames)}`,
             email: `user${i}@example.com`,
@@ -66,8 +66,8 @@ const seedData = async () => {
         });
     }
 
-    // Generate 100 Random Artist Users
-    for (let i = 0; i < 100; i++) {
+    // Generate 500 Random Artist Users
+    for (let i = 0; i < 500; i++) {
         users.push({
             name: `${getRandomItem(firstNames)} ${getRandomItem(lastNames)}`,
             email: `artist${i}@example.com`,
@@ -77,8 +77,8 @@ const seedData = async () => {
         });
     }
 
-    // Generate 50 Random Venue Users
-    for (let i = 0; i < 50; i++) {
+    // Generate 200 Random Venue Users
+    for (let i = 0; i < 200; i++) {
         users.push({
             name: `${getRandomItem(lastNames)} Enterprises`,
             email: `venue${i}@example.com`,
@@ -232,7 +232,7 @@ const seedData = async () => {
     const statuses = ["PENDING", "ACCEPTED", "REJECTED", "COMPLETED", "AWAITING_PAYMENT"];
     const paymentStatuses = ["PENDING", "PAID", "FAILED"];
 
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 2000; i++) {
         const isArtistBooking = Math.random() > 0.5;
         const user = getRandomItem(normalUsers);
         const eventDate = new Date();
@@ -309,7 +309,7 @@ const seedData = async () => {
         { title: "Grand Sangeet Night", type: "Sangeet", imageUrl: getPicsum("g6", 1000, 600), description: "High-energy dance performances and DJ night." }
     ];
     
-    for(let i=0; i<100; i++) {
+    for(let i=0; i<500; i++) {
         const type = getRandomItem(eventTypes);
         galleryItems.push({
             title: `${getRandomItem(cities)} ${type} Event`,
