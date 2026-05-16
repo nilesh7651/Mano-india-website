@@ -72,7 +72,7 @@ const updateVenue = async (req, res) => {
       return res.status(404).json({ message: "Venue not found" });
     }
 
-    const { name, venueType, city, phone, capacity, pricePerDay, description, images, bankDetails } = req.body;
+    const { name, venueType, city, phone, capacity, pricePerDay, description, images, bankDetails, availabilityCalendar } = req.body;
 
     venue.name = name || venue.name;
     venue.venueType = venueType || venue.venueType;
@@ -83,6 +83,7 @@ const updateVenue = async (req, res) => {
     venue.description = description || venue.description;
     if (images) venue.images = images;
     if (bankDetails) venue.bankDetails = bankDetails;
+    if (availabilityCalendar) venue.availabilityCalendar = availabilityCalendar;
 
     await venue.save();
 

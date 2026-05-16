@@ -45,6 +45,13 @@ const venueSchema = mongoose.Schema(
       bankName: String,
       ifscCode: String,
     },
+    availabilityCalendar: [
+      {
+        startDate: { type: Date, required: true },
+        endDate: { type: Date, required: true },
+        reason: { type: String },
+      },
+    ],
   },
   { timestamps: true }
 );

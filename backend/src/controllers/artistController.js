@@ -97,7 +97,7 @@ const updateArtistProfile = async (req, res) => {
       return res.status(404).json({ message: "Artist profile not found" });
     }
 
-    const { name, category, city, phone, pricePerEvent, bio, images, bankDetails } = req.body;
+    const { name, category, city, phone, pricePerEvent, bio, images, bankDetails, availabilityCalendar } = req.body;
 
     artist.name = name || artist.name;
     artist.category = category || artist.category;
@@ -107,6 +107,7 @@ const updateArtistProfile = async (req, res) => {
     artist.bio = bio || artist.bio;
     if (images) artist.images = images;
     if (bankDetails) artist.bankDetails = bankDetails;
+    if (availabilityCalendar) artist.availabilityCalendar = availabilityCalendar;
 
     await artist.save();
 

@@ -100,7 +100,7 @@ const updateProfile = async (req, res) => {
             return res.status(404).json({ message: "Event Manager profile not found" });
         }
 
-        const { name, companyName, city, phone, experienceYears, servicesOffered, pricePerEvent, bio, portfolio, bankDetails } = req.body;
+        const { name, companyName, city, phone, experienceYears, servicesOffered, pricePerEvent, bio, portfolio, bankDetails, availabilityCalendar } = req.body;
 
         manager.name = name || manager.name;
         manager.companyName = companyName || manager.companyName;
@@ -115,6 +115,7 @@ const updateProfile = async (req, res) => {
         if (req.body.packages) manager.packages = req.body.packages;
         if (req.body.locationsServed) manager.locationsServed = req.body.locationsServed;
         if (bankDetails) manager.bankDetails = bankDetails;
+        if (availabilityCalendar) manager.availabilityCalendar = availabilityCalendar;
 
         await manager.save();
 

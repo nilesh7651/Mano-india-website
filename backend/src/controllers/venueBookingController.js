@@ -1,6 +1,7 @@
 const VenueBooking = require("../models/VenueBooking");
 const Venue = require("../models/Venue");
 const notify = require("../utils/createNotification");
+const { isDateBlocked } = require("../utils/availabilityHelper");
 
 const createVenueBooking = async (req, res) => {
   try {
@@ -13,6 +14,10 @@ const createVenueBooking = async (req, res) => {
     const venue = await Venue.findById(venueId);
     if (!venue) {
       return res.status(404).json({ message: "Venue not found" });
+    }
+
+    if (isDateBlocked(eventDate, venue.availabilityCalendar)) {
+      return res.status(400).json({ message: "Venue is not available on the selected date" });
     }
 
     const booking = await VenueBooking.create({

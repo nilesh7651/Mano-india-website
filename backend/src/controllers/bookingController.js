@@ -4,6 +4,7 @@ const Venue = require("../models/Venue");
 const notify = require("../utils/createNotification");
 
 const EventManager = require("../models/EventManager"); // Added import
+const { isDateBlocked } = require("../utils/availabilityHelper");
 
 const createBooking = async (req, res) => {
   try {
@@ -29,6 +30,9 @@ const createBooking = async (req, res) => {
       if (!artist) {
         return res.status(404).json({ message: "Artist not found" });
       }
+      if (isDateBlocked(eventDate, artist.availabilityCalendar)) {
+        return res.status(400).json({ message: "Artist is not available on the selected date" });
+      }
       amount = artist.pricePerEvent;
       ownerId = artist.user;
     }
@@ -39,6 +43,9 @@ const createBooking = async (req, res) => {
       if (!venue) {
         return res.status(404).json({ message: "Venue not found" });
       }
+      if (isDateBlocked(eventDate, venue.availabilityCalendar)) {
+        return res.status(400).json({ message: "Venue is not available on the selected date" });
+      }
       amount = venue.pricePerDay;
       ownerId = venue.owner;
     }
@@ -48,6 +55,9 @@ const createBooking = async (req, res) => {
       const manager = await EventManager.findById(eventManagerId);
       if (!manager) {
         return res.status(404).json({ message: "Event Manager not found" });
+      }
+      if (isDateBlocked(eventDate, manager.availabilityCalendar)) {
+        return res.status(400).json({ message: "Event Manager is not available on the selected date" });
       }
       amount = manager.pricePerEvent;
       ownerId = manager.user;
